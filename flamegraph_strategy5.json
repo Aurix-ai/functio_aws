@@ -1,0 +1,49 @@
+{
+  "strategy": 5,
+  "strategy_name": "Wide Plateau Identification",
+  "top_function_percentage": 19.1,
+  "total_samples": 49729065726,
+  "total_unique_leaf_functions": 187,
+  "functions": [
+    {
+      "rank": 1,
+      "function_name": "void RadixSort<DB::QuantileTDigest<double>::RadixSortTraits>::radixSortLSDInternal<false>",
+      "source_location": "/home/ubuntu/ClickHouse/src/Common/RadixSort.h:322",
+      "percentage": 19.1,
+      "sample_count": 9495829952,
+      "function_type": "on-CPU"
+    },
+    {
+      "rank": 2,
+      "function_name": "inline_memcpy",
+      "source_location": "/home/ubuntu/ClickHouse/base/glibc-compatibility/memcpy/memcpy.cpp:5",
+      "percentage": 11.72,
+      "sample_count": 5827800312,
+      "function_type": "on-CPU"
+    },
+    {
+      "rank": 3,
+      "function_name": "memcpy",
+      "source_location": "/home/ubuntu/ClickHouse/base/glibc-compatibility/memcpy/memcpy.cpp:5",
+      "percentage": 5.36,
+      "sample_count": 2664845563,
+      "function_type": "on-CPU"
+    },
+    {
+      "rank": 4,
+      "function_name": "DB::QuantileTDigest<double>::compress",
+      "source_location": "/home/ubuntu/ClickHouse/src/AggregateFunctions/QuantileTDigest.h:262",
+      "percentage": 4.18,
+      "sample_count": 2079998880,
+      "function_type": "on-CPU"
+    },
+    {
+      "rank": 5,
+      "function_name": "RadixSort<DB::QuantileTDigest<double>::RadixSortTraits>::keyToBits",
+      "source_location": "/home/ubuntu/ClickHouse/src/Common/RadixSort.h:230",
+      "percentage": 3.28,
+      "sample_count": 1632754265,
+      "function_type": "on-CPU"
+    }
+  ]
+}
