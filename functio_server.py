@@ -34,6 +34,7 @@ def process_data(data: RequestData):
     "CREATE TABLE multiples ( value UInt64 ) ENGINE = MergeTree ORDER BY value",
     "INSERT INTO multiples SELECT 7 * number AS value FROM system.numbers LIMIT 1000000",
     "WITH 1000000 AS N SELECT arrayJoin(topK(500)(intHash64(value) % 1000000)) FROM multiples WHERE value < N FORMAT Null;",
+    "SELECT * FROM multiplesss"
 )
 
     #change to data.value back later

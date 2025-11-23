@@ -98,7 +98,20 @@ def build_code_mask(src: str) -> list[bool]:
             mark(i,j); i=j; continue
         i+=1
     return code
-
+def find_matching_bracket(s: str, start_index: int, open_char: str = '<', close_char: str = '>') -> int:
+    """
+    Finds the matching closing bracket for the open bracket at start_index.
+    Returns -1 if no matching bracket is found.
+    """
+    level = 1
+    for i in range(start_index + 1, len(s)):
+        if s[i] == open_char:
+            level += 1
+        elif s[i] == close_char:
+            level -= 1
+            if level == 0:
+                return i
+    return -1
 def find_function_definition(src:str, name:str, qualifier:Optional[str]=None, occurrence:int=1):
     code = build_code_mask(src)
     if qualifier:

@@ -148,7 +148,7 @@ def run_flamegraph(executable_command=None, pid=None, duration=10, output_base="
         raise PermissionError("flame_folded.sh is not executable")
     
     if pid and executable_command:
-        print(f"[*] Running flame_folded.sh for PID: {pid}")
+        print(f"[*] Running flame_folded_new.sh for PID: {pid}")
         cmd_args = ["sudo", "./flame_folded_new.sh", "--pid", str(pid), "--", str(executable_command)]
         print("success")
     else:

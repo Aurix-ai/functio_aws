@@ -105,7 +105,12 @@ if [[ -n "$PROFILE_PID_WITH_CMD" ]]; then
     
     # Execute the command and wait for it to complete
     echo "[*] Executing command: $EXEC_CMD"
-    bash -c "$EXEC_CMD"
+    if ! bash -c "$EXEC_CMD"; then
+        echo "Error: Command failed: $EXEC_CMD" >&2
+        kill $PERF_PID 2>/dev/null
+        wait $PERF_PID 2>/dev/null || true
+        exit 1
+    fi
     
     # Stop perf recording
     echo "[*] Command completed, stopping perf recording..."
