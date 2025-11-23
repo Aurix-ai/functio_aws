@@ -74,8 +74,10 @@ def process_data(data: RequestData):
         logging.info('FINISHED')
 
         stop_server()
-
-        return ResponseData(result=function_lookup_results, status="success")
+        if function_lookup_results is not None:
+            return ResponseData(result=function_lookup_results, status="success")
+        else:
+            return ResponseData(result=function_lookup_results, status="fail")
 
     except Exception as e:
         # If something goes wrong, raise an HTTPException
