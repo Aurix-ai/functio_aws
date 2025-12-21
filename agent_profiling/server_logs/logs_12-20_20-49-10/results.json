@@ -1,0 +1,106 @@
+{
+  "timestamp": "12-20_20-49-10",
+  "folded_file": "flamegraph_histogram_relwithdeb.folded",
+  "executable": "/home/ubuntu/ClickHouse_debug/build_debug/programs/clickhouse",
+  "query": "SELECT histogram(128)(randCanonical())\nFROM numbers(1000000) \nFORMAT Null",
+  "max_depth": 3,
+  "top_n": 3,
+  "results": [
+    {
+      "function": "void std::__1::__pop_heap[abi:ne190107]<std::__1::_ClassicAlgPolicy, std::__1::greater<void>, std::__1::pair<double, unsigned int>*>",
+      "samples": 336168418,
+      "location": "/home/ubuntu/ClickHouse_debug/contrib/vectorscan/src/rose/counting_miracle.h",
+      "functions_analyzed": [
+        "void std::__1::__pop_heap[abi:ne190107]<std::__1::_ClassicAlgPolicy, std::__1::greater<void>, std::__1::pair<double, unsigned int>*>",
+        "DB::(anonymous namespace)::AggregateFunctionHistogramData::compress",
+        "DB::IAggregateFunctionHelper<DB::(anonymous namespace)::AggregateFunctionHistogram<double> >::addBatchSinglePlace"
+      ],
+      "depth_results": [
+        {
+          "depth": 0,
+          "optimization_found": false,
+          "message": "<summary>No significant optimization opportunities were found. The provided input indicates \"Could not find function definition\" - the actual source code for `std::__pop_heap` is not available for analysis. This is a standard library (libc++) internal function that is already highly optimized by compiler/library vendors. Additionally, heap operations like `pop_heap` have inherent O(log n) complexity with sequential dependencies that prevent SIMD optimization. Any performance improvements for the histogram query would need to occur at the algorithm selection level (e.g., replacing heap-based histogram with a direct-mapped bucket approach), which is outside the scope of this specific function.</summary>",
+          "functions_at_depth": [
+            "void std::__1::__pop_heap[abi:ne190107]<std::__1::_ClassicAlgPolicy, std::__1::greater<void>, std::__1::pair<double, unsigned int>*>"
+          ]
+        },
+        {
+          "depth": 1,
+          "optimization_found": true,
+          "message": "<summary>\n    **Optimization: Replace `std::vector<bool>` with `std::vector<char>` for the `active` array**\n    \n    **Problem Identified:** The `active` array uses `std::vector<bool>`, which is a specialized template that packs bits (8 booleans per byte). This causes performance issues because:\n    1. Each read requires bit extraction (shift + mask operations)\n    2. Each write requires read-modify-write cycles\n    3. Random access patterns (which occur in this algorithm via `active[left]`, `active[right]`, `active[next[left]]`, `active[previous[left]]`) suffer from the bit manipulation overhead\n    \n    **Why the compiler cannot fix this:** `std::vector<bool>` specialization is mandated by the C++ standard. The compiler cannot automatically substitute a different representation.\n    \n    **Hot Path Impact:** According to the flamegraph, `__pop_heap` is the leaf function, and the main while loop that calls it also performs multiple `active[]` checks per iteration. The condition `if (!active[left] || !active[right] || quality(left) > min_item.first)` is evaluated for every heap pop, and additional `active[]` checks occur when pushing new items.\n    \n    **Proposed Change:**\n    ```cpp\n    // Before:\n    std::vector<bool> active(size + 1, true);\n    \n    // After:\n    std::vector<char> active(size + 1, 1);  // or std::vector<uint8_t>\n    ```\n    \n    The rest of the code remains unchanged since the boolean semantics are preserved (non-zero = true, zero = false).\n    \n    **Expected Improvement:** This eliminates bit manipulation overhead for every access to the `active` array. For workloads processing 1,000,000 rows into 128 histogram bins, this loop executes many times, and the cumulative savings from faster `active[]` accesses can be measurable.\n    </summary>",
+          "functions_at_depth": [
+            "void std::__1::__pop_heap[abi:ne190107]<std::__1::_ClassicAlgPolicy, std::__1::greater<void>, std::__1::pair<double, unsigned int>*>",
+            "DB::(anonymous namespace)::AggregateFunctionHistogramData::compress"
+          ]
+        },
+        {
+          "depth": 2,
+          "optimization_found": true,
+          "message": "<summary>\n    **Optimization: Eliminate Repeated Memory Allocations in `compress()`**\n    \n    The `compress()` function allocates four temporary vectors on every invocation:\n    ```cpp\n    std::vector<UInt32> previous(size + 1);\n    std::vector<UInt32> next(size + 1);\n    std::vector<bool> active(size + 1, true);\n    std::vector<QueueItem> storage(2 * size - max_bins);\n    ```\n    \n    Given the query processes 1 million rows and the flamegraph shows `compress()` (via `__pop_heap`) as a hot function, this function is called frequently during histogram construction. Each call triggers heap allocations which are expensive operations.\n    \n    **Proposed Fix:** Convert these temporary vectors to class members of `AggregateFunctionHistogramData` that are allocated once and reused:\n    \n    ```cpp\n    // Add as class members (with appropriate sizing based on max expected size)\n    std::vector<UInt32> compress_previous;\n    std::vector<UInt32> compress_next;\n    std::vector<bool> compress_active;\n    std::vector<QueueItem> compress_storage;\n    \n    void compress(UInt32 max_bins)\n    {\n        sort();\n        auto new_size = size;\n        if (size <= max_bins)\n            return;\n    \n        // Resize and reuse instead of reallocating\n        compress_previous.resize(size + 1);\n        compress_next.resize(size + 1);\n        compress_active.assign(size + 1, true);  // assign to reset values\n        compress_active[size] = false;\n        compress_storage.resize(2 * size - max_bins);\n        \n        // ... rest of the function uses these member vectors\n    }\n    ```\n    \n    **Why the compiler cannot do this:** The compiler cannot hoist allocations across function call boundaries or determine that the same temporary storage can be reused across multiple `compress()` invocations. This requires semantic understanding of the usage pattern.\n    \n    **Expected Impact:** Eliminates O(N) heap allocations where N is the number of times `compress()` is called during batch processing. For 1 million input values with periodic compression, this could eliminate thousands of allocation/deallocation cycles, significantly reducing memory allocator pressure and improving cache behavior.\n    </summary>",
+          "functions_at_depth": [
+            "void std::__1::__pop_heap[abi:ne190107]<std::__1::_ClassicAlgPolicy, std::__1::greater<void>, std::__1::pair<double, unsigned int>*>",
+            "DB::(anonymous namespace)::AggregateFunctionHistogramData::compress",
+            "DB::IAggregateFunctionHelper<DB::(anonymous namespace)::AggregateFunctionHistogram<double> >::addBatchSinglePlace"
+          ]
+        }
+      ]
+    },
+    {
+      "function": "DB::(anonymous namespace)::AggregateFunctionHistogramData::compress",
+      "samples": 314683291,
+      "location": "/home/ubuntu/ClickHouse_debug/src/AggregateFunctions/AggregateFunctionHistogram.cpp",
+      "functions_analyzed": [
+        "DB::(anonymous namespace)::AggregateFunctionHistogramData::compress",
+        "DB::IAggregateFunctionHelper<DB::(anonymous namespace)::AggregateFunctionHistogram<double> >::addBatchSinglePlace",
+        "DB::Aggregator::executeWithoutKeyImpl"
+      ],
+      "depth_results": [
+        {
+          "depth": 0,
+          "optimization_found": true,
+          "message": "<summary>\n    **Cache Optimization: Struct Packing for Linked List Metadata**\n    \n    The function uses three separate vectors (`previous`, `next`, `active`) that are always accessed together for the same index. This causes poor cache utilization as each access potentially touches 3 different cache lines.\n    \n    **Current Code (Poor Locality):**\n    ```cpp\n    std::vector<UInt32> previous(size + 1);\n    std::vector<UInt32> next(size + 1);\n    std::vector<bool> active(size + 1, true);  // Also: vector<bool> has bit-packing overhead\n    ```\n    \n    **Optimized Code (Packed Structure):**\n    ```cpp\n    struct NodeInfo {\n        UInt32 prev;\n        UInt32 next;\n        bool active;\n        // 3 bytes padding implicit, total 12 bytes - fits well in cache\n    };\n    std::vector<NodeInfo> nodes(size + 1);\n    for (size_t i = 0; i <= size; ++i) {\n        nodes[i] = {static_cast<UInt32>(i - 1), static_cast<UInt32>(i + 1), true};\n    }\n    nodes[size].active = false;\n    nodes[size].next = 0;\n    nodes[0].prev = size;\n    \n    auto delete_node = [&](UInt32 i) {\n        nodes[nodes[i].next].prev = nodes[i].prev;\n        nodes[nodes[i].prev].next = nodes[i].next;\n        nodes[i].active = false;\n    };\n    ```\n    \n    **Why This Matters:**\n    1. **Cache Line Efficiency**: Accessing `nodes[i]` loads all three fields in one cache line fetch instead of three separate fetches.\n    2. **Avoids `vector<bool>` Overhead**: `std::vector<bool>` is specialized to use bit-packing, which requires bit manipulation for each access. Using a regular `bool` in a struct is faster for random access patterns.\n    3. **Reduced Memory Bandwidth**: With 1M input rows, the linked list operations are frequent, and reducing cache misses will have measurable impact.\n    4. **Compiler Cannot Do This**: This is a data structure transformation that requires semantic understanding the compiler doesn't have.\n    \n    **Expected Impact**: Moderate to significant speedup (10-30%) on the compress operation due to reduced cache misses in the main merge loop where `active`, `next`, and `previous` are accessed together repeatedly.\n    </summary>",
+          "functions_at_depth": [
+            "DB::(anonymous namespace)::AggregateFunctionHistogramData::compress"
+          ]
+        },
+        {
+          "depth": 1,
+          "optimization_found": true,
+          "message": "<summary>\n    **Optimization: Replace `std::vector<bool>` with `std::vector<char>` in `compress()`**\n    \n    **Problem Identified:** The `compress()` function uses `std::vector<bool> active(size + 1, true)` to track active nodes. `std::vector<bool>` is a specialized template that stores bits packed together (8 bools per byte). This requires bit manipulation (shifts and masks) for every read and write operation.\n    \n    In the hot loop of `compress()`, there are multiple random accesses to `active`:\n    - `if (!active[left] || !active[right] || quality(left) > min_item.first)`\n    - `active[i] = false;` in `delete_node`\n    - `if (active[next[left]])` and `if (active[previous[left]])`\n    - `if (active[right])` in the final compaction loop\n    \n    These random access patterns with bit-packed storage incur significant overhead compared to direct byte access.\n    \n    **Solution:** Replace `std::vector<bool>` with `std::vector<char>` (or `std::vector<uint8_t>`):\n    \n    ```cpp\n    // Before:\n    std::vector<bool> active(size + 1, true);\n    active[size] = false;\n    \n    // After:\n    std::vector<char> active(size + 1, 1);\n    active[size] = 0;\n    ```\n    \n    And update `delete_node`:\n    ```cpp\n    // Before:\n    active[i] = false;\n    \n    // After:\n    active[i] = 0;\n    ```\n    \n    **Why the compiler cannot do this:** This is a fundamental data structure choice that changes the memory layout. The compiler must respect the `std::vector<bool>` specialization semantics and cannot transform it to a different type.\n    \n    **Expected Impact:** For histogram operations on 1 million rows with 128 bins, `compress()` is called multiple times as the internal buffer fills. Each call performs many random accesses to the `active` array. Eliminating bit manipulation overhead can provide measurable speedup in this hot path, especially given the unpredictable access patterns through the linked-list structure (`active[next[left]]`, `active[previous[left]]`).\n    \n    **Category:** Cache & Memory Optimization / Algorithmic (data structure choice)\n    </summary>",
+          "functions_at_depth": [
+            "DB::(anonymous namespace)::AggregateFunctionHistogramData::compress",
+            "DB::IAggregateFunctionHelper<DB::(anonymous namespace)::AggregateFunctionHistogram<double> >::addBatchSinglePlace"
+          ]
+        },
+        {
+          "depth": 2,
+          "optimization_found": true,
+          "message": "<summary>\n    **Optimization: Eliminate Repeated Heap Allocations in Hot `compress()` Function**\n    \n    **Problem Identified:**\n    The `compress()` function allocates four vectors on every invocation:\n    ```cpp\n    std::vector<UInt32> previous(size + 1);\n    std::vector<UInt32> next(size + 1);\n    std::vector<bool> active(size + 1, true);\n    std::vector<QueueItem> storage(2 * size - max_bins);\n    ```\n    \n    With 1 million rows being aggregated into a 128-bin histogram, `compress()` is called frequently (whenever the internal buffer exceeds capacity). Each call triggers 4 heap allocations and deallocations, which is expensive in a hot path.\n    \n    **Additional Issue:** `std::vector<bool>` is a specialized template that uses bit-packing, requiring bit manipulation for each access, which is slower than byte-level access.\n    \n    **Proposed Solution:**\n    1. Convert these working vectors to **member variables** of `AggregateFunctionHistogramData` that are allocated once and reused across `compress()` calls.\n    2. Replace `std::vector<bool>` with `std::vector<char>` or `std::vector<uint8_t>` to avoid bit manipulation overhead.\n    3. Use `resize()` and reset logic instead of fresh allocation each time.\n    \n    **Code Change (in AggregateFunctionHistogramData class):**\n    ```cpp\n    // Add as member variables (allocated once per histogram instance):\n    mutable std::vector<UInt32> compress_previous;\n    mutable std::vector<UInt32> compress_next;\n    mutable std::vector<char> compress_active;  // char instead of bool\n    mutable std::vector<QueueItem> compress_storage;\n    \n    void compress(UInt32 max_bins)\n    {\n        sort();\n        auto new_size = size;\n        if (size <= max_bins)\n            return;\n    \n        // Reuse pre-allocated vectors\n        compress_previous.resize(size + 1);\n        compress_next.resize(size + 1);\n        compress_active.assign(size + 1, 1);  // Reset to all active\n        compress_active[size] = 0;\n        compress_storage.resize(2 * size - max_bins);\n        \n        auto& previous = compress_previous;\n        auto& next = compress_next;\n        auto& active = compress_active;\n        // ... rest of function unchanged\n    }\n    ```\n    \n    **Why Compiler Cannot Do This:**\n    The compiler cannot hoist local allocations to persistent member storage across function calls - this requires semantic understanding that the vectors can be reused.\n    \n    **Expected Impact:**\n    - Eliminates O(millions) of malloc/free calls during query execution\n    - Reduces memory fragmentation\n    - Improves cache behavior by reusing the same memory regions\n    - The `vector<char>` change eliminates bit manipulation overhead in the active-check loop\n    </summary>",
+          "functions_at_depth": [
+            "DB::(anonymous namespace)::AggregateFunctionHistogramData::compress",
+            "DB::IAggregateFunctionHelper<DB::(anonymous namespace)::AggregateFunctionHistogram<double> >::addBatchSinglePlace",
+            "DB::Aggregator::executeWithoutKeyImpl"
+          ]
+        }
+      ]
+    },
+    {
+      "function": "[[kernel.kallsyms]]",
+      "samples": 209100320,
+      "location": null,
+      "functions_analyzed": [
+        "[[kernel.kallsyms]]"
+      ],
+      "depth_results": [
+        {
+          "depth": 0,
+          "optimization_found": false,
+          "message": "Kernel Function, aborting",
+          "functions_at_depth": [
+            "[[kernel.kallsyms]]"
+          ]
+        }
+      ]
+    }
+  ]
+}

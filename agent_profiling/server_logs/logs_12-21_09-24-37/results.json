@@ -1,0 +1,127 @@
+{
+  "timestamp": "12-21_09-24-37",
+  "folded_file": "flamegraph.folded",
+  "executable": "/home/ubuntu/ClickHouse_debug/build_debug/programs/clickhouse",
+  "query": "SELECT histogram(128)(randCanonical())\nFROM numbers(1000000) \nFORMAT Null",
+  "max_depth": 3,
+  "top_n": 3,
+  "results": [
+    {
+      "function": "auto std::__1::__synth_three_way[abi:se210105]::'lambda'<typename $T, typename $T0>($T const&, $T0 const&)::operator()<double, double>($T const&, $T0 const&) const requires requires { {fp < fp0} -> std::__1::__boolean_testable; {fp0 < fp} -> std::__1::__boolean_testable; }",
+      "samples": 3897430085,
+      "location": "/home/ubuntu/ClickHouse_debug/contrib/llvm-project/libcxx/include/__compare/synth_three_way.h",
+      "functions_analyzed": [
+        "auto std::__1::__synth_three_way[abi:se210105]::'lambda'<typename $T, typename $T0>($T const&, $T0 const&)::operator()<double, double>($T const&, $T0 const&) const requires requires { {fp < fp0} -> std::__1::__boolean_testable; {fp0 < fp} -> std::__1::__boolean_testable; }",
+        "std::__1::common_comparison_category<decltype ",
+        "decltype "
+      ],
+      "depth_results": [
+        {
+          "depth": 0,
+          "optimization_found": false,
+          "message": "No source code found for any function - LLM call skipped",
+          "functions_at_depth": [
+            "auto std::__1::__synth_three_way[abi:se210105]::'lambda'<typename $T, typename $T0>($T const&, $T0 const&)::operator()<double, double>($T const&, $T0 const&) const requires requires { {fp < fp0} -> std::__1::__boolean_testable; {fp0 < fp} -> std::__1::__boolean_testable; }"
+          ]
+        },
+        {
+          "depth": 1,
+          "optimization_found": false,
+          "message": "No source code found for any function - LLM call skipped",
+          "functions_at_depth": [
+            "auto std::__1::__synth_three_way[abi:se210105]::'lambda'<typename $T, typename $T0>($T const&, $T0 const&)::operator()<double, double>($T const&, $T0 const&) const requires requires { {fp < fp0} -> std::__1::__boolean_testable; {fp0 < fp} -> std::__1::__boolean_testable; }",
+            "std::__1::common_comparison_category<decltype "
+          ]
+        },
+        {
+          "depth": 2,
+          "optimization_found": false,
+          "message": "No source code found for any function - LLM call skipped",
+          "functions_at_depth": [
+            "auto std::__1::__synth_three_way[abi:se210105]::'lambda'<typename $T, typename $T0>($T const&, $T0 const&)::operator()<double, double>($T const&, $T0 const&) const requires requires { {fp < fp0} -> std::__1::__boolean_testable; {fp0 < fp} -> std::__1::__boolean_testable; }",
+            "std::__1::common_comparison_category<decltype ",
+            "decltype "
+          ]
+        }
+      ]
+    },
+    {
+      "function": "bool DebugLessComparator<DB::(anonymous namespace)::AggregateFunctionHistogramData::sort",
+      "samples": 2889022415,
+      "location": "/home/ubuntu/ClickHouse_debug/base/base/../base/sort.h",
+      "functions_analyzed": [
+        "bool DebugLessComparator<DB::(anonymous namespace)::AggregateFunctionHistogramData::sort",
+        "std::__1::pair<DB::(anonymous namespace)::AggregateFunctionHistogramData::WeightedValue*, bool> pdqsort_detail::partition_right<DB::(anonymous namespace)::AggregateFunctionHistogramData::WeightedValue*, DebugLessComparator<DB::(anonymous namespace)::AggregateFunctionHistogramData::sort",
+        "void pdqsort_detail::pdqsort_loop<DB::(anonymous namespace)::AggregateFunctionHistogramData::WeightedValue*, DebugLessComparator<DB::(anonymous namespace)::AggregateFunctionHistogramData::sort"
+      ],
+      "depth_results": [
+        {
+          "depth": 0,
+          "optimization_found": false,
+          "message": "<summary>No significant optimization opportunities were found. This function is a minimal wrapper around `pdqsort`, which is already a highly-optimized pattern-defeating quicksort implementation. The function contains no loops, no redundant computations, and no memory inefficiencies. The `ComparatorWrapper` is a zero-cost abstraction that will be optimized away by the compiler at -O3. The debug-only shuffle (`#ifndef NDEBUG`) does not affect release builds. Given the query context (histogram with 128 buckets), the sort operates on a very small dataset where algorithmic improvements would yield negligible gains. Any meaningful performance improvement would require changes to the underlying pdqsort implementation or the data structures in the calling code, which are outside the scope of this function.</summary>",
+          "functions_at_depth": [
+            "bool DebugLessComparator<DB::(anonymous namespace)::AggregateFunctionHistogramData::sort"
+          ]
+        },
+        {
+          "depth": 1,
+          "optimization_found": false,
+          "message": "<summary>No significant optimization opportunities were found. The root `sort` function is a minimal wrapper around pdqsort that:\n    \n1. **Debug shuffle is intentional**: The `#ifndef NDEBUG` shuffle before sorting is a deliberate debugging feature to catch comparison function bugs - it's not active in release builds (when NDEBUG is defined).\n\n2. **ComparatorWrapper is compiler-optimized**: The thin wrapper around the comparator will be completely inlined by the compiler at -O3.\n\n3. **pdqsort is already optimal**: Pattern-defeating quicksort is one of the fastest general-purpose comparison-based sorting algorithms with O(N log N) average complexity.\n\n4. **No source for hot path**: The actual hot function `partition_right` is in the pdqsort library without provided source code, so no changes can be proposed there.\n\nThe root function adds no algorithmic overhead in release builds, and the sorting algorithm choice (pdqsort) is already excellent for this use case.</summary>",
+          "functions_at_depth": [
+            "bool DebugLessComparator<DB::(anonymous namespace)::AggregateFunctionHistogramData::sort",
+            "std::__1::pair<DB::(anonymous namespace)::AggregateFunctionHistogramData::WeightedValue*, bool> pdqsort_detail::partition_right<DB::(anonymous namespace)::AggregateFunctionHistogramData::WeightedValue*, DebugLessComparator<DB::(anonymous namespace)::AggregateFunctionHistogramData::sort"
+          ]
+        },
+        {
+          "depth": 2,
+          "optimization_found": false,
+          "message": "<summary>No significant optimization opportunities were found. The `sort` function is a thin wrapper that:\n    \n1. The `#ifndef NDEBUG` shuffle is already conditionally compiled out in release builds, so it has zero runtime cost in production.\n\n2. The `ComparatorWrapper<Compare>` is a zero-cost template abstraction that the compiler fully inlines and optimizes away at -O3.\n\n3. The actual sorting work is delegated to `pdqsort`, a well-known, highly-optimized pattern-defeating quicksort implementation. The root function adds no algorithmic overhead.\n\n4. Given the query context (histogram with 128 buckets), the sort operates on at most 128 elements - a dataset small enough to fit entirely in L1 cache, making cache optimizations irrelevant.\n\n5. No loop structures, branch patterns, or SIMD opportunities exist in the wrapper function itself.\n\nThe hot path is entirely within the pdqsort library code (which we cannot modify), and the wrapper function contributes no meaningful overhead that could be optimized.</summary>",
+          "functions_at_depth": [
+            "bool DebugLessComparator<DB::(anonymous namespace)::AggregateFunctionHistogramData::sort",
+            "std::__1::pair<DB::(anonymous namespace)::AggregateFunctionHistogramData::WeightedValue*, bool> pdqsort_detail::partition_right<DB::(anonymous namespace)::AggregateFunctionHistogramData::WeightedValue*, DebugLessComparator<DB::(anonymous namespace)::AggregateFunctionHistogramData::sort",
+            "void pdqsort_detail::pdqsort_loop<DB::(anonymous namespace)::AggregateFunctionHistogramData::WeightedValue*, DebugLessComparator<DB::(anonymous namespace)::AggregateFunctionHistogramData::sort"
+          ]
+        }
+      ]
+    },
+    {
+      "function": "DB::(anonymous namespace)::AggregateFunctionHistogramData::compress",
+      "samples": 2439471523,
+      "location": "/home/ubuntu/ClickHouse_debug/src/AggregateFunctions/AggregateFunctionHistogram.cpp",
+      "functions_analyzed": [
+        "DB::(anonymous namespace)::AggregateFunctionHistogramData::compress",
+        "DB::(anonymous namespace)::AggregateFunctionHistogramData::add",
+        "DB::(anonymous namespace)::AggregateFunctionHistogram<double>::add"
+      ],
+      "depth_results": [
+        {
+          "depth": 0,
+          "optimization_found": true,
+          "message": "<summary>\n    **Primary Optimization: Replace `std::vector<bool>` with `std::vector<char>`**\n    \n    The code uses `std::vector<bool> active(size + 1, true)` which is a well-known C++ performance anti-pattern. `std::vector<bool>` is a template specialization that stores bits packed together, requiring bit manipulation (shifts, masks, and read-modify-write operations) for every access. In the hot loop, `active[left]`, `active[right]`, `active[next[left]]`, and `active[previous[left]]` are accessed repeatedly.\n    \n    **Why the compiler cannot fix this:** This is a type-level decision, not a code transformation. The compiler must respect the `std::vector<bool>` semantics.\n    \n    **Fix:**\n    ```cpp\n    std::vector<char> active(size + 1, 1);  // or std::vector<uint8_t>\n    active[size] = 0;\n    ```\n    \n    **Expected Impact:** 2-5x speedup on the `active` array accesses, which occur multiple times per iteration in the main compression loop.\n    \n    ---\n    \n    **Secondary Optimization: Improve Cache Locality with Struct-of-Arrays \u2192 Array-of-Structs**\n    \n    Currently, three separate vectors are used:\n    ```cpp\n    std::vector<UInt32> previous(size + 1);\n    std::vector<UInt32> next(size + 1);\n    std::vector<bool> active(size + 1, true);\n    ```\n    \n    Each node access touches 3 different memory regions, causing potential cache misses. Combining into a single struct improves spatial locality:\n    \n    ```cpp\n    struct Node {\n        UInt32 prev;\n        UInt32 next;\n        uint8_t active;  // Use uint8_t instead of bool for predictable size\n    };\n    std::vector<Node> nodes(size + 1);\n    ```\n    \n    This ensures that when accessing node `i`, all related data (`prev`, `next`, `active`) is in the same cache line.\n    \n    **Expected Impact:** Reduced cache misses when traversing the linked list, particularly beneficial when `size` is large enough that the three vectors don't fit in L1/L2 cache together.\n    </summary>",
+          "functions_at_depth": [
+            "DB::(anonymous namespace)::AggregateFunctionHistogramData::compress"
+          ]
+        },
+        {
+          "depth": 1,
+          "optimization_found": true,
+          "message": "<summary>\n    **Critical Optimization: Eliminate Repeated Heap Allocations in `compress()`**\n    \n    **Problem Identified:**\n    The `compress()` function allocates 4 vectors on every invocation:\n    - `std::vector<UInt32> previous(size + 1)` \n    - `std::vector<UInt32> next(size + 1)`\n    - `std::vector<bool> active(size + 1, true)`\n    - `std::vector<QueueItem> storage(2 * size - max_bins)`\n    \n    With the query processing 1 million values and `compress()` being called approximately every 128 additions (when size reaches 256), this results in ~7,800 calls to `compress()` and ~31,200 heap allocations/deallocations.\n    \n    **Solution:**\n    Move these temporary vectors to be member variables of `AggregateFunctionHistogramData`, pre-allocated to their maximum required size (`max_bins * 2 + 1`). Reset/reuse them on each `compress()` call instead of reallocating.\n    \n    **Proposed Changes:**\n    ```cpp\n    // Add as member variables in AggregateFunctionHistogramData:\n    std::vector<UInt32> compress_previous;\n    std::vector<UInt32> compress_next;\n    std::vector<bool> compress_active;\n    std::vector<QueueItem> compress_storage;\n    \n    // In compress(), replace allocations with:\n    void compress(UInt32 max_bins)\n    {\n        sort();\n        auto new_size = size;\n        if (size <= max_bins)\n            return;\n\n        // Resize only if needed (typically no-op after first call)\n        compress_previous.resize(size + 1);\n        compress_next.resize(size + 1);\n        compress_active.assign(size + 1, true);  // Must reset values\n        compress_active[size] = false;\n        compress_storage.resize(2 * size - max_bins);\n        \n        // ... rest of function uses these member vectors ...\n    }\n    ```\n    \n    **Why Compiler Cannot Optimize This:**\n    - Local vectors go out of scope after each `compress()` call\n    - The compiler cannot prove memory reuse safety across separate function invocations\n    - This requires architectural restructuring of the data structure\n    \n    **Expected Impact:**\n    - Eliminates ~31,200 heap allocations for the given query\n    - Reduces memory fragmentation and improves cache behavior\n    - Heap allocation is expensive (involves locks, system calls, fragmentation management)\n    - Conservative estimate: 10-30% speedup for this aggregate function\n    </summary>",
+          "functions_at_depth": [
+            "DB::(anonymous namespace)::AggregateFunctionHistogramData::compress",
+            "DB::(anonymous namespace)::AggregateFunctionHistogramData::add"
+          ]
+        },
+        {
+          "depth": 2,
+          "optimization_found": true,
+          "message": "<summary>\n    **Optimization: Eliminate Repeated Memory Allocations in `compress()`**\n    \n    The `compress()` function is called approximately 3900 times when processing 1M rows with max_bins=128. Each call allocates and deallocates 4 vectors (`previous`, `next`, `active`, `storage`) totaling roughly 256*4 + 256*4 + 256*1 + 384*16 \u2248 8KB per call. This results in thousands of unnecessary heap allocations.\n    \n    **Solution:** Pre-allocate these working buffers as member variables of `AggregateFunctionHistogramData` (sized to `max_bins * 2 + 1`) and reuse them across `compress()` calls. The buffers should be reset/cleared at the start of each `compress()` call instead of being reallocated.\n    \n    **Code Change:**\n    \n    Add member variables to the data structure:\n    ```cpp\n    // Add as member variables (allocated once during construction or first use)\n    std::vector<UInt32> compress_previous;\n    std::vector<UInt32> compress_next;\n    std::vector<bool> compress_active;\n    std::vector<QueueItem> compress_storage;\n    ```\n    \n    Modify `compress()` to reuse buffers:\n    ```cpp\n    void compress(UInt32 max_bins)\n    {\n        sort();\n        auto new_size = size;\n        if (size <= max_bins)\n            return;\n\n        // Resize only if needed (typically no-op after first call)\n        if (compress_previous.size() < size + 1) {\n            compress_previous.resize(size + 1);\n            compress_next.resize(size + 1);\n            compress_active.resize(size + 1);\n        }\n        if (compress_storage.size() < 2 * size - max_bins) {\n            compress_storage.resize(2 * size - max_bins);\n        }\n        \n        // Reset active flags\n        std::fill(compress_active.begin(), compress_active.begin() + size, true);\n        compress_active[size] = false;\n\n        auto& previous = compress_previous;\n        auto& next = compress_next;\n        auto& active = compress_active;\n        \n        // ... rest of the function remains the same, using references ...\n    }\n    ```\n    \n    **Expected Impact:** Eliminates ~3900 allocation/deallocation cycles per query, reducing allocator overhead and improving cache behavior since the same memory regions are reused.\n    \n    **Why compiler cannot do this:** The compiler cannot hoist allocations out of a function across multiple invocations - this requires semantic understanding that the buffer sizes are bounded and reusable, which is a manual refactoring decision.\n    </summary>",
+          "functions_at_depth": [
+            "DB::(anonymous namespace)::AggregateFunctionHistogramData::compress",
+            "DB::(anonymous namespace)::AggregateFunctionHistogramData::add",
+            "DB::(anonymous namespace)::AggregateFunctionHistogram<double>::add"
+          ]
+        }
+      ]
+    }
+  ]
+}
