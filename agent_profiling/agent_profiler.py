@@ -91,6 +91,35 @@ class FlamegraphContext:
         return get_next_function(self.folded_file_path, func_name, index=index, demangle=self.demangle)
 
 
+@dataclass
+class DepthResult:
+    """
+    Result from a single LLM call at a specific depth in the call stack analysis.
+    
+    Stores the outcome of analyzing functions at one level of the flamegraph,
+    including any optimization findings and the LLM's reasoning process.
+    """
+    depth: int
+    optimization_found: bool
+    message: str
+    functions_at_depth: List[str]
+    scratchpad: str  # Extracted from <thinking> block
+
+
+@dataclass
+class FunctionMemory:
+    """
+    Memory structure for tracking analysis of a single leaf function across depths.
+    
+    Accumulates results from each depth level as the LLM walks up the call stack,
+    providing context for subsequent analysis iterations.
+    """
+    function: str
+    samples: int
+    location: Optional[str]
+    depth_results: List[DepthResult]
+
+
 def demangle_with_tool(symbol: str, tool: str) -> str | None:
     """Try to demangle a symbol using a specific demangling tool."""
     try:
@@ -681,7 +710,7 @@ def llm_call(
     prompt_builder: PromptConstructor,
     llm_client: AnthropicClaudeClient,
     query: str,
-):
+) -> Tuple[bool, str, str]:
     """
     Make an LLM call to evaluate the set of functions.
 
@@ -693,8 +722,10 @@ def llm_call(
         query: The SQL query being profiled
 
     Returns:
-        A tuple where the first element indicates if the set of functions is sufficient.
-        Returns False if a function is part of standard library or we can't find its location.
+        A tuple of (status, message, scratchpad) where:
+        - status: True if an optimization was found, False otherwise
+        - message: The optimization description or reason for no optimization
+        - scratchpad: The content of the <thinking> block from the LLM response
     """
     logger = logging.getLogger(__name__)
     
@@ -755,7 +786,7 @@ def llm_call(
     # If no source code was found for any function, skip the LLM call
     if functions_found == 0:
         logger.warning("No source code found for any function - skipping LLM call")
-        return False, "No source code found for any function - LLM call skipped"
+        return False, "No source code found for any function - LLM call skipped", ""
 
     # Combine all source code into one string
     combined_source_code = "\n" + "=" * 80 + "\n".join(all_source_code_parts)
@@ -790,6 +821,12 @@ def llm_call(
     logger.debug(f"LLM response:\n{response[:500]}..." if len(response) > 500 else f"LLM response:\n{response}")
     print(response)
     
+    # Parse <thinking> block for scratchpad
+    thinking_match = re.search(r'<thinking>(.*?)</thinking>', response, re.DOTALL)
+    scratchpad = thinking_match.group(1).strip() if thinking_match else ""
+    if scratchpad:
+        logger.debug(f"Extracted scratchpad ({len(scratchpad)} chars)")
+    
     # Parse response for <optimization_available> or <no_optimization_available>
     optimization_match = re.search(
         r'<optimization_available>(.*?)</optimization_available>',
@@ -819,7 +856,7 @@ def llm_call(
         logger.warning("LLM result: COULD NOT PARSE RESPONSE")
         logger.warning(f"Response did not contain expected tags. First 500 chars: {response[:500]}")
     
-    return status, message
+    return status, message, scratchpad
 if __name__ == '__main__':
     import argparse
     
