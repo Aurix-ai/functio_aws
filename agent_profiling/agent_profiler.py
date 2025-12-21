@@ -597,8 +597,9 @@ def llm_loop(
     initial_leaf_function: str,
     leaf_function_location: str,
     query: str,
+    samples: int = 0,
     max_depth: int = 3,
-):
+) -> Tuple[List[str], List[Tuple[int, bool, str, List[str]]], FunctionMemory]:
     """
     Walk up the call stack to a specified depth, calling LLM at each level.
 
@@ -610,15 +611,17 @@ def llm_loop(
         initial_leaf_function: The starting leaf function name
         leaf_function_location: Source location of the initial function
         query: The SQL query being profiled
+        samples: Sample count for the initial leaf function
         max_depth: Maximum depth to walk up the call stack (default: 3)
 
     Returns:
-        Tuple of (functions_analyzed, list of results from each depth level)
+        Tuple of (functions_analyzed, list of results from each depth level, function_memory)
     """
     logger = logging.getLogger(__name__)
     
     logger.info(f"llm_loop started for function: {initial_leaf_function}")
     logger.info(f"Initial location: {leaf_function_location}")
+    logger.info(f"Samples: {samples}")
     logger.info(f"Max depth: {max_depth}")
     
     # Create prompt builder once for all iterations
@@ -633,14 +636,33 @@ def llm_loop(
     # Collect results from each depth level
     all_results: List[Tuple[int, bool, str, List[str]]] = []  # (depth, status, message, functions)
     
+    # Initialize FunctionMemory for this run
+    memory = FunctionMemory(
+        function=initial_leaf_function,
+        samples=samples,
+        location=leaf_function_location,
+        depth_results=[],
+    )
+    
     if is_filtered_function(initial_leaf_function):
         logger.info(f"Function {initial_leaf_function} is one of the kernel functions therefore we should not continue the llm loop:")
-        return functions_to_check_by_agent, [(0, False, "Kernel Function, aborting", functions_to_check_by_agent.copy())]
+        result = (0, False, "Kernel Function, aborting", functions_to_check_by_agent.copy())
+        all_results.append(result)
+        # Add to memory
+        memory.depth_results.append(DepthResult(
+            depth=0,
+            optimization_found=False,
+            message="Kernel Function, aborting",
+            functions_at_depth=functions_to_check_by_agent.copy(),
+            scratchpad="",
+        ))
+        return functions_to_check_by_agent, all_results, memory
 
     for depth in range(max_depth):
         logger.info(f"llm_loop depth {depth + 1}/{max_depth}: analyzing {len(functions_to_check_by_agent)} function(s)")
-        logger.debug(f"Functions in trace: {' -> '.join(functions_to_check_by_agent)}")
+        logger.debug(f"Functions in trace: {' -> '.join(reversed(functions_to_check_by_agent))}")
         
+        # Pass memory to llm_call (only pass memory with results from previous depths)
         llm_call_result = llm_call(
             functions_to_check_by_agent,
             function_locations,
@@ -648,13 +670,26 @@ def llm_loop(
             prompt_builder,
             llm_client,
             query,
+            memory=memory if memory.depth_results else None,
         )
         
         status = llm_call_result[0]
         message = llm_call_result[1]
+        scratchpad = llm_call_result[2]
         
         # Record result for this depth
         all_results.append((depth, status, message, functions_to_check_by_agent.copy()))
+        
+        # Update memory with this depth's result
+        depth_result = DepthResult(
+            depth=depth,
+            optimization_found=status,
+            message=message,
+            functions_at_depth=functions_to_check_by_agent.copy(),
+            scratchpad=scratchpad,
+        )
+        memory.depth_results.append(depth_result)
+        logger.debug(f"Memory updated with depth {depth + 1} result (scratchpad: {len(scratchpad)} chars)")
         
         if status:
             logger.info(f"Optimization found at depth {depth + 1}!")
@@ -693,14 +728,52 @@ def llm_loop(
         return None
 
     logger.info(f"llm_loop completed. Total functions analyzed: {len(functions_to_check_by_agent)}")
-    logger.info(f"Final function trace: {' -> '.join(functions_to_check_by_agent)}")
+    logger.info(f"Final function trace: {' -> '.join(reversed(functions_to_check_by_agent))}")
     logger.info(f"Results collected from {len(all_results)} depth level(s)")
+    logger.info(f"Memory contains {len(memory.depth_results)} depth result(s)")
     
     # Log summary of all results
     optimizations_found = sum(1 for r in all_results if r[1])
     logger.info(f"Optimizations found: {optimizations_found}/{len(all_results)} levels")
     
-    return functions_to_check_by_agent, all_results
+    return functions_to_check_by_agent, all_results, memory
+
+
+def format_memory_for_prompt(memory: Optional[FunctionMemory]) -> str:
+    """
+    Format the FunctionMemory into a string suitable for inclusion in the LLM prompt.
+    
+    Args:
+        memory: The FunctionMemory object containing previous analysis results
+        
+    Returns:
+        A formatted string representing the memory, or empty string if no memory
+    """
+    if memory is None or not memory.depth_results:
+        return ""
+    
+    parts = []
+    parts.append(f"Function: {memory.function}")
+    parts.append(f"Samples: {memory.samples}")
+    if memory.location:
+        parts.append(f"Location: {memory.location}")
+    parts.append("")
+    parts.append("Previous Analysis Results:")
+    parts.append("-" * 40)
+    
+    for result in memory.depth_results:
+        parts.append(f"Depth {result.depth + 1}:")
+        parts.append(f"  Functions analyzed: {' -> '.join(reversed(result.functions_at_depth))}")
+        parts.append(f"  Optimization found: {'Yes' if result.optimization_found else 'No'}")
+        parts.append(f"  Message: {result.message}")
+        if result.scratchpad:
+            parts.append(f"  Reasoning:")
+            # Indent the scratchpad content
+            for line in result.scratchpad.split('\n'):
+                parts.append(f"    {line}")
+        parts.append("")
+    
+    return "\n".join(parts)
 
 
 def llm_call(
@@ -710,6 +783,7 @@ def llm_call(
     prompt_builder: PromptConstructor,
     llm_client: AnthropicClaudeClient,
     query: str,
+    memory: Optional[FunctionMemory] = None,
 ) -> Tuple[bool, str, str]:
     """
     Make an LLM call to evaluate the set of functions.
@@ -720,6 +794,7 @@ def llm_call(
         executable: Path to the executable binary for function lookup
         prompt_builder: PromptConstructor instance for building prompts
         query: The SQL query being profiled
+        memory: Optional FunctionMemory containing results from previous depth analyses
 
     Returns:
         A tuple of (status, message, scratchpad) where:
@@ -790,12 +865,17 @@ def llm_call(
 
     # Combine all source code into one string
     combined_source_code = "\n" + "=" * 80 + "\n".join(all_source_code_parts)
-    # Build function call trace string from function_list
-    function_trace = " -> ".join(function_list)
+    # Build function call trace string from function_list (reversed: caller -> callee order)
+    function_trace = " -> ".join(reversed(function_list))
 
+    # Format memory for prompt inclusion
+    memory_str = format_memory_for_prompt(memory)
+    
     # Construct the prompt based on number of functions
     template_name = "single_function" if len(function_list) == 1 else "multiple_functions"
     logger.info(f"Using template: {template_name}")
+    if memory_str:
+        logger.info(f"Including memory from {len(memory.depth_results)} previous depth(s)")
     
     if len(function_list) == 1:
         prompt = prompt_builder.construct(
@@ -803,6 +883,7 @@ def llm_call(
             context={
                 "QUERY": query,
                 "SOURCE_CODE": combined_source_code,
+                "MEMORY": memory_str,
             }
         )
     else:
@@ -812,6 +893,7 @@ def llm_call(
                 "QUERY": query,
                 "FUNCTION_TRACE": function_trace,
                 "SOURCE_CODE": combined_source_code,
+                "MEMORY": memory_str,
             }
         )
     
@@ -914,6 +996,7 @@ if __name__ == '__main__':
             
             # Collect all results for JSON export
             all_run_results = []
+            all_memories = []  # Collect all FunctionMemory objects
             
             for i, (func, count, location) in enumerate(results, 1):
                 logger.info("-" * 60)
@@ -927,7 +1010,13 @@ if __name__ == '__main__':
                 print(f"    LOCATION: {location if location else '<unknown>'}")
                 print("=" * 120)
                 
-                functions, all_results = llm_loop(ctx, func, location, args.query, max_depth=args.depth)
+                functions, all_results, memory = llm_loop(
+                    ctx, func, location, args.query, 
+                    samples=count, max_depth=args.depth
+                )
+                
+                # Collect memory for later saving
+                all_memories.append(memory)
                 
                 logger.info(f"    LLM loop completed. Functions analyzed: {functions}")
                 logger.info(f"    Results from {len(all_results)} depth level(s):")
@@ -935,7 +1024,7 @@ if __name__ == '__main__':
                 for depth, status, message, funcs_at_depth in all_results:
                     status_str = "OPTIMIZATION FOUND" if status else "No optimization"
                     logger.info(f"      Depth {depth + 1}: {status_str}")
-                    logger.info(f"        Functions: {' -> '.join(funcs_at_depth)}")
+                    logger.info(f"        Functions: {' -> '.join(reversed(funcs_at_depth))}")
                     if status:
                         logger.info(f"        Message: {message[:200]}..." if len(message) > 200 else f"        Message: {message}")
                 
@@ -969,6 +1058,38 @@ if __name__ == '__main__':
                     "results": all_run_results,
                 }, f, indent=2)
             logger.info(f"Results saved to {results_file}")
+            
+            # Save memory to JSON file
+            memory_file = base_run_dir / "memory.json"
+            memory_data = {
+                "timestamp": run_timestamp,
+                "folded_file": args.folded_file,
+                "executable": args.executable,
+                "query": args.query,
+                "max_depth": args.depth,
+                "top_n": args.top,
+                "memories": [
+                    {
+                        "function": mem.function,
+                        "samples": mem.samples,
+                        "location": mem.location,
+                        "depth_results": [
+                            {
+                                "depth": dr.depth,
+                                "optimization_found": dr.optimization_found,
+                                "message": dr.message,
+                                "functions_at_depth": dr.functions_at_depth,
+                                "scratchpad": dr.scratchpad,
+                            }
+                            for dr in mem.depth_results
+                        ]
+                    }
+                    for mem in all_memories
+                ],
+            }
+            with open(memory_file, 'w', encoding='utf-8') as f:
+                json.dump(memory_data, f, indent=2)
+            logger.info(f"Memory saved to {memory_file}")
                 
         else:
             logger.info("No executable provided - listing top leaf functions only")
