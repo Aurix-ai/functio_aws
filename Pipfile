@@ -6,6 +6,7 @@ name = "pypi"
 [packages]
 fastapi = {extras = ["all"], version = "*"}
 openai = "*"
+anthropic = "*"
 
 [dev-packages]
 

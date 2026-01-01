@@ -1,0 +1,325 @@
+2025-11-28 19:47:44 - INFO - __main__: ============================================================
+2025-11-28 19:47:44 - INFO - __main__: Mock server run started at 11-28_19-47-44
+2025-11-28 19:47:44 - INFO - __main__: ============================================================
+2025-11-28 19:47:44 - INFO - __main__: Starting ClickHouse server...
+2025-11-28 19:47:50 - INFO - __main__: ClickHouse server started successfully
+2025-11-28 19:47:50 - INFO - __main__: Processing 3 queries
+2025-11-28 19:47:50 - INFO - __main__: Waiting for server to be ready...
+2025-11-28 19:47:50 - INFO - __main__: Server is ready
+2025-11-28 19:47:50 - INFO - __main__: Executing 2 setup queries...
+2025-11-28 19:47:50 - INFO - __main__: Executing setup query 1/2: CREATE TABLE IF NOT EXISTS stress_test_5(
+    id UInt64,
+    random...
+2025-11-28 19:47:50 - INFO - STDOUT: executed correctly query 
+2025-11-28 19:47:50 - INFO - STDOUT:             CREATE TABLE IF NOT EXISTS stress_test_5(
+2025-11-28 19:47:50 - INFO - STDOUT:     id UInt64,
+2025-11-28 19:47:50 - INFO - STDOUT:     random_data String,
+2025-11-28 19:47:50 - INFO - STDOUT:     val Float64
+2025-11-28 19:47:50 - INFO - STDOUT: ) ENGINE = MergeTree()
+2025-11-28 19:47:50 - INFO - STDOUT: ORDER BY id;
+2025-11-28 19:47:50 - INFO - STDOUT:             
+2025-11-28 19:47:50 - INFO - __main__: Setup query 1 completed successfully
+2025-11-28 19:47:50 - INFO - __main__: Executing setup query 2/2: INSERT INTO stress_test_5
+SELECT 
+    number AS id,
+    hex(MD5(toS...
+2025-11-28 19:47:51 - INFO - STDOUT: executed correctly query 
+2025-11-28 19:47:51 - INFO - STDOUT:             INSERT INTO stress_test_5
+2025-11-28 19:47:51 - INFO - STDOUT: SELECT 
+2025-11-28 19:47:51 - INFO - STDOUT:     number AS id,
+2025-11-28 19:47:51 - INFO - STDOUT:     hex(MD5(toString(number))) AS random_data,
+2025-11-28 19:47:51 - INFO - STDOUT:     rand() / 4294967295 AS val                 
+2025-11-28 19:47:51 - INFO - STDOUT: FROM numbers(100000);
+2025-11-28 19:47:51 - INFO - STDOUT:             
+2025-11-28 19:47:51 - INFO - __main__: Setup query 2 completed successfully
+2025-11-28 19:47:51 - INFO - __main__: Main query to analyze: SELECT 
+    id,
+    sin(val) * tan(val) + cos(id % 360) AS math_crunch,
+    SHA256(rand...
+2025-11-28 19:47:51 - INFO - __main__: Starting flamegraph analysis (unified_strategy)...
+2025-11-28 19:47:51 - INFO - STDOUT: [*] Running flame_folded_pid.sh for PID: 2488988
+2025-11-28 19:47:51 - INFO - STDOUT: Executable command is /home/ubuntu/ClickHouse_debug/build_debug/programs/clickhouse client --query '
+2025-11-28 19:47:51 - INFO - STDOUT:             SELECT 
+2025-11-28 19:47:51 - INFO - STDOUT:     id,
+2025-11-28 19:47:51 - INFO - STDOUT:     sin(val) * tan(val) + cos(id % 360) AS math_crunch,
+2025-11-28 19:47:51 - INFO - STDOUT:     SHA256(random_data || toString(math_crunch)) AS heavy_hash
+2025-11-28 19:47:51 - INFO - STDOUT: FROM stress_test_5
+2025-11-28 19:47:51 - INFO - STDOUT: WHERE 
+2025-11-28 19:47:51 - INFO - STDOUT:     toString(id) LIKE '"'"'%5%'"'"' 
+2025-11-28 19:47:51 - INFO - STDOUT: ORDER BY 
+2025-11-28 19:47:51 - INFO - STDOUT:     math_crunch DESC
+2025-11-28 19:47:51 - INFO - STDOUT: LIMIT 1;
+2025-11-28 19:47:51 - INFO - STDOUT:             '
+2025-11-28 19:47:51 - INFO - STDOUT: successfully ran flame_folded_pid.sh
+2025-11-28 19:48:07 - INFO - STDOUT: [✓] FlameGraph folded file generated successfully
+2025-11-28 19:51:21 - INFO - STDOUT: [*] Extracted source locations for 470 functions
+2025-11-28 19:51:22 - INFO - __main__: Flamegraph analysis complete. Found 7 hot functions
+2025-11-28 19:51:22 - INFO - __main__: Looking up function definitions...
+2025-11-28 19:51:22 - INFO - __main__: Looking up function: DB::PODArray<unsigned long, 4096ul, Allocator<false, false>, 63ul, 64ul>::operator[] in /home/ubuntu/ClickHouse_debug/src/Common/PODArray.h
+2025-11-28 19:51:22 - INFO - STDOUT: operator[]
+2025-11-28 19:51:22 - INFO - STDOUT: Function 'DB::PODArray<unsigned long, 4096ul, Allocator<false, false>, 63ul, 64ul>::operator[]' () found:
+2025-11-28 19:51:22 - INFO - STDOUT:   Start position: 14578
+2025-11-28 19:51:22 - INFO - STDOUT:   Opening brace: 14613
+2025-11-28 19:51:22 - INFO - STDOUT:   Closing brace: 14905
+2025-11-28 19:51:22 - INFO - STDOUT: Function signature and body:
+2025-11-28 19:51:22 - INFO - STDOUT:     T & operator[] (ssize_t n)
+2025-11-28 19:51:22 - INFO - STDOUT:     {
+2025-11-28 19:51:22 - INFO - STDOUT:         /// <= size, because taking address of one element past memory range is Ok in C++ (expression like &arr[arr.size()] is perfectly valid).
+2025-11-28 19:51:22 - INFO - STDOUT:         assert((n >= (static_cast<ssize_t>(pad_left_) ? -1 : 0)) && (n <= static_cast<ssize_t>(this->size())));
+2025-11-28 19:51:22 - INFO - STDOUT:         return t_start()[n];
+2025-11-28 19:51:22 - INFO - STDOUT:     }
+2025-11-28 19:51:22 - INFO - __main__: Found function: DB::PODArray<unsigned long, 4096ul, Allocator<false, false>, 63ul, 64ul>::operator[] -> /home/rocky/functio/ClickHouse/src/Common/PODArray.h
+2025-11-28 19:51:22 - INFO - __main__: Looking up function: DB::FunctionToExecutableFunctionAdaptor::executeImpl in /home/ubuntu/ClickHouse_debug/src/Functions/IFunctionAdaptors.h
+2025-11-28 19:51:22 - INFO - STDOUT: executeImpl
+2025-11-28 19:51:22 - INFO - STDOUT: Function 'DB::FunctionToExecutableFunctionAdaptor::executeImpl' () not found using traditional way. Trying alternative
+2025-11-28 19:51:45 - INFO - STDOUT: /home/ubuntu/ClickHouse_debug/src/Functions/IFunctionAdaptors.cpp
+2025-11-28 19:51:45 - INFO - STDOUT: Function 'DB::FunctionToExecutableFunctionAdaptor::executeImpl' () found:
+2025-11-28 19:51:45 - INFO - STDOUT:   Start position: 96
+2025-11-28 19:51:45 - INFO - STDOUT:   Opening brace: 267
+2025-11-28 19:51:45 - INFO - STDOUT:   Closing brace: 406
+2025-11-28 19:51:45 - INFO - STDOUT: Function signature and body:
+2025-11-28 19:51:45 - INFO - STDOUT: ColumnPtr FunctionToExecutableFunctionAdaptor::executeImpl(const ColumnsWithTypeAndName& arguments,
+2025-11-28 19:51:45 - INFO - STDOUT:         const DataTypePtr& result_type, size_t input_rows_count) const
+2025-11-28 19:51:45 - INFO - STDOUT: {
+2025-11-28 19:51:45 - INFO - STDOUT:     checkFunctionArgumentSizes(arguments, input_rows_count);
+2025-11-28 19:51:45 - INFO - STDOUT:     return function->executeImpl(arguments, result_type, input_rows_count);
+2025-11-28 19:51:45 - INFO - STDOUT: }
+2025-11-28 19:51:45 - INFO - __main__: Found function: DB::FunctionToExecutableFunctionAdaptor::executeImpl -> /home/rocky/functio/ClickHouse/src/Functions/IFunctionAdaptors.cpp
+2025-11-28 19:51:45 - INFO - __main__: Looking up function: __cos_fma in ./math/../sysdeps/ieee754/dbl-64/s_sin.c
+2025-11-28 19:51:45 - INFO - STDOUT: __cos_fma
+2025-11-28 19:51:45 - ERROR - __main__: Error looking up __cos_fma: [Errno 2] No such file or directory: './math/../sysdeps/ieee754/dbl-64/s_sin.c'
+2025-11-28 19:51:45 - INFO - __main__: Looking up function: bool LZ4::(anonymous namespace)::decompressImpl<8ul> in /home/ubuntu/ClickHouse_debug/src/Compression/LZ4_decompress_faster.cpp
+2025-11-28 19:51:45 - INFO - STDOUT: decompressImpl
+2025-11-28 19:51:45 - INFO - STDOUT: Function 'bool LZ4::(anonymous namespace)::decompressImpl<8ul>' () found:
+2025-11-28 19:51:45 - INFO - STDOUT:   Start position: 11136
+2025-11-28 19:51:45 - INFO - STDOUT:   Opening brace: 11250
+2025-11-28 19:51:45 - INFO - STDOUT:   Closing brace: 16048
+2025-11-28 19:51:45 - INFO - STDOUT: Function signature and body:
+2025-11-28 19:51:45 - INFO - STDOUT: bool NO_INLINE decompressImpl(const char * const source, char * const dest, size_t source_size, size_t dest_size)
+2025-11-28 19:51:45 - INFO - STDOUT: {
+2025-11-28 19:51:45 - INFO - STDOUT:     const UInt8 * ip = reinterpret_cast<const UInt8 *>(source);
+2025-11-28 19:51:45 - INFO - STDOUT:     UInt8 * op = reinterpret_cast<UInt8 *>(dest);
+2025-11-28 19:51:45 - INFO - STDOUT:     const UInt8 * const input_end = ip + source_size;
+2025-11-28 19:51:45 - INFO - STDOUT:     UInt8 * const output_begin = op;
+2025-11-28 19:51:45 - INFO - STDOUT:     UInt8 * const output_end = op + dest_size;
+2025-11-28 19:51:45 - INFO - STDOUT:     while (true)
+2025-11-28 19:51:45 - INFO - STDOUT:     {
+2025-11-28 19:51:45 - INFO - STDOUT:         size_t length;
+2025-11-28 19:51:45 - INFO - STDOUT:         auto continue_read_length = [&]
+2025-11-28 19:51:45 - INFO - STDOUT:         {
+2025-11-28 19:51:45 - INFO - STDOUT:             unsigned s;
+2025-11-28 19:51:45 - INFO - STDOUT:             do
+2025-11-28 19:51:45 - INFO - STDOUT:             {
+2025-11-28 19:51:45 - INFO - STDOUT:                 s = *ip++;
+2025-11-28 19:51:45 - INFO - STDOUT:                 length += s;
+2025-11-28 19:51:45 - INFO - STDOUT:             } while (unlikely(s == 255 && ip < input_end));
+2025-11-28 19:51:45 - INFO - STDOUT:         };
+2025-11-28 19:51:45 - INFO - STDOUT:         /// Get literal length.
+2025-11-28 19:51:45 - INFO - STDOUT:         if (unlikely(ip >= input_end))
+2025-11-28 19:51:45 - INFO - STDOUT:             return false;
+2025-11-28 19:51:45 - INFO - STDOUT:         const unsigned token = *ip++;
+2025-11-28 19:51:45 - INFO - STDOUT:         length = token >> 4;
+2025-11-28 19:51:45 - INFO - STDOUT:         UInt8 * copy_end;
+2025-11-28 19:51:45 - INFO - STDOUT:         size_t real_length;
+2025-11-28 19:51:45 - INFO - STDOUT:         /// It might be true fairly often for well-compressed columns.
+2025-11-28 19:51:45 - INFO - STDOUT:         /// ATST it may hurt performance in other cases because this condition is hard to predict (especially if the number of zeros is ~50%).
+2025-11-28 19:51:45 - INFO - STDOUT:         /// In such cases this `if` will significantly increase number of mispredicted instructions. But seems like it results in a
+2025-11-28 19:51:45 - INFO - STDOUT:         /// noticeable slowdown only for implementations with `copy_amount` > 8. Probably because they use havier instructions.
+2025-11-28 19:51:45 - INFO - STDOUT:         if constexpr (copy_amount == 8)
+2025-11-28 19:51:45 - INFO - STDOUT:             if (length == 0)
+2025-11-28 19:51:45 - INFO - STDOUT:                 goto decompress_match;
+2025-11-28 19:51:45 - INFO - STDOUT:         if (length == 0x0F)
+2025-11-28 19:51:45 - INFO - STDOUT:         {
+2025-11-28 19:51:45 - INFO - STDOUT:             if (unlikely(ip + 1 >= input_end))
+2025-11-28 19:51:45 - INFO - STDOUT:                 return false;
+2025-11-28 19:51:45 - INFO - STDOUT:             continue_read_length();
+2025-11-28 19:51:45 - INFO - STDOUT:         }
+2025-11-28 19:51:45 - INFO - STDOUT:         /// Copy literals.
+2025-11-28 19:51:45 - INFO - STDOUT:         copy_end = op + length;
+2025-11-28 19:51:45 - INFO - STDOUT:         /// input: Hello, world
+2025-11-28 19:51:45 - INFO - STDOUT:         ///        ^-ip
+2025-11-28 19:51:45 - INFO - STDOUT:         /// output: xyz
+2025-11-28 19:51:45 - INFO - STDOUT:         ///            ^-op  ^-copy_end
+2025-11-28 19:51:45 - INFO - STDOUT:         /// output: xyzHello, w
+2025-11-28 19:51:45 - INFO - STDOUT:         ///                   ^- excessive copied bytes due to "wildCopy"
+2025-11-28 19:51:45 - INFO - STDOUT:         /// input: Hello, world
+2025-11-28 19:51:45 - INFO - STDOUT:         ///              ^-ip
+2025-11-28 19:51:45 - INFO - STDOUT:         /// output: xyzHello, w
+2025-11-28 19:51:45 - INFO - STDOUT:         ///                  ^-op (we will overwrite excessive bytes on next iteration)
+2025-11-28 19:51:45 - INFO - STDOUT:         if (unlikely(copy_end > output_end))
+2025-11-28 19:51:45 - INFO - STDOUT:             return false;
+2025-11-28 19:51:45 - INFO - STDOUT:         // Due to implementation specifics the copy length is always a multiple of copy_amount
+2025-11-28 19:51:45 - INFO - STDOUT:         real_length = 0;
+2025-11-28 19:51:45 - INFO - STDOUT:         static_assert(copy_amount == 8 || copy_amount == 16 || copy_amount == 32);
+2025-11-28 19:51:45 - INFO - STDOUT:         if constexpr (copy_amount == 8)
+2025-11-28 19:51:45 - INFO - STDOUT:             real_length = (((length >> 3) + 1) * 8);
+2025-11-28 19:51:45 - INFO - STDOUT:         else if constexpr (copy_amount == 16)
+2025-11-28 19:51:45 - INFO - STDOUT:             real_length = (((length >> 4) + 1) * 16);
+2025-11-28 19:51:45 - INFO - STDOUT:         else if constexpr (copy_amount == 32)
+2025-11-28 19:51:45 - INFO - STDOUT:             real_length = (((length >> 5) + 1) * 32);
+2025-11-28 19:51:45 - INFO - STDOUT:         if (unlikely(ip + real_length >= input_end + ADDITIONAL_BYTES_AT_END_OF_BUFFER))
+2025-11-28 19:51:45 - INFO - STDOUT:             return false;
+2025-11-28 19:51:45 - INFO - STDOUT:         wildCopyFromInput<copy_amount>(op, ip, copy_end - op); /// Here we can write up to copy_amount - 1 bytes after buffer.
+2025-11-28 19:51:45 - INFO - STDOUT:         if (copy_end == output_end)
+2025-11-28 19:51:45 - INFO - STDOUT:             return true;
+2025-11-28 19:51:45 - INFO - STDOUT:         ip += length;
+2025-11-28 19:51:45 - INFO - STDOUT:         op = copy_end;
+2025-11-28 19:51:45 - INFO - STDOUT:     decompress_match:
+2025-11-28 19:51:45 - INFO - STDOUT:         if (unlikely(ip + 1 >= input_end))
+2025-11-28 19:51:45 - INFO - STDOUT:             return false;
+2025-11-28 19:51:45 - INFO - STDOUT:         /// Get match offset.
+2025-11-28 19:51:45 - INFO - STDOUT:         size_t offset = LZ4_readLE16(ip);
+2025-11-28 19:51:45 - INFO - STDOUT:         ip += 2;
+2025-11-28 19:51:45 - INFO - STDOUT:         UInt8 * match = op - offset;
+2025-11-28 19:51:45 - INFO - STDOUT:         if (unlikely(match < output_begin))
+2025-11-28 19:51:45 - INFO - STDOUT:             return false;
+2025-11-28 19:51:45 - INFO - STDOUT:         /// Get match length.
+2025-11-28 19:51:45 - INFO - STDOUT:         length = token & 0x0F;
+2025-11-28 19:51:45 - INFO - STDOUT:         if (length == 0x0F)
+2025-11-28 19:51:45 - INFO - STDOUT:         {
+2025-11-28 19:51:45 - INFO - STDOUT:             if (unlikely(ip + 1 >= input_end))
+2025-11-28 19:51:45 - INFO - STDOUT:                 return false;
+2025-11-28 19:51:45 - INFO - STDOUT:             continue_read_length();
+2025-11-28 19:51:45 - INFO - STDOUT:         }
+2025-11-28 19:51:45 - INFO - STDOUT:         length += 4;
+2025-11-28 19:51:45 - INFO - STDOUT:         /// Copy match within block, that produce overlapping pattern. Match may replicate itself.
+2025-11-28 19:51:45 - INFO - STDOUT:         copy_end = op + length;
+2025-11-28 19:51:45 - INFO - STDOUT:         if (unlikely(copy_end > output_end))
+2025-11-28 19:51:45 - INFO - STDOUT:             return false;
+2025-11-28 19:51:45 - INFO - STDOUT:         /** Here we can write up to copy_amount - 1 - 4 * 2 bytes after buffer.
+2025-11-28 19:51:45 - INFO - STDOUT:           * The worst case when offset = 1 and length = 4
+2025-11-28 19:51:45 - INFO - STDOUT:           */
+2025-11-28 19:51:45 - INFO - STDOUT:         if (offset < copy_amount)
+2025-11-28 19:51:45 - INFO - STDOUT:         {
+2025-11-28 19:51:45 - INFO - STDOUT:             /// output: Hello
+2025-11-28 19:51:45 - INFO - STDOUT:             ///              ^-op
+2025-11-28 19:51:45 - INFO - STDOUT:             ///         ^-match; offset = 5
+2025-11-28 19:51:45 - INFO - STDOUT:             ///
+2025-11-28 19:51:45 - INFO - STDOUT:             /// output: Hello
+2025-11-28 19:51:45 - INFO - STDOUT:             ///         [------] - copy_amount bytes
+2025-11-28 19:51:45 - INFO - STDOUT:             ///              [------] - copy them here
+2025-11-28 19:51:45 - INFO - STDOUT:             ///
+2025-11-28 19:51:45 - INFO - STDOUT:             /// output: HelloHelloHel
+2025-11-28 19:51:45 - INFO - STDOUT:             ///            ^-match   ^-op
+2025-11-28 19:51:45 - INFO - STDOUT:             copyOverlap<copy_amount>(op, match, offset);
+2025-11-28 19:51:45 - INFO - STDOUT:         }
+2025-11-28 19:51:45 - INFO - STDOUT:         else
+2025-11-28 19:51:45 - INFO - STDOUT:         {
+2025-11-28 19:51:45 - INFO - STDOUT:             copyFromOutput<copy_amount>(op, match);
+2025-11-28 19:51:45 - INFO - STDOUT:             match += copy_amount;
+2025-11-28 19:51:45 - INFO - STDOUT:         }
+2025-11-28 19:51:45 - INFO - STDOUT:         op += copy_amount;
+2025-11-28 19:51:45 - INFO - STDOUT:         copyFromOutput<copy_amount>(op, match);   /// copy_amount + copy_amount - 1 - 4 * 2 bytes after buffer.
+2025-11-28 19:51:45 - INFO - STDOUT:         if (length > copy_amount * 2)
+2025-11-28 19:51:45 - INFO - STDOUT:         {
+2025-11-28 19:51:45 - INFO - STDOUT:             if (unlikely(copy_end > output_end))
+2025-11-28 19:51:45 - INFO - STDOUT:                 return false;
+2025-11-28 19:51:45 - INFO - STDOUT:             wildCopyFromOutput<copy_amount>(op + copy_amount, match + copy_amount, copy_end - (op + copy_amount));
+2025-11-28 19:51:45 - INFO - STDOUT:         }
+2025-11-28 19:51:45 - INFO - STDOUT:         op = copy_end;
+2025-11-28 19:51:45 - INFO - STDOUT:     }
+2025-11-28 19:51:45 - INFO - STDOUT: }
+2025-11-28 19:51:45 - INFO - __main__: Found function: bool LZ4::(anonymous namespace)::decompressImpl<8ul> -> /home/rocky/functio/ClickHouse/src/Compression/LZ4_decompress_faster.cpp
+2025-11-28 19:51:45 - INFO - __main__: Looking up function: DB::MergeTreeReadersChain::read in /home/ubuntu/ClickHouse_debug/src/Storages/MergeTree/MergeTreeReadersChain.cpp
+2025-11-28 19:51:45 - INFO - STDOUT: read
+2025-11-28 19:51:45 - INFO - STDOUT: Function 'DB::MergeTreeReadersChain::read' () found:
+2025-11-28 19:51:45 - INFO - STDOUT:   Start position: 1747
+2025-11-28 19:51:45 - INFO - STDOUT:   Opening brace: 1887
+2025-11-28 19:51:45 - INFO - STDOUT:   Closing brace: 4397
+2025-11-28 19:51:45 - INFO - STDOUT: Function signature and body:
+2025-11-28 19:51:45 - INFO - STDOUT: MergeTreeReadersChain::ReadResult MergeTreeReadersChain::read(size_t max_rows, MarkRanges & ranges, std::vector<MarkRanges> & patch_ranges)
+2025-11-28 19:51:45 - INFO - STDOUT: {
+2025-11-28 19:51:45 - INFO - STDOUT:     if (max_rows == 0)
+2025-11-28 19:51:45 - INFO - STDOUT:         throw Exception(ErrorCodes::LOGICAL_ERROR, "Expected at least 1 row to read, got 0.");
+2025-11-28 19:51:45 - INFO - STDOUT:     ReadResult read_result{log};
+2025-11-28 19:51:45 - INFO - STDOUT:     if (range_readers.empty())
+2025-11-28 19:51:45 - INFO - STDOUT:         return read_result;
+2025-11-28 19:51:45 - INFO - STDOUT:     auto & first_reader = range_readers.front();
+2025-11-28 19:51:45 - INFO - STDOUT:     try
+2025-11-28 19:51:45 - INFO - STDOUT:     {
+2025-11-28 19:51:45 - INFO - STDOUT:         read_result = first_reader.startReadingChain(max_rows, ranges);
+2025-11-28 19:51:45 - INFO - STDOUT:         LOG_TEST(log, "First reader returned: {}, requested columns: {}", read_result.dumpInfo(), first_reader.getSampleBlock().dumpNames());
+2025-11-28 19:51:45 - INFO - STDOUT:     }
+2025-11-28 19:51:45 - INFO - STDOUT:     catch (Exception & e)
+2025-11-28 19:51:45 - INFO - STDOUT:     {
+2025-11-28 19:51:45 - INFO - STDOUT:         e.addMessage("While reading part {}", first_reader.getReader()->data_part_info_for_read->getPartName());
+2025-11-28 19:51:45 - INFO - STDOUT:         throw;
+2025-11-28 19:51:45 - INFO - STDOUT:     }
+2025-11-28 19:51:45 - INFO - STDOUT:     if (read_result.num_rows != 0)
+2025-11-28 19:51:45 - INFO - STDOUT:     {
+2025-11-28 19:51:45 - INFO - STDOUT:         first_reader.getReader()->fillVirtualColumns(read_result.columns, read_result.num_rows);
+2025-11-28 19:51:45 - INFO - STDOUT:         readPatches(first_reader.getReadSampleBlock(), patch_ranges, read_result);
+2025-11-28 19:51:45 - INFO - STDOUT:         executeActionsBeforePrewhere(read_result, read_result.columns, first_reader, {}, read_result.num_rows);
+2025-11-28 19:51:45 - INFO - STDOUT:         executePrewhereActions(first_reader, read_result, {}, range_readers.size() == 1);
+2025-11-28 19:51:45 - INFO - STDOUT:         addPatchVirtuals(read_result, first_reader.getSampleBlock());
+2025-11-28 19:51:45 - INFO - STDOUT:     }
+2025-11-28 19:51:45 - INFO - STDOUT:     for (size_t i = 1; i < range_readers.size(); ++i)
+2025-11-28 19:51:45 - INFO - STDOUT:     {
+2025-11-28 19:51:45 - INFO - STDOUT:         size_t num_read_rows = 0;
+2025-11-28 19:51:45 - INFO - STDOUT:         auto columns = range_readers[i].continueReadingChain(read_result, num_read_rows);
+2025-11-28 19:51:45 - INFO - STDOUT:         /// Even if number of read rows is 0 we need to apply all steps to produce a block with correct structure.
+2025-11-28 19:51:45 - INFO - STDOUT:         /// It's also needed to properly advancing streams in later steps.
+2025-11-28 19:51:45 - INFO - STDOUT:         if (read_result.num_rows == 0)
+2025-11-28 19:51:45 - INFO - STDOUT:             continue;
+2025-11-28 19:51:45 - INFO - STDOUT:         const auto & previous_header = range_readers[i - 1].getSampleBlock();
+2025-11-28 19:51:45 - INFO - STDOUT:         applyPatchesAfterReader(read_result, i - 1);
+2025-11-28 19:51:45 - INFO - STDOUT:         if (!columns.empty())
+2025-11-28 19:51:45 - INFO - STDOUT:         {
+2025-11-28 19:51:45 - INFO - STDOUT:             /// If all requested columns are absent in part num_read_rows will be 0.
+2025-11-28 19:51:45 - INFO - STDOUT:             /// In this case we need to use number of rows in the result to fill the default values and don't filter block.
+2025-11-28 19:51:45 - INFO - STDOUT:             if (num_read_rows == 0)
+2025-11-28 19:51:45 - INFO - STDOUT:                 num_read_rows = read_result.num_rows;
+2025-11-28 19:51:45 - INFO - STDOUT:             executeActionsBeforePrewhere(read_result, columns, range_readers[i], previous_header, num_read_rows);
+2025-11-28 19:51:45 - INFO - STDOUT:             read_result.columns.insert(read_result.columns.end(), columns.begin(), columns.end());
+2025-11-28 19:51:45 - INFO - STDOUT:         }
+2025-11-28 19:51:45 - INFO - STDOUT:         executePrewhereActions(range_readers[i], read_result, previous_header, i + 1 == range_readers.size());
+2025-11-28 19:51:45 - INFO - STDOUT:     }
+2025-11-28 19:51:45 - INFO - STDOUT:     applyPatchesAfterReader(read_result, range_readers.size() - 1);
+2025-11-28 19:51:45 - INFO - STDOUT:     return read_result;
+2025-11-28 19:51:45 - INFO - STDOUT: }
+2025-11-28 19:51:45 - INFO - __main__: Found function: DB::MergeTreeReadersChain::read -> /home/rocky/functio/ClickHouse/src/Storages/MergeTree/MergeTreeReadersChain.cpp
+2025-11-28 19:51:45 - INFO - __main__: Looking up function: DB::ColumnVector<double>::greater::operator in /home/ubuntu/ClickHouse_debug/src/Columns/ColumnVector.cpp
+2025-11-28 19:51:45 - INFO - STDOUT: operator
+2025-11-28 19:51:45 - INFO - STDOUT: Function 'DB::ColumnVector<double>::greater::operator' () found:
+2025-11-28 19:51:45 - INFO - STDOUT:   Start position: 2941
+2025-11-28 19:51:45 - INFO - STDOUT:   Opening brace: 2995
+2025-11-28 19:51:45 - INFO - STDOUT:   Closing brace: 3392
+2025-11-28 19:51:45 - INFO - STDOUT: Function signature and body:
+2025-11-28 19:51:45 - INFO - STDOUT:     bool operator()(size_t lhs, size_t rhs) const
+2025-11-28 19:51:45 - INFO - STDOUT:     {
+2025-11-28 19:51:45 - INFO - STDOUT:         if (unlikely(parent.data[lhs] == parent.data[rhs]))
+2025-11-28 19:51:45 - INFO - STDOUT:             return lhs < rhs;
+2025-11-28 19:51:45 - INFO - STDOUT:         if constexpr (is_floating_point<T>)
+2025-11-28 19:51:45 - INFO - STDOUT:         {
+2025-11-28 19:51:45 - INFO - STDOUT:             if (unlikely(isNaN(parent.data[lhs]) && isNaN(parent.data[rhs])))
+2025-11-28 19:51:45 - INFO - STDOUT:             {
+2025-11-28 19:51:45 - INFO - STDOUT:                 return lhs < rhs;
+2025-11-28 19:51:45 - INFO - STDOUT:             }
+2025-11-28 19:51:45 - INFO - STDOUT:         }
+2025-11-28 19:51:45 - INFO - STDOUT:         return CompareHelper<T>::less(parent.data[lhs], parent.data[rhs], nan_direction_hint);
+2025-11-28 19:51:45 - INFO - STDOUT:     }
+2025-11-28 19:51:45 - INFO - __main__: Found function: DB::ColumnVector<double>::greater::operator -> /home/rocky/functio/ClickHouse/src/Columns/ColumnVector.cpp
+2025-11-28 19:51:45 - INFO - __main__: Looking up function: void partial_sort<unsigned long*, DB::ColumnVector<double>::greater> in /home/ubuntu/ClickHouse_debug/src/Columns/ColumnVector.cpp
+2025-11-28 19:51:45 - INFO - STDOUT: void partial_sort
+2025-11-28 19:51:45 - INFO - STDOUT: Function 'void partial_sort<unsigned long*, DB::ColumnVector<double>::greater>' () not found using traditional way. Trying alternative
+2025-11-28 19:51:58 - INFO - STDOUT: /home/ubuntu/ClickHouse_debug/base/base/../base/sort.h
+2025-11-28 19:51:58 - INFO - STDOUT: Function 'void partial_sort<unsigned long*, DB::ColumnVector<double>::greater>' () found:
+2025-11-28 19:51:58 - INFO - STDOUT:   Start position: 2253
+2025-11-28 19:51:58 - INFO - STDOUT:   Opening brace: 2336
+2025-11-28 19:51:58 - INFO - STDOUT:   Closing brace: 2582
+2025-11-28 19:51:58 - INFO - STDOUT: Function signature and body:
+2025-11-28 19:51:58 - INFO - STDOUT: void partial_sort(RandomIt first, RandomIt middle, RandomIt last, Compare compare)
+2025-11-28 19:51:58 - INFO - STDOUT: {
+2025-11-28 19:51:58 - INFO - STDOUT: #ifndef NDEBUG
+2025-11-28 19:51:58 - INFO - STDOUT:     ::shuffle(first, last);
+2025-11-28 19:51:58 - INFO - STDOUT: #endif
+2025-11-28 19:51:58 - INFO - STDOUT:     ComparatorWrapper<Compare> compare_wrapper = compare;
+2025-11-28 19:51:58 - INFO - STDOUT:     ::miniselect::floyd_rivest_partial_sort(first, middle, last, compare_wrapper);
+2025-11-28 19:51:58 - INFO - STDOUT: #ifndef NDEBUG
+2025-11-28 19:51:58 - INFO - STDOUT:     ::shuffle(middle, last);
+2025-11-28 19:51:58 - INFO - STDOUT: #endif
+2025-11-28 19:51:58 - INFO - STDOUT: }
+2025-11-28 19:51:58 - INFO - __main__: Found function: void partial_sort<unsigned long*, DB::ColumnVector<double>::greater> -> /home/rocky/functio/ClickHouse/base/base/../base/sort.h
+2025-11-28 19:51:58 - INFO - __main__: Function lookup complete. Found 6 functions
+2025-11-28 19:51:58 - INFO - __main__: Results: [('DB::PODArray<unsigned long, 4096ul, Allocator<false, false>, 63ul, 64ul>::operator[]', '/home/rocky/functio/ClickHouse/src/Common/PODArray.h'), ('DB::FunctionToExecutableFunctionAdaptor::executeImpl', '/home/rocky/functio/ClickHouse/src/Functions/IFunctionAdaptors.cpp'), ('bool LZ4::(anonymous namespace)::decompressImpl<8ul>', '/home/rocky/functio/ClickHouse/src/Compression/LZ4_decompress_faster.cpp'), ('DB::MergeTreeReadersChain::read', '/home/rocky/functio/ClickHouse/src/Storages/MergeTree/MergeTreeReadersChain.cpp'), ('DB::ColumnVector<double>::greater::operator', '/home/rocky/functio/ClickHouse/src/Columns/ColumnVector.cpp'), ('void partial_sort<unsigned long*, DB::ColumnVector<double>::greater>', '/home/rocky/functio/ClickHouse/base/base/../base/sort.h')]
+2025-11-28 19:51:58 - INFO - __main__: Stopping ClickHouse server...

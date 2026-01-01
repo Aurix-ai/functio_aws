@@ -1,9 +1,13 @@
+from typing_extensions import ParamSpecArgs
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-from fl_analyze_unified import unified_strategy
-from execute_query import start_server, execute_query, stop_server
+from fl_analyze_unified import unified_strategy, transform_path
+from execute_query import *
 from function_lookup import function_lookup
 import logging
+from dataclasses import dataclass
+from typing import Optional
+import subprocess
 
 # 1. Create a Pydantic model for request data validation
 # This ensures the incoming JSON has a 'value' field that is a list of strings.
@@ -15,73 +19,125 @@ class ResponseData(BaseModel):
     result: list
     status: str
 
+@dataclass
+class QueryResult:
+    success: bool
+    error: Optional[str] = None
+
+CPP_APP_EXECUTABLE = '/home/ubuntu/ClickHouse_debug/build_debug/programs/clickhouse'
+
+def execute_query(query:str):
+    query_execution_cmd = [
+        CPP_APP_EXECUTABLE,
+        "client",
+        "--query", query
+    ]
+    try:
+        query_execution_result = subprocess.run(
+            query_execution_cmd,
+            capture_output=True,
+            text=True,
+            check=False,
+            timeout=600 #10 min timeout
+        )
+        if query_execution_result.returncode != 0:
+            return QueryResult(success=False, error=query_execution_result.stderr.strip())
+        return QueryResult(success=True, error=None)
+    except subprocess.CalledProcessError as e:
+        return QueryResult(success=False, error=e.stderr)
 # 3. Initialize the FastAPI app
 app = FastAPI()
 
 # 4. Define the API endpoint
 @app.post("/process", response_model=ResponseData)
 def process_data(data: RequestData):
-    """
-    Receives a list of query strings, processes only the last one, and returns results.
-    """
     try:
-        #print(f"Received data: {data}")
         start_server()
-        #mock data
-        data_value = (
-    "CREATE DATABASE IF NOT EXISTS mydb",
-    "USE mydb",
-    "CREATE TABLE multiples ( value UInt64 ) ENGINE = MergeTree ORDER BY value",
-    "INSERT INTO multiples SELECT 7 * number AS value FROM system.numbers LIMIT 1000000",
-    "WITH 1000000 AS N SELECT arrayJoin(topK(500)(intHash64(value) % 1000000)) FROM multiples WHERE value < N FORMAT Null;",
-    "SELECT * FROM multiplesss"
-)
-
-    #change to data.value back later
-        if(len(data_value)>1):
-            for query in data_value[0:len(data_value)-1]:
-                success, output, error = execute_query(query)
-                print(f"Executed query: {query}")
-                print(f"Success: {success}")
-                print(f"Output: {output}")
-                print(f"Error: {error}")
-            # we need to run flamegraph strategy on the last query only
-            last_query = data_value[-1]
-            hot_queries = unified_strategy(last_query, "report", False, True, ["/home/ubuntu/ClickHouse_debug/contrib"], prefix_path="/home/ubuntu/ClickHouse_debug", custom_prefix="/home/ubuntu/ClickHouse_debug")
-            # hot_queries is a list of tuples [(function_name, full_path), ...]
+        data_value = data.value
+#         data_value=(
+#             """
+#             CREATE TABLE IF NOT EXISTS stress_test_5(
+#     id UInt64,
+#     random_data String,
+#     val Float64
+# ) ENGINE = MergeTree()
+# ORDER BY id;
+#             """,
+#             """
+#             INSERT INTO stress_test_5
+# SELECT 
+#     number AS id,
+#     hex(MD5(toString(number))) AS random_data,
+#     rand() / 4294967295 AS val                 
+# FROM numbers(100000);
+#             """,
             
-            # Call function_lookup for each (function, location) pair
-            function_lookup_results = []
-            for function_name, file_path in hot_queries:
-                print(f"\n--- Looking up function: {function_name} in {file_path} ---")
-                try:
-                    result = function_lookup(function_name, file_path)
-                    if result is not None:
-                        function_lookup_results.append({
-                            "function": function_name,
-                            "file": result[0],
-                            "lookup_result": result[1]
-                        })
-                except Exception as e:
-                    print(f"Error looking up {function_name}: {e}")
-                    function_lookup_results.append({
-                        "function": function_name,
-                        "file": file_path,
-                        "error": str(e)
-                    })
-        
+#             """
+#             SELECT 
+#     id,
+#     sin(val) * tan(val) + cos(id % 360) AS math_crunch,
+#     SHA256(random_data || toString(math_crunch)) AS heavy_hash
+# FROM stress_test_5
+# WHERE 
+#     toString(id) LIKE '%5%' 
+# ORDER BY 
+#     math_crunch DESC
+# LIMIT 1;
+#             """)
+        function_lookup_results = []
+        if len(data_value)==0:
+            print("data_value len can't be 0")
+            return ResponseData(result=['No queries provided. Input query to continue'], status="fail")
+        if not wait_for_server_ready():
+            print("Server not ready. Abort")
+            return ResponseData(result=['Server not ready. Abort'], status="fail")
+        setup_queries = data_value[:-1]
+        for query in setup_queries:
+            queryResult = execute_query(query)
+            if not queryResult.success:
+                print(f'One of the queries failed to execute: {queryResult.error}')
+                return ResponseData(result=[f'One of the queries failed to execute: {queryResult.error}'], status="fail")
+        last_query = data_value[-1]
+        print(last_query)
+        try:
+            hot_functions = unified_strategy(
+                last_query,
+                "report",
+                False,
+                True,
+                ["/home/ubuntu/ClickHouse_debug/contrib", "/home/ubuntu/ClickHouse_debug/base/glibc-compatibility/"],
+                prefix_path="/home/ubuntu/ClickHouse_debug",
+                custom_prefix="/home/ubuntu/ClickHouse_debug",
+            )
+        except Exception as e:
+            return ResponseData(result=f"error running flamegraph analysis. Error message: {e}", status="fail")
+        for function_name, file_path in hot_functions:
+            print(f"\n--- Looking up function: {function_name} in {file_path} ---")
+            try:
+                result = function_lookup(function_name, file_path)
+                if result is not None:
+                    file_location = transform_path(
+                        result[0],
+                        "/home/ubuntu/ClickHouse_debug",
+                        "/home/rocky/functio/ClickHouse",
+                    )
+                    function_lookup_results.append((function_name, file_location))
+            except Exception as e:
+                print(f"Error looking up {function_name}: {e}")
+
         print(f"\nFunction lookup results: {function_lookup_results}")
-        logging.info('FINISHED')
 
         stop_server()
-        if function_lookup_results is not None:
+        if function_lookup_results:
             return ResponseData(result=function_lookup_results, status="success")
         else:
             return ResponseData(result=function_lookup_results, status="fail")
 
     except Exception as e:
-        # If something goes wrong, raise an HTTPException
-        raise HTTPException(status_code=500, detail=str(e))
+        return ResponseData(result=[str(e)], status="fail")
 
+        
 if __name__ == "__main__":
-    process_data(None)
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=5000)
+    #process_data(None)

@@ -1,0 +1,70 @@
+2025-12-13 11:34:53 - INFO - __main__: ============================================================
+2025-12-13 11:34:53 - INFO - __main__: Mock run started at 12-13_11-34-53
+2025-12-13 11:34:53 - INFO - __main__: ============================================================
+2025-12-13 11:34:53 - INFO - __main__: Using 1 hardcoded queries
+2025-12-13 11:34:53 - INFO - __main__: Starting ClickHouse server...
+2025-12-13 11:35:00 - INFO - __main__: ClickHouse server is ready
+2025-12-13 11:35:00 - INFO - __main__: Executing 0 setup queries...
+2025-12-13 11:35:00 - INFO - __main__: Main query to analyze: SELECT histogram(128)(randCanonical()) FROM numbers(100000000) FORMAT Null...
+2025-12-13 11:35:00 - INFO - __main__: Profiling command: /home/ubuntu/ClickHouse_debug/build_debug/programs/clickhouse client --query 'SELECT histogram(128)(randCanonical()) FROM numbers(100000000) FORMAT Null'
+2025-12-13 11:35:00 - INFO - STDOUT: [*] Running flame_folded_pid.sh for PID: 3915116
+2025-12-13 11:35:00 - INFO - STDOUT: Executable command is /home/ubuntu/ClickHouse_debug/build_debug/programs/clickhouse client --query 'SELECT histogram(128)(randCanonical()) FROM numbers(100000000) FORMAT Null'
+2025-12-13 11:35:00 - INFO - STDOUT: successfully ran flame_folded_pid.sh
+2025-12-13 11:37:12 - INFO - STDOUT: [✓] FlameGraph folded file generated successfully
+2025-12-13 11:42:12 - INFO - STDOUT: [*] Extracted source locations for 1264 functions
+2025-12-13 11:42:13 - INFO - __main__: Flamegraph analysis complete. Found 4 hot functions
+2025-12-13 11:42:13 - INFO - __main__: Looking up function definitions...
+2025-12-13 11:42:13 - INFO - __main__: Looking up function: bool DebugLessComparator<DB::(anonymous namespace)::AggregateFunctionHistogramData::sort in /home/ubuntu/ClickHouse_debug/base/base/../base/sort.h
+2025-12-13 11:42:13 - INFO - STDOUT: bool DebugLessComparator<DB::(anonymous namespace)::AggregateFunctionHistogramData::sort
+2025-12-13 11:42:13 - INFO - STDOUT: Function 'bool DebugLessComparator<DB::(anonymous namespace)::AggregateFunctionHistogramData::sort' () not found using traditional way. Trying alternative
+2025-12-13 11:42:52 - INFO - STDOUT: /home/ubuntu/ClickHouse_debug/base/base/../base/sort.h
+2025-12-13 11:42:52 - INFO - STDOUT: None
+2025-12-13 11:42:52 - INFO - STDOUT: standart and alternative methods of function lookup failed, skipping this function
+2025-12-13 11:42:52 - WARNING - __main__: Function not found: bool DebugLessComparator<DB::(anonymous namespace)::AggregateFunctionHistogramData::sort
+2025-12-13 11:42:52 - INFO - __main__: Looking up function: DB::(anonymous namespace)::AggregateFunctionHistogramData::compress in /home/ubuntu/ClickHouse_debug/src/AggregateFunctions/AggregateFunctionHistogram.cpp
+2025-12-13 11:42:52 - INFO - STDOUT: compress
+2025-12-13 11:42:52 - ERROR - __main__: Error looking up DB::(anonymous namespace)::AggregateFunctionHistogramData::compress: name 'code' is not defined
+Traceback (most recent call last):
+  File "/home/ubuntu/functio_server/pid_profiling_clean/functio_mock_server.py", line 161, in _run_pipeline
+    resolved_path = function_lookup(function_name, file_path, projectConfig.executable)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/functio_server/pid_profiling_clean/function_lookup.py", line 293, in function_lookup
+    result = find_function_definition(source_code, short_function_name)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/functio_server/pid_profiling_clean/function_lookup.py", line 123, in find_function_definition
+    if not code[i_name]: continue
+           ^^^^
+NameError: name 'code' is not defined. Did you forget to import 'code'
+2025-12-13 11:42:52 - INFO - __main__: Looking up function: DB::(anonymous namespace)::AggregateFunctionHistogram<double>::add in /home/ubuntu/ClickHouse_debug/src/AggregateFunctions/AggregateFunctionHistogram.cpp
+2025-12-13 11:42:52 - INFO - STDOUT: add
+2025-12-13 11:42:52 - ERROR - __main__: Error looking up DB::(anonymous namespace)::AggregateFunctionHistogram<double>::add: name 'code' is not defined
+Traceback (most recent call last):
+  File "/home/ubuntu/functio_server/pid_profiling_clean/functio_mock_server.py", line 161, in _run_pipeline
+    resolved_path = function_lookup(function_name, file_path, projectConfig.executable)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/functio_server/pid_profiling_clean/function_lookup.py", line 293, in function_lookup
+    result = find_function_definition(source_code, short_function_name)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/functio_server/pid_profiling_clean/function_lookup.py", line 123, in find_function_definition
+    if not code[i_name]: continue
+           ^^^^
+NameError: name 'code' is not defined. Did you forget to import 'code'
+2025-12-13 11:42:52 - INFO - __main__: Looking up function: DB::(anonymous namespace)::AggregateFunctionHistogramData::sort in /home/ubuntu/ClickHouse_debug/base/base/../base/sort.h
+2025-12-13 11:42:52 - INFO - STDOUT: sort
+2025-12-13 11:42:52 - ERROR - __main__: Error looking up DB::(anonymous namespace)::AggregateFunctionHistogramData::sort: name 'code' is not defined
+Traceback (most recent call last):
+  File "/home/ubuntu/functio_server/pid_profiling_clean/functio_mock_server.py", line 161, in _run_pipeline
+    resolved_path = function_lookup(function_name, file_path, projectConfig.executable)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/functio_server/pid_profiling_clean/function_lookup.py", line 293, in function_lookup
+    result = find_function_definition(source_code, short_function_name)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/functio_server/pid_profiling_clean/function_lookup.py", line 123, in find_function_definition
+    if not code[i_name]: continue
+           ^^^^
+NameError: name 'code' is not defined. Did you forget to import 'code'
+2025-12-13 11:42:52 - INFO - __main__: Stopping ClickHouse server...
+2025-12-13 11:42:57 - INFO - __main__: ClickHouse server stopped
+2025-12-13 11:42:57 - INFO - __main__: Final status: fail
+2025-12-13 11:42:57 - INFO - __main__: Final result: []
+2025-12-13 11:42:57 - INFO - STDOUT: {'result': [], 'status': 'fail'}

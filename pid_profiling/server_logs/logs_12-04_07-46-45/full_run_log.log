@@ -1,0 +1,43 @@
+2025-12-04 07:46:45 - INFO - __main__: ============================================================
+2025-12-04 07:46:45 - INFO - __main__: New request received at 12-04_07-46-45
+2025-12-04 07:46:45 - INFO - __main__: ============================================================
+2025-12-04 07:46:45 - INFO - __main__: Starting ClickHouse server...
+2025-12-04 07:46:51 - INFO - __main__: ClickHouse server started successfully
+2025-12-04 07:46:51 - INFO - __main__: Received 1 queries
+2025-12-04 07:46:51 - INFO - __main__: Waiting for server to be ready...
+2025-12-04 07:46:51 - INFO - __main__: Server is ready
+2025-12-04 07:46:51 - INFO - __main__: Executing 0 setup queries...
+2025-12-04 07:46:51 - INFO - __main__: Main query to analyze: SELECT avgWeightedIf(toNullable(number), toNullable(number), toNullable(number) % 10) AS t FROM numbers(1000000000) SETTINGS max_threads = 1;
+2025-12-04 07:46:51 - INFO - __main__: Starting flamegraph analysis (unified_strategy)...
+2025-12-04 07:46:51 - INFO - STDOUT: [*] Running flame_folded_pid.sh for PID: 2998193
+2025-12-04 07:46:51 - INFO - STDOUT: Executable command is /home/ubuntu/ClickHouse_debug/build_debug/programs/clickhouse client --query 'SELECT avgWeightedIf(toNullable(number), toNullable(number), toNullable(number) % 10) AS t FROM numbers(1000000000) SETTINGS max_threads = 1;'
+2025-12-04 07:46:51 - INFO - STDOUT: successfully ran flame_folded_pid.sh
+2025-12-04 07:47:52 - INFO - STDOUT: [✓] FlameGraph folded file generated successfully
+2025-12-04 07:52:02 - INFO - STDOUT: [*] Extracted source locations for 1572 functions
+2025-12-04 07:52:02 - INFO - __main__: Flamegraph analysis complete. Found 5 hot functions
+2025-12-04 07:52:02 - INFO - __main__: Looking up function definitions...
+2025-12-04 07:52:02 - INFO - __main__: Looking up function: DB::AggregateFunctionIfNullVariadic<true, true>::addBatchSinglePlace in /home/ubuntu/ClickHouse_debug/src/AggregateFunctions/Combinators/AggregateFunctionIf.cpp
+2025-12-04 07:52:02 - INFO - STDOUT: addBatchSinglePlace
+2025-12-04 07:52:02 - INFO - STDOUT: Function 'DB::AggregateFunctionIfNullVariadic<true, true>::addBatchSinglePlace' () found:
+2025-12-04 07:52:02 - INFO - __main__: Found function: DB::AggregateFunctionIfNullVariadic<true, true>::addBatchSinglePlace -> /home/rocky/functio/ClickHouse/src/AggregateFunctions/Combinators/AggregateFunctionIf.cpp
+2025-12-04 07:52:02 - INFO - __main__: Looking up function: DB::PODArray<unsigned long, 4096ul, Allocator<false, false>, 63ul, 64ul>::operator[] in /home/ubuntu/ClickHouse_debug/src/Common/PODArray.h
+2025-12-04 07:52:02 - INFO - STDOUT: operator[]
+2025-12-04 07:52:02 - INFO - STDOUT: Function 'DB::PODArray<unsigned long, 4096ul, Allocator<false, false>, 63ul, 64ul>::operator[]' () found:
+2025-12-04 07:52:02 - INFO - __main__: Found function: DB::PODArray<unsigned long, 4096ul, Allocator<false, false>, 63ul, 64ul>::operator[] -> /home/rocky/functio/ClickHouse/src/Common/PODArray.h
+2025-12-04 07:52:02 - INFO - __main__: Looking up function: DB::(anonymous namespace)::ModuloByConstantImpl<unsigned long, char8_t>::vectorConstant in /home/ubuntu/ClickHouse_debug/src/Functions/modulo.cpp
+2025-12-04 07:52:02 - INFO - STDOUT: vectorConstant
+2025-12-04 07:52:02 - INFO - STDOUT: Function 'DB::(anonymous namespace)::ModuloByConstantImpl<unsigned long, char8_t>::vectorConstant' () found:
+2025-12-04 07:52:02 - INFO - __main__: Found function: DB::(anonymous namespace)::ModuloByConstantImpl<unsigned long, char8_t>::vectorConstant -> /home/rocky/functio/ClickHouse/src/Functions/modulo.cpp
+2025-12-04 07:52:02 - INFO - __main__: Looking up function: DB::(anonymous namespace)::AggregateFunctionAvgWeighted<unsigned long, unsigned long>::add in /home/ubuntu/ClickHouse_debug/src/AggregateFunctions/AggregateFunctionAvgWeighted.cpp
+2025-12-04 07:52:02 - INFO - STDOUT: add
+2025-12-04 07:52:02 - INFO - STDOUT: Function 'DB::(anonymous namespace)::AggregateFunctionAvgWeighted<unsigned long, unsigned long>::add' () found:
+2025-12-04 07:52:02 - INFO - __main__: Found function: DB::(anonymous namespace)::AggregateFunctionAvgWeighted<unsigned long, unsigned long>::add -> /home/rocky/functio/ClickHouse/src/AggregateFunctions/AggregateFunctionAvgWeighted.cpp
+2025-12-04 07:52:02 - INFO - __main__: Looking up function: DB::IAggregateFunctionHelper<DB::(anonymous namespace)::AggregateFunctionAvgWeighted<unsigned long, unsigned long> >::addBatchSinglePlaceNotNull in /home/ubuntu/ClickHouse_debug/src/AggregateFunctions/IAggregateFunction.h
+2025-12-04 07:52:02 - INFO - STDOUT: addBatchSinglePlaceNotNull
+2025-12-04 07:52:02 - INFO - STDOUT: Function 'DB::IAggregateFunctionHelper<DB::(anonymous namespace)::AggregateFunctionAvgWeighted<unsigned long, unsigned long> >::addBatchSinglePlaceNotNull' () found:
+2025-12-04 07:52:02 - INFO - __main__: Found function: DB::IAggregateFunctionHelper<DB::(anonymous namespace)::AggregateFunctionAvgWeighted<unsigned long, unsigned long> >::addBatchSinglePlaceNotNull -> /home/rocky/functio/ClickHouse/src/AggregateFunctions/IAggregateFunction.h
+2025-12-04 07:52:02 - INFO - __main__: Function lookup complete. Found 5 functions
+2025-12-04 07:52:02 - INFO - __main__: Results: [('DB::AggregateFunctionIfNullVariadic<true, true>::addBatchSinglePlace', '/home/rocky/functio/ClickHouse/src/AggregateFunctions/Combinators/AggregateFunctionIf.cpp'), ('DB::PODArray<unsigned long, 4096ul, Allocator<false, false>, 63ul, 64ul>::operator[]', '/home/rocky/functio/ClickHouse/src/Common/PODArray.h'), ('DB::(anonymous namespace)::ModuloByConstantImpl<unsigned long, char8_t>::vectorConstant', '/home/rocky/functio/ClickHouse/src/Functions/modulo.cpp'), ('DB::(anonymous namespace)::AggregateFunctionAvgWeighted<unsigned long, unsigned long>::add', '/home/rocky/functio/ClickHouse/src/AggregateFunctions/AggregateFunctionAvgWeighted.cpp'), ('DB::IAggregateFunctionHelper<DB::(anonymous namespace)::AggregateFunctionAvgWeighted<unsigned long, unsigned long> >::addBatchSinglePlaceNotNull', '/home/rocky/functio/ClickHouse/src/AggregateFunctions/IAggregateFunction.h')]
+2025-12-04 07:52:02 - INFO - __main__: Stopping ClickHouse server...
+2025-12-04 07:52:06 - INFO - __main__: ClickHouse server stopped
+2025-12-04 07:52:06 - INFO - __main__: Request completed successfully

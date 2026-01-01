@@ -1,0 +1,51 @@
+2025-11-28 19:43:34 - INFO - __main__: ============================================================
+2025-11-28 19:43:34 - INFO - __main__: Mock server run started at 11-28_19-43-34
+2025-11-28 19:43:34 - INFO - __main__: ============================================================
+2025-11-28 19:43:34 - INFO - __main__: Starting ClickHouse server...
+2025-11-28 19:43:40 - INFO - __main__: ClickHouse server started successfully
+2025-11-28 19:43:40 - INFO - __main__: Processing 3 queries
+2025-11-28 19:43:40 - INFO - __main__: Waiting for server to be ready...
+2025-11-28 19:43:40 - INFO - __main__: Server is ready
+2025-11-28 19:43:40 - INFO - __main__: Executing 2 setup queries...
+2025-11-28 19:43:40 - INFO - __main__: Executing setup query 1/2: CREATE TABLE IF NOT EXISTS stress_test_5(
+    id UInt64,
+    random...
+2025-11-28 19:43:41 - INFO - STDOUT: executed correctly query 
+2025-11-28 19:43:41 - INFO - STDOUT:             CREATE TABLE IF NOT EXISTS stress_test_5(
+2025-11-28 19:43:41 - INFO - STDOUT:     id UInt64,
+2025-11-28 19:43:41 - INFO - STDOUT:     random_data String,
+2025-11-28 19:43:41 - INFO - STDOUT:     val Float64
+2025-11-28 19:43:41 - INFO - STDOUT: ) ENGINE = MergeTree()
+2025-11-28 19:43:41 - INFO - STDOUT: ORDER BY id;
+2025-11-28 19:43:41 - INFO - STDOUT:             
+2025-11-28 19:43:41 - INFO - __main__: Setup query 1 completed successfully
+2025-11-28 19:43:41 - INFO - __main__: Executing setup query 2/2: INSERT INTO stress_test_5
+SELECT 
+    number AS id,
+    hex(MD5(toS...
+2025-11-28 19:43:41 - INFO - STDOUT: executed correctly query 
+2025-11-28 19:43:41 - INFO - STDOUT:             INSERT INTO stress_test_5
+2025-11-28 19:43:41 - INFO - STDOUT: SELECT 
+2025-11-28 19:43:41 - INFO - STDOUT:     number AS id,
+2025-11-28 19:43:41 - INFO - STDOUT:     hex(MD5(toString(number))) AS random_data,
+2025-11-28 19:43:41 - INFO - STDOUT:     rand() / 4294967295 AS val                 
+2025-11-28 19:43:41 - INFO - STDOUT: FROM numbers(100000);
+2025-11-28 19:43:41 - INFO - STDOUT:             
+2025-11-28 19:43:41 - INFO - __main__: Setup query 2 completed successfully
+2025-11-28 19:43:41 - INFO - __main__: Main query to analyze: SELECT 
+    id,
+    sin(val) * tan(val) + cos(id % 360) AS math_crunch,
+    SHA256(rand...
+2025-11-28 19:43:41 - INFO - __main__: Starting flamegraph analysis (unified_strategy)...
+2025-11-28 19:43:41 - ERROR - STDERR: Error in unified_strategy: invalid literal for int() with base 10: '2466137 2462326'
+2025-11-28 19:43:41 - ERROR - __main__: Flamegraph analysis failed: invalid literal for int() with base 10: '2466137 2462326'
+Traceback (most recent call last):
+  File "/home/ubuntu/functio_server/pid_profiling/functio_mock_server.py", line 136, in process_data
+    hot_functions = unified_strategy(
+                    ^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/functio_server/pid_profiling/unified_analysis.py", line 993, in unified_strategy
+    raise e
+  File "/home/ubuntu/functio_server/pid_profiling/unified_analysis.py", line 968, in unified_strategy
+    pid = int(result.stdout.strip())
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: invalid literal for int() with base 10: '2466137 2462326'

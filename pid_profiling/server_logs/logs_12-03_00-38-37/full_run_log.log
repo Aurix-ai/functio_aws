@@ -1,0 +1,52 @@
+2025-12-03 00:38:37 - INFO - __main__: ============================================================
+2025-12-03 00:38:37 - INFO - __main__: New request received at 12-03_00-38-37
+2025-12-03 00:38:37 - INFO - __main__: ============================================================
+2025-12-03 00:38:37 - INFO - __main__: Starting ClickHouse server...
+2025-12-03 00:38:43 - INFO - __main__: ClickHouse server started successfully
+2025-12-03 00:38:43 - INFO - __main__: Received 1 queries
+2025-12-03 00:38:43 - INFO - __main__: Waiting for server to be ready...
+2025-12-03 00:38:43 - INFO - __main__: Server is ready
+2025-12-03 00:38:43 - INFO - __main__: Executing 0 setup queries...
+2025-12-03 00:38:43 - INFO - __main__: Main query to analyze: SELECT sum(number) FROM numbers(100000000000)
+2025-12-03 00:38:43 - INFO - __main__: Starting flamegraph analysis (unified_strategy)...
+2025-12-03 00:38:43 - INFO - STDOUT: [*] Running flame_folded_pid.sh for PID: 2951228
+2025-12-03 00:38:43 - INFO - STDOUT: Executable command is /home/ubuntu/ClickHouse_debug/build_debug/programs/clickhouse client --query 'SELECT sum(number) FROM numbers(100000000000)'
+2025-12-03 00:38:43 - INFO - STDOUT: successfully ran flame_folded_pid.sh
+2025-12-03 00:41:56 - INFO - __main__: ============================================================
+2025-12-03 00:41:56 - INFO - __main__: New request received at 12-03_00-41-56
+2025-12-03 00:41:56 - INFO - __main__: ============================================================
+2025-12-03 00:41:56 - INFO - __main__: Starting ClickHouse server...
+2025-12-03 00:42:03 - INFO - __main__: ClickHouse server started successfully
+2025-12-03 00:42:03 - INFO - __main__: Received 1 queries
+2025-12-03 00:42:03 - INFO - __main__: Waiting for server to be ready...
+2025-12-03 00:42:03 - INFO - __main__: Server is ready
+2025-12-03 00:42:03 - INFO - __main__: Executing 0 setup queries...
+2025-12-03 00:42:03 - INFO - __main__: Main query to analyze: SELECT avgWeightedIf(toNullable(number), toNullable(number), toNullable(number) % 10) AS t FROM numbers(1000000000) SETTINGS max_threads = 1;
+2025-12-03 00:42:03 - INFO - __main__: Starting flamegraph analysis (unified_strategy)...
+2025-12-03 00:42:03 - INFO - STDOUT: [*] Running flame_folded_pid.sh for PID: 2952625
+2025-12-03 00:42:03 - INFO - STDOUT: Executable command is /home/ubuntu/ClickHouse_debug/build_debug/programs/clickhouse client --query 'SELECT avgWeightedIf(toNullable(number), toNullable(number), toNullable(number) % 10) AS t FROM numbers(1000000000) SETTINGS max_threads = 1;'
+2025-12-03 00:42:03 - INFO - STDOUT: successfully ran flame_folded_pid.sh
+2025-12-03 00:42:33 - ERROR - STDERR: Error detected in command output:
+2025-12-03 00:42:33 - ERROR - STDERR: stdout: [*] Recording perf data for PID: 2951228 while executing: /home/ubuntu/ClickHouse_debug/build_debug/programs/clickhouse client --query 'SELECT sum(number) FROM numbers(100000000000)'
+2025-12-03 00:42:33 - ERROR - STDERR: [*] Executing command: /home/ubuntu/ClickHouse_debug/build_debug/programs/clickhouse client --query 'SELECT sum(number) FROM numbers(100000000000)'
+2025-12-03 00:42:33 - ERROR - STDERR: [*] Converting perf.data to folded format...
+2025-12-03 00:42:33 - ERROR - STDERR: [✓] Folded flamegraph written to: flamegraph.folded
+2025-12-03 00:42:33 - ERROR - STDERR: stderr: Received exception from server (version 25.11.1):
+2025-12-03 00:42:33 - ERROR - STDERR: Code: 394. DB::Exception: Received from localhost:9000. DB::Exception: Query was cancelled. (QUERY_WAS_CANCELLED)
+2025-12-03 00:42:33 - ERROR - STDERR: (query: SELECT sum(number) FROM numbers(100000000000))
+2025-12-03 00:42:33 - ERROR - STDERR: [ perf record: Woken up 2559 times to write data ]
+2025-12-03 00:42:33 - ERROR - STDERR: [ perf record: Captured and wrote 66.623 MB perf.data (204869 samples) ]
+2025-12-03 00:42:33 - ERROR - STDERR: Error in unified_strategy: Command '['sudo', './flame_folded_pid.sh', '--pid', '2951228', '--', "/home/ubuntu/ClickHouse_debug/build_debug/programs/clickhouse client --query 'SELECT sum(number) FROM numbers(100000000000)'"]' returned non-zero exit status 1.
+2025-12-03 00:42:33 - ERROR - __main__: Flamegraph analysis failed: Command '['sudo', './flame_folded_pid.sh', '--pid', '2951228', '--', "/home/ubuntu/ClickHouse_debug/build_debug/programs/clickhouse client --query 'SELECT sum(number) FROM numbers(100000000000)'"]' returned non-zero exit status 1.
+Traceback (most recent call last):
+  File "/home/ubuntu/functio_server/pid_profiling/functio_server.py", line 118, in process_data
+    hot_functions = unified_strategy(
+                    ^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/functio_server/pid_profiling/unified_analysis.py", line 993, in unified_strategy
+    raise e
+  File "/home/ubuntu/functio_server/pid_profiling/unified_analysis.py", line 969, in unified_strategy
+    folded_path = run_flamegraph(executable_command='/home/ubuntu/ClickHouse_debug/build_debug/programs/clickhouse client --query ' + shlex.quote(query), pid=pid, output_base=output_base)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/functio_server/pid_profiling/unified_analysis.py", line 150, in run_flamegraph
+    raise subprocess.CalledProcessError(
+subprocess.CalledProcessError: Command '['sudo', './flame_folded_pid.sh', '--pid', '2951228', '--', "/home/ubuntu/ClickHouse_debug/build_debug/programs/clickhouse client --query 'SELECT sum(number) FROM numbers(100000000000)'"]' returned non-zero exit status 1.

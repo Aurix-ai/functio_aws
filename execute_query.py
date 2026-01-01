@@ -16,11 +16,15 @@ def start_server(clickhouse_server_path: str = "/home/ubuntu/ClickHouse_debug/bu
     Returns:
         subprocess.Popen: The server process object
     """
+
+    time.sleep(3)
+
+
     global _server_process
     
     if _server_process is not None:
-        # Server already running - stop it first
-        stop_server()
+        # Server already running - just return it
+        return _server_process
     
     # Start the server process (runs in background)
     _server_process = subprocess.Popen(
@@ -31,47 +35,69 @@ def start_server(clickhouse_server_path: str = "/home/ubuntu/ClickHouse_debug/bu
     )
     
     # Wait a bit for server to start up
-    time.sleep(2)
+    time.sleep(3)
     
     return _server_process
 
-def execute_query(query: str, clickhouse_client_path: str = "/home/ubuntu/ClickHouse_debug/build_debug/programs/clickhouse"):
-    """
-    Execute a ClickHouse query using the client against the running server.
-    The server is started automatically if not already running.
+def wait_for_server_ready(client_path: str = "/home/ubuntu/ClickHouse_debug/build_debug/programs/clickhouse", timeout=30):
+    """Wait for ClickHouse server to be ready to accept queries."""
+    import time
+    start_time = time.time()
+
+    while time.time() - start_time < timeout:
+        try:
+            result = subprocess.run(
+                [client_path, "client", "--query", "SELECT 1"],
+                capture_output=True,
+                text=True,
+                timeout=5
+            )
+            if result.returncode == 0:
+                return True
+        except:
+            pass
+        time.sleep(1)
+    stop_server()
+    return False
+
+
+# def execute_query(query: str, clickhouse_client_path: str = "/home/ubuntu/ClickHouse_debug/build_debug/programs/clickhouse"):
+#     """
+#     Execute a ClickHouse query using the client against the running server.
+#     The server is started automatically if not already running.
     
-    Args:
-        query: The SQL query string to execute
-        clickhouse_client_path: Path to the clickhouse client executable
+#     Args:
+#         query: The SQL query string to execute
+#         clickhouse_client_path: Path to the clickhouse client executable
         
-    Returns:
-        tuple: (success: bool, output: str, error: str)
-    """
-    global _server_process
+#     Returns:
+#         tuple: (success: bool, output: str, error: str)
+#     """
+#     global _server_process
     
-    # Ensure server is running
-    if _server_process is None:
-        start_server()
+#     # Ensure server is running
+#     if _server_process is None:
+#         start_server()
     
-    try:
-        # Run clickhouse client with the query
-        result = subprocess.run(
-            [clickhouse_client_path, "client", "--query", query],
-            capture_output=True,
-            text=True,
-            check=False,
-            timeout=300  # 5 minute timeout
-        )
+#     try:
+#         # Run clickhouse client with the query
+#         result = subprocess.run(
+#             [clickhouse_client_path, "client", "--query", query],
+#             capture_output=True,
+#             text=True,
+#             check=False,
+#             timeout=300  # 5 minute timeout
+#         )
         
-        if result.returncode == 0:
-            return True, result.stdout, result.stderr
-        else:
-            return False, result.stdout, result.stderr
+#         if result.returncode == 0:
+#             return True, result.stdout, result.stderr
+#         else:
+#             return False, result.stdout, result.stderr
             
-    except subprocess.TimeoutExpired:
-        return False, "", "Query execution timed out after 5 minutes"
-    except Exception as e:
-        return False, "", f"Error executing query: {str(e)}"
+#     except subprocess.TimeoutExpired:
+#         return False, "", "Query execution timed out after 5 minutes"
+#     except Exception as e:
+#         return False, "", f"Error executing query: {str(e)}"
 
 def stop_server():
     """

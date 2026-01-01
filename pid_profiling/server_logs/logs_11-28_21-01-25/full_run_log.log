@@ -1,0 +1,9 @@
+2025-11-28 21:01:25 - INFO - __main__: ============================================================
+2025-11-28 21:01:25 - INFO - __main__: New request received at 11-28_21-01-25
+2025-11-28 21:01:25 - INFO - __main__: ============================================================
+2025-11-28 21:01:26 - INFO - __main__: Starting ClickHouse server...
+2025-11-28 21:11:18 - ERROR - STDERR: Exception ignored in: <module 'threading' from '/usr/lib/python3.12/threading.py'>
+2025-11-28 21:11:18 - ERROR - STDERR: Traceback (most recent call last):
+2025-11-28 21:11:18 - ERROR - STDERR:   File "/usr/lib/python3.12/threading.py", line 1622, in _shutdown
+2025-11-28 21:11:19 - ERROR - STDERR:     lock.acquire()
+2025-11-28 21:11:19 - ERROR - STDERR: KeyboardInterrupt: 

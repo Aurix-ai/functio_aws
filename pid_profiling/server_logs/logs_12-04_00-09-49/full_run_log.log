@@ -1,0 +1,34 @@
+2025-12-04 00:09:49 - INFO - __main__: ============================================================
+2025-12-04 00:09:49 - INFO - __main__: New request received at 12-04_00-09-49
+2025-12-04 00:09:49 - INFO - __main__: ============================================================
+2025-12-04 00:09:49 - INFO - __main__: Starting ClickHouse server...
+2025-12-04 00:09:55 - INFO - __main__: ClickHouse server started successfully
+2025-12-04 00:09:55 - INFO - __main__: Received 1 queries
+2025-12-04 00:09:55 - INFO - __main__: Waiting for server to be ready...
+2025-12-04 00:09:55 - INFO - __main__: Server is ready
+2025-12-04 00:09:55 - INFO - __main__: Executing 0 setup queries...
+2025-12-04 00:09:55 - INFO - __main__: Main query to analyze: SELECT sum(number) FROM numbers(10000000000)
+2025-12-04 00:09:55 - INFO - __main__: Starting flamegraph analysis (unified_strategy)...
+2025-12-04 00:09:55 - INFO - STDOUT: [*] Running flame_folded_pid.sh for PID: 2993207
+2025-12-04 00:09:55 - INFO - STDOUT: Executable command is /home/ubuntu/ClickHouse_debug/build_debug/programs/clickhouse client --query 'SELECT sum(number) FROM numbers(10000000000)'
+2025-12-04 00:09:55 - INFO - STDOUT: successfully ran flame_folded_pid.sh
+2025-12-04 00:11:11 - INFO - STDOUT: [✓] FlameGraph folded file generated successfully
+2025-12-04 00:15:58 - INFO - STDOUT: [*] Extracted source locations for 2102 functions
+2025-12-04 00:15:58 - INFO - __main__: Flamegraph analysis complete. Found 2 hot functions
+2025-12-04 00:15:58 - INFO - __main__: Looking up function definitions...
+2025-12-04 00:15:58 - INFO - __main__: Looking up function: void DB::AggregateFunctionSumData<unsigned long>::addManyImplAVX512BW<unsigned long> in /home/ubuntu/ClickHouse_debug/src/AggregateFunctions/AggregateFunctionSum.h
+2025-12-04 00:15:58 - INFO - STDOUT: addManyImplAVX512BW
+2025-12-04 00:15:59 - INFO - STDOUT: Function 'void DB::AggregateFunctionSumData<unsigned long>::addManyImplAVX512BW<unsigned long>' () not found using traditional way. Trying alternative
+2025-12-04 00:16:22 - INFO - STDOUT: /home/ubuntu/ClickHouse_debug/src/AggregateFunctions/AggregateFunctionSum.h
+2025-12-04 00:16:22 - INFO - STDOUT: None
+2025-12-04 00:16:22 - INFO - STDOUT: standart and alternative methods of function lookup failed, skipping this function
+2025-12-04 00:16:22 - WARNING - __main__: Function not found: void DB::AggregateFunctionSumData<unsigned long>::addManyImplAVX512BW<unsigned long>
+2025-12-04 00:16:22 - INFO - __main__: Looking up function: DB::Aggregator::executeOnBlock in /home/ubuntu/ClickHouse_debug/src/Interpreters/Aggregator.cpp
+2025-12-04 00:16:22 - INFO - STDOUT: executeOnBlock
+2025-12-04 00:16:22 - INFO - STDOUT: Function 'DB::Aggregator::executeOnBlock' () found:
+2025-12-04 00:16:22 - INFO - __main__: Found function: DB::Aggregator::executeOnBlock -> /home/rocky/functio/ClickHouse/src/Interpreters/Aggregator.cpp
+2025-12-04 00:16:22 - INFO - __main__: Function lookup complete. Found 1 functions
+2025-12-04 00:16:22 - INFO - __main__: Results: [('DB::Aggregator::executeOnBlock', '/home/rocky/functio/ClickHouse/src/Interpreters/Aggregator.cpp')]
+2025-12-04 00:16:22 - INFO - __main__: Stopping ClickHouse server...
+2025-12-04 00:16:25 - INFO - __main__: ClickHouse server stopped
+2025-12-04 00:16:25 - INFO - __main__: Request completed successfully

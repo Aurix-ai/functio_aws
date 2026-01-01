@@ -1,0 +1,55 @@
+2025-11-29 16:15:00 - INFO - __main__: ============================================================
+2025-11-29 16:15:00 - INFO - __main__: New request received at 11-29_16-15-00
+2025-11-29 16:15:00 - INFO - __main__: ============================================================
+2025-11-29 16:15:00 - INFO - __main__: Starting ClickHouse server...
+2025-11-29 16:15:06 - INFO - __main__: ClickHouse server started successfully
+2025-11-29 16:15:06 - INFO - __main__: Received 3 queries
+2025-11-29 16:15:06 - INFO - __main__: Waiting for server to be ready...
+2025-11-29 16:15:06 - INFO - __main__: Server is ready
+2025-11-29 16:15:06 - INFO - __main__: Executing 2 setup queries...
+2025-11-29 16:15:06 - INFO - __main__: Executing setup query 1/2: CREATE TABLE stress_strings_1 (
+    id UInt64,
+    junk_data String
+) ENGINE = MergeTree()
+ORDER BY ...
+2025-11-29 16:15:07 - INFO - __main__: Setup query 1 completed successfully
+2025-11-29 16:15:07 - INFO - __main__: Executing setup query 2/2: INSERT INTO stress_strings_1
+SELECT 
+    number, 
+    hex(MD5(toString(number))) 
+FROM numbers(10000...
+2025-11-29 16:15:13 - INFO - __main__: Setup query 2 completed successfully
+2025-11-29 16:15:13 - INFO - __main__: Main query to analyze: SELECT 
+    id, 
+    extractAll(junk_data, '([A-F0-9]{2})') as hex_parts
+FROM stress_strings_1
+WHERE 
+    id < 10000000 -- Process 500k rows
+    AND
+    match(junk_data, '(?i)^[a-f0-9]{5,10}.*?[0-9]{2,5}.*?[a-f]{2}$')
+ORDER BY id DESC;
+2025-11-29 16:15:13 - INFO - __main__: Starting flamegraph analysis (unified_strategy)...
+2025-11-29 16:15:13 - INFO - STDOUT: [*] Running flame_folded_pid.sh for PID: 2574613
+2025-11-29 16:15:13 - INFO - STDOUT: Executable command is /home/ubuntu/ClickHouse_debug/build_debug/programs/clickhouse client --query 'SELECT 
+2025-11-29 16:15:13 - INFO - STDOUT:     id, 
+2025-11-29 16:15:13 - INFO - STDOUT:     extractAll(junk_data, '"'"'([A-F0-9]{2})'"'"') as hex_parts
+2025-11-29 16:15:13 - INFO - STDOUT: FROM stress_strings_1
+2025-11-29 16:15:13 - INFO - STDOUT: WHERE 
+2025-11-29 16:15:13 - INFO - STDOUT:     id < 10000000 -- Process 500k rows
+2025-11-29 16:15:13 - INFO - STDOUT:     AND
+2025-11-29 16:15:13 - INFO - STDOUT:     match(junk_data, '"'"'(?i)^[a-f0-9]{5,10}.*?[0-9]{2,5}.*?[a-f]{2}$'"'"')
+2025-11-29 16:15:13 - INFO - STDOUT: ORDER BY id DESC;'
+2025-11-29 16:15:13 - INFO - STDOUT: successfully ran flame_folded_pid.sh
+2025-11-29 16:16:00 - INFO - STDOUT: [✓] FlameGraph folded file generated successfully
+2025-11-29 17:02:27 - INFO - STDOUT: [*] Extracted source locations for 1970 functions
+2025-11-29 17:02:28 - INFO - __main__: Flamegraph analysis complete. Found 1 hot functions
+2025-11-29 17:02:28 - INFO - __main__: Looking up function definitions...
+2025-11-29 17:02:28 - INFO - __main__: Looking up function: DB::OptimizedRegularExpression::match in /home/ubuntu/ClickHouse_debug/src/Common/OptimizedRegularExpression.cpp
+2025-11-29 17:02:28 - INFO - STDOUT: match
+2025-11-29 17:02:28 - INFO - STDOUT: Function 'DB::OptimizedRegularExpression::match' () found:
+2025-11-29 17:02:28 - INFO - __main__: Found function: DB::OptimizedRegularExpression::match -> /home/rocky/functio/ClickHouse/src/Common/OptimizedRegularExpression.cpp
+2025-11-29 17:02:28 - INFO - __main__: Function lookup complete. Found 1 functions
+2025-11-29 17:02:28 - INFO - __main__: Results: [('DB::OptimizedRegularExpression::match', '/home/rocky/functio/ClickHouse/src/Common/OptimizedRegularExpression.cpp')]
+2025-11-29 17:02:28 - INFO - __main__: Stopping ClickHouse server...
+2025-11-29 17:02:28 - INFO - __main__: ClickHouse server stopped
+2025-11-29 17:02:28 - INFO - __main__: Request completed successfully

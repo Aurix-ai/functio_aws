@@ -1,0 +1,40 @@
+2025-12-13 11:52:06 - INFO - __main__: ============================================================
+2025-12-13 11:52:06 - INFO - __main__: Mock run started at 12-13_11-52-06
+2025-12-13 11:52:06 - INFO - __main__: ============================================================
+2025-12-13 11:52:06 - INFO - __main__: Using 1 hardcoded queries
+2025-12-13 11:52:06 - INFO - __main__: Starting ClickHouse server...
+2025-12-13 11:52:12 - INFO - __main__: ClickHouse server is ready
+2025-12-13 11:52:12 - INFO - __main__: Executing 0 setup queries...
+2025-12-13 11:52:12 - INFO - __main__: Main query to analyze: SELECT histogram(128)(randCanonical()) FROM numbers(100000000) FORMAT Null...
+2025-12-13 11:52:12 - INFO - __main__: Profiling command: /home/ubuntu/ClickHouse_debug/build_debug/programs/clickhouse client --query 'SELECT histogram(128)(randCanonical()) FROM numbers(100000000) FORMAT Null'
+2025-12-13 11:52:12 - INFO - STDOUT: [*] Running flame_folded_pid.sh for PID: 3922652
+2025-12-13 11:52:12 - INFO - STDOUT: Executable command is /home/ubuntu/ClickHouse_debug/build_debug/programs/clickhouse client --query 'SELECT histogram(128)(randCanonical()) FROM numbers(100000000) FORMAT Null'
+2025-12-13 11:52:12 - INFO - STDOUT: successfully ran flame_folded_pid.sh
+2025-12-13 11:54:23 - INFO - STDOUT: [✓] FlameGraph folded file generated successfully
+2025-12-13 11:59:59 - INFO - STDOUT: [*] Extracted source locations for 1244 functions
+2025-12-13 12:00:00 - INFO - __main__: Flamegraph analysis complete. Found 4 hot functions
+2025-12-13 12:00:00 - INFO - __main__: Looking up function definitions...
+2025-12-13 12:00:00 - INFO - __main__: Looking up function: bool DebugLessComparator<DB::(anonymous namespace)::AggregateFunctionHistogramData::sort in /home/ubuntu/ClickHouse_debug/base/base/../base/sort.h
+2025-12-13 12:00:00 - INFO - STDOUT: bool DebugLessComparator<DB::(anonymous namespace)::AggregateFunctionHistogramData::sort
+2025-12-13 12:00:00 - INFO - STDOUT: Function 'bool DebugLessComparator<DB::(anonymous namespace)::AggregateFunctionHistogramData::sort' () not found using traditional way. Trying alternative
+2025-12-13 12:00:26 - INFO - STDOUT: /home/ubuntu/ClickHouse_debug/base/base/../base/sort.h
+2025-12-13 12:00:26 - INFO - STDOUT: None
+2025-12-13 12:00:26 - INFO - STDOUT: standart and alternative methods of function lookup failed, skipping this function
+2025-12-13 12:00:26 - WARNING - __main__: Function not found: bool DebugLessComparator<DB::(anonymous namespace)::AggregateFunctionHistogramData::sort
+2025-12-13 12:00:26 - INFO - __main__: Looking up function: DB::(anonymous namespace)::AggregateFunctionHistogramData::compress in /home/ubuntu/ClickHouse_debug/src/AggregateFunctions/AggregateFunctionHistogram.cpp
+2025-12-13 12:00:26 - INFO - STDOUT: compress
+2025-12-13 12:00:26 - INFO - STDOUT: Function 'DB::(anonymous namespace)::AggregateFunctionHistogramData::compress' () found:
+2025-12-13 12:00:26 - INFO - __main__: Found function: DB::(anonymous namespace)::AggregateFunctionHistogramData::compress -> /home/rocky/functio/ClickHouse/src/AggregateFunctions/AggregateFunctionHistogram.cpp
+2025-12-13 12:00:26 - INFO - __main__: Looking up function: DB::(anonymous namespace)::AggregateFunctionHistogram<double>::add in /home/ubuntu/ClickHouse_debug/src/AggregateFunctions/AggregateFunctionHistogram.cpp
+2025-12-13 12:00:26 - INFO - STDOUT: add
+2025-12-13 12:00:26 - INFO - STDOUT: Function 'DB::(anonymous namespace)::AggregateFunctionHistogram<double>::add' () found:
+2025-12-13 12:00:26 - INFO - __main__: Found function: DB::(anonymous namespace)::AggregateFunctionHistogram<double>::add -> /home/rocky/functio/ClickHouse/src/AggregateFunctions/AggregateFunctionHistogram.cpp
+2025-12-13 12:00:26 - INFO - __main__: Looking up function: DB::(anonymous namespace)::AggregateFunctionHistogramData::sort in /home/ubuntu/ClickHouse_debug/base/base/../base/sort.h
+2025-12-13 12:00:26 - INFO - STDOUT: sort
+2025-12-13 12:00:26 - INFO - STDOUT: Function 'DB::(anonymous namespace)::AggregateFunctionHistogramData::sort' () found:
+2025-12-13 12:00:26 - INFO - __main__: Found function: DB::(anonymous namespace)::AggregateFunctionHistogramData::sort -> /home/rocky/functio/ClickHouse/base/base/../base/sort.h
+2025-12-13 12:00:26 - INFO - __main__: Stopping ClickHouse server...
+2025-12-13 12:00:26 - INFO - __main__: ClickHouse server stopped
+2025-12-13 12:00:26 - INFO - __main__: Final status: success
+2025-12-13 12:00:26 - INFO - __main__: Final result: [('DB::(anonymous namespace)::AggregateFunctionHistogramData::compress', '/home/rocky/functio/ClickHouse/src/AggregateFunctions/AggregateFunctionHistogram.cpp'), ('DB::(anonymous namespace)::AggregateFunctionHistogram<double>::add', '/home/rocky/functio/ClickHouse/src/AggregateFunctions/AggregateFunctionHistogram.cpp'), ('DB::(anonymous namespace)::AggregateFunctionHistogramData::sort', '/home/rocky/functio/ClickHouse/base/base/../base/sort.h')]
+2025-12-13 12:00:26 - INFO - STDOUT: {'result': [('DB::(anonymous namespace)::AggregateFunctionHistogramData::compress', '/home/rocky/functio/ClickHouse/src/AggregateFunctions/AggregateFunctionHistogram.cpp'), ('DB::(anonymous namespace)::AggregateFunctionHistogram<double>::add', '/home/rocky/functio/ClickHouse/src/AggregateFunctions/AggregateFunctionHistogram.cpp'), ('DB::(anonymous namespace)::AggregateFunctionHistogramData::sort', '/home/rocky/functio/ClickHouse/base/base/../base/sort.h')], 'status': 'success'}

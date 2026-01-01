@@ -1,0 +1,82 @@
+2025-11-30 08:34:35 - INFO - __main__: ============================================================
+2025-11-30 08:34:35 - INFO - __main__: New request received at 11-30_08-34-35
+2025-11-30 08:34:35 - INFO - __main__: ============================================================
+2025-11-30 08:34:35 - INFO - __main__: Starting ClickHouse server...
+2025-11-30 08:34:41 - INFO - __main__: ClickHouse server started successfully
+2025-11-30 08:34:41 - INFO - __main__: Received 3 queries
+2025-11-30 08:34:41 - INFO - __main__: Waiting for server to be ready...
+2025-11-30 08:34:42 - INFO - __main__: Server is ready
+2025-11-30 08:34:42 - INFO - __main__: Executing 2 setup queries...
+2025-11-30 08:34:42 - INFO - __main__: Executing setup query 1/2: CREATE TABLE stress_window (
+    id UInt64,
+    category UInt8,
+    score Float64
+) ENGINE = MergeTr...
+2025-11-30 08:34:42 - INFO - __main__: Setup query 1 completed successfully
+2025-11-30 08:34:42 - INFO - __main__: Executing setup query 2/2: INSERT INTO stress_window
+SELECT 
+    number, 
+    number % 10,
+    rand() / 1000
+FROM numbers(10000...
+2025-11-30 08:34:45 - INFO - __main__: Setup query 2 completed successfully
+2025-11-30 08:34:45 - INFO - __main__: Main query to analyze: SELECT 
+    category,
+    id,
+    score,
+    rank() OVER (PARTITION BY category ORDER BY score DESC) as rnk,
+    avg(score) OVER (PARTITION BY category ROWS BETWEEN 100 PRECEDING AND 100 FOLLOWING) as moving_avg
+FROM 
+    (SELECT * FROM stress_window LIMIT 10000000)
+ORDER BY 
+    category, rnk;
+2025-11-30 08:34:45 - INFO - __main__: Starting flamegraph analysis (unified_strategy)...
+2025-11-30 08:34:45 - INFO - STDOUT: [*] Running flame_folded_pid.sh for PID: 2712226
+2025-11-30 08:34:45 - INFO - STDOUT: Executable command is /home/ubuntu/ClickHouse_debug/build_debug/programs/clickhouse client --query 'SELECT 
+2025-11-30 08:34:45 - INFO - STDOUT:     category,
+2025-11-30 08:34:45 - INFO - STDOUT:     id,
+2025-11-30 08:34:45 - INFO - STDOUT:     score,
+2025-11-30 08:34:45 - INFO - STDOUT:     rank() OVER (PARTITION BY category ORDER BY score DESC) as rnk,
+2025-11-30 08:34:45 - INFO - STDOUT:     avg(score) OVER (PARTITION BY category ROWS BETWEEN 100 PRECEDING AND 100 FOLLOWING) as moving_avg
+2025-11-30 08:34:45 - INFO - STDOUT: FROM 
+2025-11-30 08:34:45 - INFO - STDOUT:     (SELECT * FROM stress_window LIMIT 10000000)
+2025-11-30 08:34:45 - INFO - STDOUT: ORDER BY 
+2025-11-30 08:34:45 - INFO - STDOUT:     category, rnk;'
+2025-11-30 08:34:45 - INFO - STDOUT: successfully ran flame_folded_pid.sh
+2025-11-30 08:35:36 - INFO - STDOUT: [✓] FlameGraph folded file generated successfully
+2025-11-30 08:45:24 - INFO - STDOUT: [*] Extracted source locations for 1354 functions
+2025-11-30 08:45:27 - INFO - __main__: Flamegraph analysis complete. Found 5 hot functions
+2025-11-30 08:45:27 - INFO - __main__: Looking up function definitions...
+2025-11-30 08:45:27 - INFO - __main__: Looking up function: void DB::AggregateFunctionSumData<double>::addManyImplAVX512BW<double> in /home/ubuntu/ClickHouse_debug/src/AggregateFunctions/AggregateFunctionSum.h
+2025-11-30 08:45:27 - INFO - STDOUT: addManyImplAVX512BW
+2025-11-30 08:45:27 - INFO - STDOUT: Function 'void DB::AggregateFunctionSumData<double>::addManyImplAVX512BW<double>' () not found using traditional way. Trying alternative
+2025-11-30 08:45:49 - INFO - STDOUT: /home/ubuntu/ClickHouse_debug/src/AggregateFunctions/AggregateFunctionSum.h
+2025-11-30 08:45:49 - INFO - STDOUT: None
+2025-11-30 08:45:49 - INFO - STDOUT: standart and alternative methods of function lookup failed, skipping this function
+2025-11-30 08:45:49 - WARNING - __main__: Function not found: void DB::AggregateFunctionSumData<double>::addManyImplAVX512BW<double>
+2025-11-30 08:45:49 - INFO - __main__: Looking up function: DB::Chunk DB::MergeSorter::mergeBatchImpl<DB::SortingQueueImpl<DB::SortCursor, in /home/ubuntu/ClickHouse_debug/src/Core/SortCursor.h
+2025-11-30 08:45:49 - INFO - STDOUT: mergeBatchImpl<DB::SortingQueueImpl<DB::SortCursor,
+2025-11-30 08:45:49 - INFO - STDOUT: Function 'DB::Chunk DB::MergeSorter::mergeBatchImpl<DB::SortingQueueImpl<DB::SortCursor,' () not found using traditional way. Trying alternative
+2025-11-30 08:46:03 - INFO - STDOUT: /home/ubuntu/ClickHouse_debug/src/Processors/Transforms/SortingTransform.cpp
+2025-11-30 08:46:03 - INFO - STDOUT: None
+2025-11-30 08:46:03 - INFO - STDOUT: standart and alternative methods of function lookup failed, skipping this function
+2025-11-30 08:46:03 - WARNING - __main__: Function not found: DB::Chunk DB::MergeSorter::mergeBatchImpl<DB::SortingQueueImpl<DB::SortCursor,
+2025-11-30 08:46:03 - INFO - __main__: Looking up function: auto DB::MergeSorter::read in ./io/../sysdeps/unix/sysv/linux/read.c
+2025-11-30 08:46:03 - INFO - STDOUT: read
+2025-11-30 08:46:03 - ERROR - __main__: Error looking up auto DB::MergeSorter::read: [Errno 2] No such file or directory: './io/../sysdeps/unix/sysv/linux/read.c'
+2025-11-30 08:46:03 - INFO - __main__: Looking up function: DB::IColumn::assertTypeEquality in /home/ubuntu/ClickHouse_debug/src/Columns/IColumn.h
+2025-11-30 08:46:03 - INFO - STDOUT: assertTypeEquality
+2025-11-30 08:46:03 - INFO - STDOUT: Function 'DB::IColumn::assertTypeEquality' () found:
+2025-11-30 08:46:03 - INFO - __main__: Found function: DB::IColumn::assertTypeEquality -> /home/rocky/functio/ClickHouse/src/Columns/IColumn.h
+2025-11-30 08:46:03 - INFO - __main__: Looking up function: DB::RowNumber::operator<=> in /home/ubuntu/ClickHouse_debug/src/Processors/Transforms/WindowTransform.h
+2025-11-30 08:46:03 - INFO - STDOUT: operator
+2025-11-30 08:46:03 - INFO - STDOUT: Function 'DB::RowNumber::operator<=>' () not found using traditional way. Trying alternative
+2025-11-30 08:46:16 - INFO - STDOUT: /home/ubuntu/ClickHouse_debug/src/Processors/Transforms/WindowTransform.h
+2025-11-30 08:46:16 - INFO - STDOUT: None
+2025-11-30 08:46:16 - INFO - STDOUT: standart and alternative methods of function lookup failed, skipping this function
+2025-11-30 08:46:16 - WARNING - __main__: Function not found: DB::RowNumber::operator<=>
+2025-11-30 08:46:16 - INFO - __main__: Function lookup complete. Found 1 functions
+2025-11-30 08:46:16 - INFO - __main__: Results: [('DB::IColumn::assertTypeEquality', '/home/rocky/functio/ClickHouse/src/Columns/IColumn.h')]
+2025-11-30 08:46:16 - INFO - __main__: Stopping ClickHouse server...
+2025-11-30 08:46:19 - INFO - __main__: ClickHouse server stopped
+2025-11-30 08:46:19 - INFO - __main__: Request completed successfully

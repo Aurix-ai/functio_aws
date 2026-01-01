@@ -1,0 +1,79 @@
+2025-11-28 20:17:07 - INFO - __main__: ============================================================
+2025-11-28 20:17:07 - INFO - __main__: Mock server run started at 11-28_20-17-07
+2025-11-28 20:17:07 - INFO - __main__: ============================================================
+2025-11-28 20:17:07 - INFO - __main__: Starting ClickHouse server...
+2025-11-28 20:17:13 - INFO - __main__: ClickHouse server started successfully
+2025-11-28 20:17:13 - INFO - __main__: Processing 3 queries
+2025-11-28 20:17:13 - INFO - __main__: Waiting for server to be ready...
+2025-11-28 20:17:13 - INFO - __main__: Server is ready
+2025-11-28 20:17:13 - INFO - __main__: Executing 2 setup queries...
+2025-11-28 20:17:13 - INFO - __main__: Executing setup query 1/2: CREATE TABLE IF NOT EXISTS stress_test_5(
+    id UInt64,
+    random...
+2025-11-28 20:17:13 - INFO - STDOUT: executed correctly query 
+2025-11-28 20:17:13 - INFO - STDOUT:             CREATE TABLE IF NOT EXISTS stress_test_5(
+2025-11-28 20:17:13 - INFO - STDOUT:     id UInt64,
+2025-11-28 20:17:13 - INFO - STDOUT:     random_data String,
+2025-11-28 20:17:13 - INFO - STDOUT:     val Float64
+2025-11-28 20:17:13 - INFO - STDOUT: ) ENGINE = MergeTree()
+2025-11-28 20:17:13 - INFO - STDOUT: ORDER BY id;
+2025-11-28 20:17:13 - INFO - STDOUT:             
+2025-11-28 20:17:13 - INFO - __main__: Setup query 1 completed successfully
+2025-11-28 20:17:13 - INFO - __main__: Executing setup query 2/2: INSERT INTO stress_test_5
+SELECT 
+    number AS id,
+    hex(MD5(toS...
+2025-11-28 20:17:13 - INFO - STDOUT: executed correctly query 
+2025-11-28 20:17:13 - INFO - STDOUT:             INSERT INTO stress_test_5
+2025-11-28 20:17:13 - INFO - STDOUT: SELECT 
+2025-11-28 20:17:13 - INFO - STDOUT:     number AS id,
+2025-11-28 20:17:13 - INFO - STDOUT:     hex(MD5(toString(number))) AS random_data,
+2025-11-28 20:17:13 - INFO - STDOUT:     rand() / 4294967295 AS val                 
+2025-11-28 20:17:13 - INFO - STDOUT: FROM numbers(100000);
+2025-11-28 20:17:13 - INFO - STDOUT:             
+2025-11-28 20:17:13 - INFO - __main__: Setup query 2 completed successfully
+2025-11-28 20:17:13 - INFO - __main__: Main query to analyze: SELECT 
+    id,
+    sin(val) * tan(val) + cos(id % 360) AS math_crunch,
+    SHA256(rand...
+2025-11-28 20:17:13 - INFO - __main__: Starting flamegraph analysis (unified_strategy)...
+2025-11-28 20:17:13 - INFO - STDOUT: [*] Running flame_folded_pid.sh for PID: 2496455
+2025-11-28 20:17:13 - INFO - STDOUT: Executable command is /home/ubuntu/ClickHouse_debug/build_debug/programs/clickhouse client --query '
+2025-11-28 20:17:13 - INFO - STDOUT:             SELECT 
+2025-11-28 20:17:13 - INFO - STDOUT:     id,
+2025-11-28 20:17:13 - INFO - STDOUT:     sin(val) * tan(val) + cos(id % 360) AS math_crunch,
+2025-11-28 20:17:13 - INFO - STDOUT:     SHA256(random_data || toString(math_crunch)) AS heavy_hash
+2025-11-28 20:17:13 - INFO - STDOUT: FROM stress_test_5
+2025-11-28 20:17:13 - INFO - STDOUT: WHERE 
+2025-11-28 20:17:13 - INFO - STDOUT:     toString(id) LIKE '"'"'%5%'"'"' 
+2025-11-28 20:17:13 - INFO - STDOUT: ORDER BY 
+2025-11-28 20:17:13 - INFO - STDOUT:     math_crunch DESC
+2025-11-28 20:17:13 - INFO - STDOUT: LIMIT 1;
+2025-11-28 20:17:13 - INFO - STDOUT:             '
+2025-11-28 20:17:13 - INFO - STDOUT: successfully ran flame_folded_pid.sh
+2025-11-28 20:17:27 - INFO - STDOUT: [✓] FlameGraph folded file generated successfully
+2025-11-28 20:21:15 - INFO - STDOUT: [*] Extracted source locations for 389 functions
+2025-11-28 20:21:16 - INFO - __main__: Flamegraph analysis complete. Found 5 hot functions
+2025-11-28 20:21:16 - INFO - __main__: Looking up function definitions...
+2025-11-28 20:21:16 - INFO - __main__: Looking up function: DB::PODArray<unsigned long, 4096ul, Allocator<false, false>, 63ul, 64ul>::operator[] in /home/ubuntu/ClickHouse_debug/src/Common/PODArray.h
+2025-11-28 20:21:16 - INFO - STDOUT: operator[]
+2025-11-28 20:21:16 - INFO - STDOUT: Function 'DB::PODArray<unsigned long, 4096ul, Allocator<false, false>, 63ul, 64ul>::operator[]' () found:
+2025-11-28 20:21:16 - INFO - __main__: Found function: DB::PODArray<unsigned long, 4096ul, Allocator<false, false>, 63ul, 64ul>::operator[] -> /home/rocky/functio/ClickHouse/src/Common/PODArray.h
+2025-11-28 20:21:16 - INFO - __main__: Looking up function: __cos_fma in ./math/../sysdeps/ieee754/dbl-64/s_sin.c
+2025-11-28 20:21:16 - INFO - STDOUT: __cos_fma
+2025-11-28 20:21:16 - ERROR - __main__: Error looking up __cos_fma: [Errno 2] No such file or directory: './math/../sysdeps/ieee754/dbl-64/s_sin.c'
+2025-11-28 20:21:16 - INFO - __main__: Looking up function: bool LZ4::(anonymous namespace)::decompressImpl<16ul> in /home/ubuntu/ClickHouse_debug/src/Compression/LZ4_decompress_faster.cpp
+2025-11-28 20:21:16 - INFO - STDOUT: decompressImpl
+2025-11-28 20:21:16 - INFO - STDOUT: Function 'bool LZ4::(anonymous namespace)::decompressImpl<16ul>' () found:
+2025-11-28 20:21:16 - INFO - __main__: Found function: bool LZ4::(anonymous namespace)::decompressImpl<16ul> -> /home/rocky/functio/ClickHouse/src/Compression/LZ4_decompress_faster.cpp
+2025-11-28 20:21:16 - INFO - __main__: Looking up function: pcg_detail::xsl_rr_mixin<unsigned long, unsigned __int128>::output in /home/ubuntu/ClickHouse_debug/base/pcg-random/./pcg_random.hpp
+2025-11-28 20:21:16 - INFO - STDOUT: output
+2025-11-28 20:21:16 - INFO - STDOUT: Function 'pcg_detail::xsl_rr_mixin<unsigned long, unsigned __int128>::output' () found:
+2025-11-28 20:21:16 - INFO - __main__: Found function: pcg_detail::xsl_rr_mixin<unsigned long, unsigned __int128>::output -> /home/rocky/functio/ClickHouse/base/pcg-random/./pcg_random.hpp
+2025-11-28 20:21:16 - INFO - __main__: Looking up function: bool LZ4::(anonymous namespace)::decompressImpl<8ul> in /home/ubuntu/ClickHouse_debug/src/Compression/LZ4_decompress_faster.cpp
+2025-11-28 20:21:16 - INFO - STDOUT: decompressImpl
+2025-11-28 20:21:16 - INFO - STDOUT: Function 'bool LZ4::(anonymous namespace)::decompressImpl<8ul>' () found:
+2025-11-28 20:21:16 - INFO - __main__: Found function: bool LZ4::(anonymous namespace)::decompressImpl<8ul> -> /home/rocky/functio/ClickHouse/src/Compression/LZ4_decompress_faster.cpp
+2025-11-28 20:21:16 - INFO - __main__: Function lookup complete. Found 4 functions
+2025-11-28 20:21:16 - INFO - __main__: Results: [('DB::PODArray<unsigned long, 4096ul, Allocator<false, false>, 63ul, 64ul>::operator[]', '/home/rocky/functio/ClickHouse/src/Common/PODArray.h'), ('bool LZ4::(anonymous namespace)::decompressImpl<16ul>', '/home/rocky/functio/ClickHouse/src/Compression/LZ4_decompress_faster.cpp'), ('pcg_detail::xsl_rr_mixin<unsigned long, unsigned __int128>::output', '/home/rocky/functio/ClickHouse/base/pcg-random/./pcg_random.hpp'), ('bool LZ4::(anonymous namespace)::decompressImpl<8ul>', '/home/rocky/functio/ClickHouse/src/Compression/LZ4_decompress_faster.cpp')]
+2025-11-28 20:21:16 - INFO - __main__: Stopping ClickHouse server...

@@ -1,0 +1,40 @@
+2025-12-26 15:39:17 - INFO - __main__: ============================================================
+2025-12-26 15:39:17 - INFO - __main__: Mock run started at 12-26_15-39-17
+2025-12-26 15:39:17 - INFO - __main__: ============================================================
+2025-12-26 15:39:17 - INFO - __main__: Loaded 19 queries from /home/ubuntu/functio_server/pid_profiling_clean/queries_26th.sql
+2025-12-26 15:39:17 - INFO - __main__: ============================================================
+2025-12-26 15:39:17 - INFO - __main__: Processing query 1/19: SELECT anyHeavy(number % 10) FROM numbers(850_000_000) FORMAT NULL;...
+2025-12-26 15:39:17 - INFO - __main__: ============================================================
+2025-12-26 15:39:17 - INFO - __main__: Starting ClickHouse server...
+2025-12-26 15:39:24 - INFO - __main__: ClickHouse server is ready
+2025-12-26 15:39:24 - INFO - __main__: Executing 0 setup queries...
+2025-12-26 15:39:24 - INFO - __main__: Main query to analyze: SELECT anyHeavy(number % 10) FROM numbers(850_000_000) FORMAT NULL;...
+2025-12-26 15:39:24 - INFO - __main__: Profiling command: /home/ubuntu/ClickHouse_debug/build_debug/programs/clickhouse client --query 'SELECT anyHeavy(number % 10) FROM numbers(850_000_000) FORMAT NULL;'
+2025-12-26 15:39:24 - ERROR - STDERR: Error in unified_strategy: invalid literal for int() with base 10: '2745422 2633674'
+2025-12-26 15:39:24 - ERROR - __main__: Flamegraph analysis failed: invalid literal for int() with base 10: '2745422 2633674'
+Traceback (most recent call last):
+  File "/home/ubuntu/functio_server/pid_profiling_clean/functio_mock_server.py", line 143, in _run_pipeline
+    hot_functions = unified_strategy(
+                    ^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/functio_server/pid_profiling_clean/unified_analysis.py", line 1165, in unified_strategy
+    raise e
+  File "/home/ubuntu/functio_server/pid_profiling_clean/unified_analysis.py", line 1140, in unified_strategy
+    pid = int(result.stdout.strip())
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: invalid literal for int() with base 10: '2745422 2633674'
+2025-12-26 15:39:24 - INFO - __main__: Stopping ClickHouse server...
+2025-12-26 15:39:28 - INFO - __main__: ClickHouse server stopped
+2025-12-26 15:39:28 - INFO - __main__: Query 1 status: fail
+2025-12-26 15:39:28 - INFO - __main__: Query 1 result count: 1
+2025-12-26 15:39:28 - INFO - __main__: ============================================================
+2025-12-26 15:39:28 - INFO - __main__: Processing query 2/19: SELECT topK(1000)(rand64() % 1_000_000) FROM numbers(100_000_000) FORMAT NULL;...
+2025-12-26 15:39:28 - INFO - __main__: ============================================================
+2025-12-26 15:39:28 - INFO - __main__: Starting ClickHouse server...
+2025-12-26 15:39:35 - INFO - __main__: ClickHouse server is ready
+2025-12-26 15:39:35 - INFO - __main__: Executing 0 setup queries...
+2025-12-26 15:39:35 - INFO - __main__: Main query to analyze: SELECT topK(1000)(rand64() % 1_000_000) FROM numbers(100_000_000) FORMAT NULL;...
+2025-12-26 15:39:35 - INFO - __main__: Profiling command: /home/ubuntu/ClickHouse_debug/build_debug/programs/clickhouse client --query 'SELECT topK(1000)(rand64() % 1_000_000) FROM numbers(100_000_000) FORMAT NULL;'
+2025-12-26 15:39:35 - INFO - STDOUT: [*] Running flame_folded_pid.sh for PID: 2746188
+2025-12-26 15:39:35 - INFO - STDOUT: Executable command is /home/ubuntu/ClickHouse_debug/build_debug/programs/clickhouse client --query 'SELECT topK(1000)(rand64() % 1_000_000) FROM numbers(100_000_000) FORMAT NULL;'
+2025-12-26 15:39:35 - INFO - STDOUT: successfully ran flame_folded_pid.sh
+2025-12-26 15:45:21 - INFO - STDOUT: [✓] FlameGraph folded file generated successfully

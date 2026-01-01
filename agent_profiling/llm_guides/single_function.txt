@@ -78,6 +78,11 @@ Rewriting memory access to make it SIMD-friendly
     {{SOURCE_CODE}}
     ]]>
 </source_code_to_analyze>
+<memory>
+<![CDATA[
+{{MEMORY}}
+]]>
+</memory>
 </input_data>
 
 <instructions>
@@ -87,6 +92,12 @@ Rewriting memory access to make it SIMD-friendly
 4. Performance**:** Only report optimizations that yield speedups (don't report style changes).
 5. **Final Output:** If a valid optimization survives the inspection, output OPTION 1. Otherwise, output OPTION 2.
 </instructions>
+
+<previous_context>
+You can get information about previous analysis of functions on this flamegraph through the <context> block, which is passed in <input_data>.
+It contains structured information about the functions/aggregations of functions that the agent previously checked: whether or not optimization was found, message returned by the agent, and scratchpad.
+Scratchpad contains content of the thinking block from the agent response.
+</previous_context>
 
 <output_format>
 <instruction>

@@ -1,0 +1,255 @@
+{
+  "SELECT anyHeavy(number % 10) FROM numbers(850_000_000) FORMAT NULL;": {
+    "result": [
+      [
+        "DB::(anonymous namespace)::ModuloByConstantImpl<unsigned long, char8_t>::vectorConstant",
+        "/home/rocky/functio/ClickHouse/src/Functions/modulo.cpp"
+      ],
+      [
+        "DB::SingleValueDataFixed<char8_t>::isEqualTo",
+        "/home/rocky/functio/ClickHouse/src/AggregateFunctions/SingleValueData.cpp"
+      ],
+      [
+        "DB::(anonymous namespace)::AggregateFunctionAnyHeavyData::add",
+        "/home/rocky/functio/ClickHouse/src/AggregateFunctions/AggregateFunctionAnyHeavy.cpp"
+      ]
+    ],
+    "status": "success"
+  },
+  "SELECT topK(1000)(rand64() % 1_000_000) FROM numbers(100_000_000) FORMAT NULL;": {
+    "result": [
+      [
+        "DB::SpaceSaving<unsigned int, HashCRC32<unsigned int> >::percolate",
+        "/home/rocky/functio/ClickHouse/src/Common/SpaceSaving.h"
+      ]
+    ],
+    "status": "success"
+  },
+  "SELECT quantilesTDigest(0.10, 0.25, 0.50, 0.75, 0.90)(rand64() % 1_000_000_000) FROM numbers(100_000_000) FORMAT NULL;": {
+    "result": [
+      [
+        "void RadixSort<DB::QuantileTDigest<unsigned int>::RadixSortTraits>::radixSortLSDInternal<false, true>",
+        "/home/rocky/functio/ClickHouse/src/Common/RadixSort.h"
+      ],
+      [
+        "RadixSort<DB::QuantileTDigest<unsigned int>::RadixSortTraits>::executeLSD",
+        "/home/rocky/functio/ClickHouse/src/Common/RadixSort.h"
+      ]
+    ],
+    "status": "success"
+  },
+  "SELECT uniqCombined(20)(number) FROM numbers(200_000_000) FORMAT NULL;": {
+    "result": [
+      [
+        "DB::AsynchronousInsertQueue::processBatchDeadlines",
+        "/home/rocky/functio/ClickHouse/src/Interpreters/AsynchronousInsertQueue.cpp"
+      ]
+    ],
+    "status": "success"
+  },
+  "SELECT histogram(250)(number % 1_000_000) FROM numbers(11_000_000) FORMAT NULL;": {
+    "result": [
+      [
+        "DB::AsynchronousInsertQueue::processBatchDeadlines",
+        "/home/rocky/functio/ClickHouse/src/Interpreters/AsynchronousInsertQueue.cpp"
+      ]
+    ],
+    "status": "success"
+  },
+  "SELECT groupUniqArray(toUInt64(number % 1000000)) FROM numbers(100_000_000) FORMAT NULL;": {
+    "result": [
+      [
+        "HashTableCell<unsigned long, DefaultHash<unsigned long>, HashTableNoState>::isZero",
+        "/home/rocky/functio/ClickHouse/src/Common/HashTable/HashTable.h"
+      ],
+      [
+        "DB::(anonymous namespace)::ModuloByConstantImpl<unsigned long, unsigned int>::vectorConstant",
+        "/home/rocky/functio/ClickHouse/src/Functions/modulo.cpp"
+      ],
+      [
+        "bool bitEquals<unsigned long>",
+        "/home/rocky/functio/ClickHouse/src/Common/HashTable/HashTable.h"
+      ],
+    ],
+    "status": "success"
+  },
+  "SELECT quantileExact(0.99)(number) FROM numbers(300_000_000) FORMAT NULL;": {
+    "result": [
+      [
+        "pcg_detail::xsl_rr_mixin<unsigned long, unsigned __int128>::output",
+        "/home/rocky/functio/ClickHouse/base/pcg-random/./pcg_random.hpp"
+      ]
+    ],
+    "status": "success"
+  },
+  "SELECT sequenceMatch('(?1)(?2)')(toUInt32(number), (number % 2) = 0, (number % 3) = 0) FROM numbers(180_000_000) FORMAT Null;": {
+    "result": [
+      [
+        "DB::(anonymous namespace)::AggregateFunctionSequenceMatchData<unsigned int>::sort",
+        "/home/rocky/functio/ClickHouse/src/AggregateFunctions/AggregateFunctionSequenceMatch.cpp"
+      ]
+    ],
+    "status": "success"
+  },
+  "SELECT simpleLinearRegression(number, number * 2 + 5) FROM numbers(600_000_000) FORMAT NULL;": {
+    "result": [
+      [
+        "DB::(anonymous namespace)::AggregateFunctionSimpleLinearRegressionData::add",
+        "/home/rocky/functio/ClickHouse/src/AggregateFunctions/AggregateFunctionSimpleLinearRegression.cpp"
+      ],
+      [
+        "DB::ColumnVector<unsigned long>::getFloat64",
+        "/home/rocky/functio/ClickHouse/src/Columns/ColumnVector.cpp"
+      ],
+      [
+        "DB::(anonymous namespace)::AggregateFunctionSimpleLinearRegression::add",
+        "/home/rocky/functio/ClickHouse/src/AggregateFunctions/AggregateFunctionSimpleLinearRegression.cpp"
+      ],
+      [
+        "DB::PODArrayBase<8ul, 4096ul, Allocator<false, false>, 63ul, 64ul>::size",
+        "/home/rocky/functio/ClickHouse/src/Common/PODArray.h"
+      ]
+    ],
+    "status": "success"
+  },
+  "SELECT mannWhitneyUTest('two-sided')(number, number % 2) FROM numbers(10_000_000) FORMAT NULL;": {
+    "result": [
+      [
+        "DB::AsynchronousInsertQueue::processBatchDeadlines",
+        "/home/rocky/functio/ClickHouse/src/Interpreters/AsynchronousInsertQueue.cpp"
+      ]
+    ],
+    "status": "success"
+  },
+  "SELECT studentTTest(number, number % 2) FROM numbers(600_000_000) FORMAT NULL;": {
+    "result": [
+      [
+        "DB::ColumnVector<unsigned long>::getFloat64",
+        "/home/rocky/functio/ClickHouse/src/Columns/ColumnVector.cpp"
+      ],
+      [
+        "DB::AggregateFunctionTTest<DB::(anonymous namespace)::StudentTTestData>::add",
+        "/home/rocky/functio/ClickHouse/src/AggregateFunctions/AggregateFunctionTTest.h"
+      ],
+      [
+        "DB::(anonymous namespace)::ModuloByConstantImpl<unsigned long, char8_t>::vectorConstant",
+        "/home/rocky/functio/ClickHouse/src/Functions/modulo.cpp"
+      ],
+      [
+        "DB::TTestMoments<double>::addX",
+        "/home/rocky/functio/ClickHouse/src/AggregateFunctions/Moments.h"
+      ],
+      [
+        "DB::TTestMoments<double>::addY",
+        "/home/rocky/functio/ClickHouse/src/AggregateFunctions/Moments.h"
+      ]
+    ],
+    "status": "success"
+  },
+  "SELECT welchTTest(number, number % 2) FROM numbers(700_000_000) FORMAT NULL;": {
+    "result": [
+      [
+        "DB::ColumnVector<unsigned long>::getFloat64",
+        "/home/rocky/functio/ClickHouse/src/Columns/ColumnVector.cpp"
+      ],
+      [
+        "DB::AggregateFunctionTTest<DB::(anonymous namespace)::WelchTTestData>::add",
+        "/home/rocky/functio/ClickHouse/src/AggregateFunctions/AggregateFunctionTTest.h"
+      ],
+      [
+        "DB::(anonymous namespace)::ModuloByConstantImpl<unsigned long, char8_t>::vectorConstant",
+        "/home/rocky/functio/ClickHouse/src/Functions/modulo.cpp"
+      ],
+      [
+        "DB::TTestMoments<double>::addX",
+        "/home/rocky/functio/ClickHouse/src/AggregateFunctions/Moments.h"
+      ],
+      [
+        "DB::TTestMoments<double>::addY",
+        "/home/rocky/functio/ClickHouse/src/AggregateFunctions/Moments.h"
+      ]
+    ],
+    "status": "success"
+  },
+  "SELECT groupArraySorted(1500000)(number) FROM numbers(600_000_000) FORMAT NULL;": {
+    "result": [
+      [
+        "pcg_detail::xsl_rr_mixin<unsigned long, unsigned __int128>::output",
+        "/home/rocky/functio/ClickHouse/base/pcg-random/./pcg_random.hpp"
+      ],
+      [
+        "pcg_detail::engine<unsigned long, unsigned __int128, pcg_detail::xsl_rr_mixin<unsigned long, unsigned __int128>, false, pcg_detail::specific_stream<unsigned __int128>, pcg_detail::default_multiplier<unsigned __int128> >::bump",
+        "/home/rocky/functio/ClickHouse/base/pcg-random/./pcg_random.hpp"
+      ]
+    ],
+    "status": "success"
+  },
+  "SELECT groupArrayInsertAt('-')(toString(number), number) FROM numbers(16_000_000) FORMAT NULL;": {
+    "result": [
+      [
+        "DB::(anonymous namespace)::AggregateFunctionGroupArrayInsertAtGeneric::add",
+        "/home/rocky/functio/ClickHouse/src/AggregateFunctions/AggregateFunctionGroupArrayInsertAt.cpp"
+      ],
+      [
+        "DB::Field::Field",
+        "/home/rocky/functio/ClickHouse/src/Core/Field.h"
+      ],
+      [
+        "DB::IAggregateFunctionHelper<DB::(anonymous namespace)::AggregateFunctionGroupArrayInsertAtGeneric>::addBatchSinglePlace",
+        "/home/rocky/functio/ClickHouse/src/AggregateFunctions/IAggregateFunction.h"
+      ]
+    ],
+    "status": "success"
+  },
+  "SELECT groupArrayIntersect(arrayMap(i -> (number + i) % 100000, range(20))) FROM numbers(30_000_000) FORMAT NULL;": {
+    "result": [
+      [
+        "DB::ColumnVector<unsigned long>::replicate",
+        "/home/rocky/functio/ClickHouse/src/Columns/ColumnVector.cpp"
+      ],
+      [
+        "DB::PODArrayBase<8ul, 4096ul, Allocator<false, false>, 63ul, 64ul>::size",
+        "/home/rocky/functio/ClickHouse/src/Common/PODArray.h"
+      ]
+    ],
+    "status": "success"
+  },
+  "SELECT groupArrayMovingSum(number) FROM numbers(200_000_000) FORMAT NULL;": {
+    "result": [
+      [
+        "void DB::PODArray<unsigned long, 4096ul, Allocator<false, false>, 63ul, 64ul>::push_back<unsigned long>",
+        "/home/rocky/functio/ClickHouse/src/Common/PODArray.h"
+      ],
+      [
+        "void DB::Aggregator::insertAggregatesIntoColumns<char*>",
+        "/home/rocky/functio/ClickHouse/src/Interpreters/Aggregator.cpp"
+      ],
+      [
+        "void DB::PODArray<unsigned long, 32ul, DB::MixedArenaAllocator<4096ul, Allocator<false, false>, DB::AlignedArenaAllocator<8ul>, 8ul>, 0ul, 0ul>::push_back<unsigned long&, DB::Arena*&>",
+        "/home/rocky/functio/ClickHouse/src/Common/PODArray.h"
+      ],
+      [
+        "DB::MovingSumData<unsigned long>::get",
+        "/home/rocky/functio/ClickHouse/src/AggregateFunctions/AggregateFunctionGroupArrayMoving.cpp"
+      ],
+      [
+        "DB::Aggregator::addBatchSinglePlace",
+        "/home/rocky/functio/ClickHouse/src/Interpreters/Aggregator.cpp"
+      ]
+    ],
+    "status": "success"
+  },
+  "SELECT analysisOfVariance(toFloat64(number), number % 1000) FROM numbers(250_000_000) FORMAT NULL;": {
+    "result": [
+      [
+        "DB::AnalysisOfVarianceMoments<double>::add",
+        "/home/rocky/functio/ClickHouse/src/AggregateFunctions/Moments.h"
+      ],
+      [
+        "DB::(anonymous namespace)::AggregateFunctionAnalysisOfVariance::add",
+        "/home/rocky/functio/ClickHouse/src/AggregateFunctions/AggregateFunctionAnalysisOfVariance.cpp"
+      ]
+    ],
+    "status": "success"
+  }
+}

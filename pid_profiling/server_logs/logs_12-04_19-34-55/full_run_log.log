@@ -1,0 +1,43 @@
+2025-12-04 19:34:55 - INFO - __main__: ============================================================
+2025-12-04 19:34:55 - INFO - __main__: New request received at 12-04_19-34-55
+2025-12-04 19:34:55 - INFO - __main__: ============================================================
+2025-12-04 19:34:55 - INFO - __main__: Starting ClickHouse server...
+2025-12-04 19:35:02 - INFO - __main__: ClickHouse server started successfully
+2025-12-04 19:35:02 - INFO - __main__: Received 1 queries
+2025-12-04 19:35:02 - INFO - __main__: Waiting for server to be ready...
+2025-12-04 19:35:02 - INFO - __main__: Server is ready
+2025-12-04 19:35:02 - INFO - __main__: Executing 0 setup queries...
+2025-12-04 19:35:02 - INFO - __main__: Main query to analyze: select sumIf(number::Decimal128(3), rand32() % 2 = 0) from numbers(1000000000)
+2025-12-04 19:35:02 - INFO - __main__: Starting flamegraph analysis (unified_strategy)...
+2025-12-04 19:35:02 - INFO - STDOUT: [*] Running flame_folded_pid.sh for PID: 3000693
+2025-12-04 19:35:02 - INFO - STDOUT: Executable command is /home/ubuntu/ClickHouse_debug/build_debug/programs/clickhouse client --query 'select sumIf(number::Decimal128(3), rand32() % 2 = 0) from numbers(1000000000)'
+2025-12-04 19:35:02 - INFO - STDOUT: successfully ran flame_folded_pid.sh
+2025-12-04 19:37:49 - INFO - STDOUT: [✓] FlameGraph folded file generated successfully
+2025-12-04 19:46:49 - INFO - STDOUT: [*] Extracted source locations for 2752 functions
+2025-12-04 19:46:49 - INFO - __main__: Flamegraph analysis complete. Found 5 hot functions
+2025-12-04 19:46:49 - INFO - __main__: Looking up function definitions...
+2025-12-04 19:46:49 - INFO - __main__: Looking up function: auto wide::integer<128ul, int>::_impl::operator_amp<wide::integer<128ul, int> > in /home/ubuntu/ClickHouse_debug/base/base/../base/wide_integer_impl.h
+2025-12-04 19:46:49 - INFO - STDOUT: operator_amp
+2025-12-04 19:46:49 - INFO - STDOUT: Function 'auto wide::integer<128ul, int>::_impl::operator_amp<wide::integer<128ul, int> >' () found:
+2025-12-04 19:46:49 - INFO - __main__: Found function: auto wide::integer<128ul, int>::_impl::operator_amp<wide::integer<128ul, int> > -> /home/rocky/functio/ClickHouse/base/base/../base/wide_integer_impl.h
+2025-12-04 19:46:49 - INFO - __main__: Looking up function: auto wide::integer<128ul, int>::_impl::operator_star<wide::integer<128ul, int> > in /home/ubuntu/ClickHouse_debug/base/base/../base/wide_integer_impl.h
+2025-12-04 19:46:49 - INFO - STDOUT: operator_star
+2025-12-04 19:46:50 - INFO - STDOUT: Function 'auto wide::integer<128ul, int>::_impl::operator_star<wide::integer<128ul, int> >' () found:
+2025-12-04 19:46:50 - INFO - __main__: Found function: auto wide::integer<128ul, int>::_impl::operator_star<wide::integer<128ul, int> > -> /home/rocky/functio/ClickHouse/base/base/../base/wide_integer_impl.h
+2025-12-04 19:46:50 - INFO - __main__: Looking up function: unsigned long wide::integer<128ul, int>::_impl::get_item<wide::integer<128ul, int> > in /home/ubuntu/ClickHouse_debug/base/base/../base/wide_integer_impl.h
+2025-12-04 19:46:50 - INFO - STDOUT: get_item
+2025-12-04 19:46:50 - INFO - STDOUT: Function 'unsigned long wide::integer<128ul, int>::_impl::get_item<wide::integer<128ul, int> >' () found:
+2025-12-04 19:46:50 - INFO - __main__: Found function: unsigned long wide::integer<128ul, int>::_impl::get_item<wide::integer<128ul, int> > -> /home/rocky/functio/ClickHouse/base/base/../base/wide_integer_impl.h
+2025-12-04 19:46:50 - INFO - __main__: Looking up function: wide::integer<128ul, int>::_impl::little in /home/ubuntu/ClickHouse_debug/base/base/../base/wide_integer_impl.h
+2025-12-04 19:46:50 - INFO - STDOUT: little
+2025-12-04 19:46:50 - INFO - STDOUT: Function 'wide::integer<128ul, int>::_impl::little' () found:
+2025-12-04 19:46:50 - INFO - __main__: Found function: wide::integer<128ul, int>::_impl::little -> /home/rocky/functio/ClickHouse/base/base/../base/wide_integer_impl.h
+2025-12-04 19:46:50 - INFO - __main__: Looking up function: wide::integer<128ul, int> wide::integer<128ul, int>::_impl::plus<wide::integer<128ul, int> > in /home/ubuntu/ClickHouse_debug/base/base/../base/wide_integer_impl.h
+2025-12-04 19:46:50 - INFO - STDOUT: plus
+2025-12-04 19:46:50 - INFO - STDOUT: Function 'wide::integer<128ul, int> wide::integer<128ul, int>::_impl::plus<wide::integer<128ul, int> >' () found:
+2025-12-04 19:46:50 - INFO - __main__: Found function: wide::integer<128ul, int> wide::integer<128ul, int>::_impl::plus<wide::integer<128ul, int> > -> /home/rocky/functio/ClickHouse/base/base/../base/wide_integer_impl.h
+2025-12-04 19:46:50 - INFO - __main__: Function lookup complete. Found 5 functions
+2025-12-04 19:46:50 - INFO - __main__: Results: [('auto wide::integer<128ul, int>::_impl::operator_amp<wide::integer<128ul, int> >', '/home/rocky/functio/ClickHouse/base/base/../base/wide_integer_impl.h'), ('auto wide::integer<128ul, int>::_impl::operator_star<wide::integer<128ul, int> >', '/home/rocky/functio/ClickHouse/base/base/../base/wide_integer_impl.h'), ('unsigned long wide::integer<128ul, int>::_impl::get_item<wide::integer<128ul, int> >', '/home/rocky/functio/ClickHouse/base/base/../base/wide_integer_impl.h'), ('wide::integer<128ul, int>::_impl::little', '/home/rocky/functio/ClickHouse/base/base/../base/wide_integer_impl.h'), ('wide::integer<128ul, int> wide::integer<128ul, int>::_impl::plus<wide::integer<128ul, int> >', '/home/rocky/functio/ClickHouse/base/base/../base/wide_integer_impl.h')]
+2025-12-04 19:46:50 - INFO - __main__: Stopping ClickHouse server...
+2025-12-04 19:46:53 - INFO - __main__: ClickHouse server stopped
+2025-12-04 19:46:53 - INFO - __main__: Request completed successfully

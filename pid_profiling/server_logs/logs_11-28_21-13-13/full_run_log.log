@@ -1,0 +1,100 @@
+2025-11-28 21:13:13 - INFO - __main__: ============================================================
+2025-11-28 21:13:13 - INFO - __main__: New request received at 11-28_21-13-13
+2025-11-28 21:13:13 - INFO - __main__: ============================================================
+2025-11-28 21:13:13 - INFO - __main__: Starting ClickHouse server...
+2025-11-28 21:13:19 - INFO - __main__: ClickHouse server started successfully
+2025-11-28 21:13:19 - INFO - __main__: Received 3 queries
+2025-11-28 21:13:19 - INFO - __main__: Waiting for server to be ready...
+2025-11-28 21:13:19 - INFO - __main__: Server is ready
+2025-11-28 21:13:19 - INFO - __main__: Executing 2 setup queries...
+2025-11-28 21:13:19 - INFO - __main__: Executing setup query 1/2: CREATE TABLE stress_arrays_5 (
+    id UInt64,
+    seed_val UInt64
+) ENGINE = MergeTree()
+ORDER BY id...
+2025-11-28 21:13:19 - INFO - __main__: Setup query 1 completed successfully
+2025-11-28 21:13:19 - INFO - __main__: Executing setup query 2/2: INSERT INTO stress_arrays_5
+SELECT 
+    number, 
+    rand() 
+FROM numbers(1000000);...
+2025-11-28 21:13:20 - INFO - __main__: Setup query 2 completed successfully
+2025-11-28 21:13:20 - INFO - __main__: Main query to analyze: SELECT 
+    id, 
+    expanded_val, 
+    uniqExact(expanded_val) 
+FROM stress_arrays_5
+ARRAY JOIN range(id % 100) AS expanded_val 
+WHERE id > 0
+GROUP BY id, expanded_val
+ORDER BY expanded_val DESC
+LIMIT 1000;
+2025-11-28 21:13:20 - INFO - __main__: Starting flamegraph analysis (unified_strategy)...
+2025-11-28 21:13:20 - INFO - STDOUT: [*] Running flame_folded_pid.sh for PID: 2511974
+2025-11-28 21:13:20 - INFO - STDOUT: Executable command is /home/ubuntu/ClickHouse_debug/build_debug/programs/clickhouse client --query 'SELECT 
+2025-11-28 21:13:20 - INFO - STDOUT:     id, 
+2025-11-28 21:13:20 - INFO - STDOUT:     expanded_val, 
+2025-11-28 21:13:20 - INFO - STDOUT:     uniqExact(expanded_val) 
+2025-11-28 21:13:20 - INFO - STDOUT: FROM stress_arrays_5
+2025-11-28 21:13:20 - INFO - STDOUT: ARRAY JOIN range(id % 100) AS expanded_val 
+2025-11-28 21:13:20 - INFO - STDOUT: WHERE id > 0
+2025-11-28 21:13:20 - INFO - STDOUT: GROUP BY id, expanded_val
+2025-11-28 21:13:20 - INFO - STDOUT: ORDER BY expanded_val DESC
+2025-11-28 21:13:20 - INFO - STDOUT: LIMIT 1000;'
+2025-11-28 21:13:20 - INFO - STDOUT: successfully ran flame_folded_pid.sh
+2025-11-28 21:14:36 - INFO - STDOUT: [✓] FlameGraph folded file generated successfully
+2025-11-28 21:23:51 - INFO - STDOUT: [*] Extracted source locations for 2630 functions
+2025-11-28 21:23:52 - INFO - __main__: Flamegraph analysis complete. Found 8 hot functions
+2025-11-28 21:23:52 - INFO - __main__: Looking up function definitions...
+2025-11-28 21:23:52 - INFO - __main__: Looking up function: bool ZeroTraits::check<wide::integer<128ul, unsigned int> > in /home/ubuntu/ClickHouse_debug/src/Common/HashTable/HashTable.h
+2025-11-28 21:23:52 - INFO - STDOUT: check
+2025-11-28 21:23:52 - INFO - STDOUT: Function 'bool ZeroTraits::check<wide::integer<128ul, unsigned int> >' () not found using traditional way. Trying alternative
+2025-11-28 21:24:15 - INFO - STDOUT: /home/ubuntu/ClickHouse_debug/src/Common/HashTable/HashTable.h
+2025-11-28 21:24:15 - INFO - STDOUT: None
+2025-11-28 21:24:15 - INFO - STDOUT: standart and alternative methods of function lookup failed, skipping this function
+2025-11-28 21:24:15 - WARNING - __main__: Function not found: bool ZeroTraits::check<wide::integer<128ul, unsigned int> >
+2025-11-28 21:24:15 - INFO - __main__: Looking up function: HashMapCell<wide::integer<128ul, unsigned int>, char*, UInt128Hash, HashTableNoState, PairNoInit<wide::integer<128ul, unsigned int>, char*> >::isZero in /home/ubuntu/ClickHouse_debug/src/Common/HashTable/HashMap.h
+2025-11-28 21:24:15 - INFO - STDOUT: isZero
+2025-11-28 21:24:15 - INFO - STDOUT: Function 'HashMapCell<wide::integer<128ul, unsigned int>, char*, UInt128Hash, HashTableNoState, PairNoInit<wide::integer<128ul, unsigned int>, char*> >::isZero' () not found using traditional way. Trying alternative
+2025-11-28 21:24:28 - INFO - STDOUT: /home/ubuntu/ClickHouse_debug/src/Common/HashTable/HashMap.h
+2025-11-28 21:24:28 - INFO - STDOUT: None
+2025-11-28 21:24:28 - INFO - STDOUT: standart and alternative methods of function lookup failed, skipping this function
+2025-11-28 21:24:28 - WARNING - __main__: Function not found: HashMapCell<wide::integer<128ul, unsigned int>, char*, UInt128Hash, HashTableNoState, PairNoInit<wide::integer<128ul, unsigned int>, char*> >::isZero
+2025-11-28 21:24:28 - INFO - __main__: Looking up function: HashMapCell<wide::integer<128ul, unsigned int>, char*, UInt128Hash, HashTableNoState, PairNoInit<wide::integer<128ul, unsigned int>, char*> >::isZero in /home/ubuntu/ClickHouse_debug/src/Common/HashTable/HashMap.h
+2025-11-28 21:24:28 - INFO - STDOUT: isZero
+2025-11-28 21:24:28 - INFO - STDOUT: Function 'HashMapCell<wide::integer<128ul, unsigned int>, char*, UInt128Hash, HashTableNoState, PairNoInit<wide::integer<128ul, unsigned int>, char*> >::isZero' () not found using traditional way. Trying alternative
+2025-11-28 21:24:41 - INFO - STDOUT: /home/ubuntu/ClickHouse_debug/src/Common/HashTable/HashMap.h
+2025-11-28 21:24:41 - INFO - STDOUT: None
+2025-11-28 21:24:41 - INFO - STDOUT: standart and alternative methods of function lookup failed, skipping this function
+2025-11-28 21:24:41 - WARNING - __main__: Function not found: HashMapCell<wide::integer<128ul, unsigned int>, char*, UInt128Hash, HashTableNoState, PairNoInit<wide::integer<128ul, unsigned int>, char*> >::isZero
+2025-11-28 21:24:41 - INFO - __main__: Looking up function: void DB::Aggregator::mergeStreamsImpl<DB::AggregationMethodKeysFixed<HashMapTable<wide::integer<128ul, unsigned int>, HashMapCell<wide::integer<128ul, unsigned int>, char*, UInt128Hash, HashTableNoState, PairNoInit<wide::integer<128ul, unsigned int>, char*> >, UInt128Hash, HashTableGrowerWithPrecalculation<8ul>, Allocator<true, true> >, false, false, false>, HashMapTable<wide::integer<128ul, unsigned int>, HashMapCell<wide::integer<128ul, unsigned int>, char*, UInt128Hash, HashTableNoState, PairNoInit<wide::integer<128ul, unsigned int>, char*> >, UInt128Hash, HashTableGrowerWithPrecalculation<8ul>, Allocator<true, true> > > in /home/ubuntu/ClickHouse_debug/src/Interpreters/Aggregator.cpp
+2025-11-28 21:24:41 - INFO - STDOUT: mergeStreamsImpl
+2025-11-28 21:24:41 - INFO - STDOUT: Function 'void DB::Aggregator::mergeStreamsImpl<DB::AggregationMethodKeysFixed<HashMapTable<wide::integer<128ul, unsigned int>, HashMapCell<wide::integer<128ul, unsigned int>, char*, UInt128Hash, HashTableNoState, PairNoInit<wide::integer<128ul, unsigned int>, char*> >, UInt128Hash, HashTableGrowerWithPrecalculation<8ul>, Allocator<true, true> >, false, false, false>, HashMapTable<wide::integer<128ul, unsigned int>, HashMapCell<wide::integer<128ul, unsigned int>, char*, UInt128Hash, HashTableNoState, PairNoInit<wide::integer<128ul, unsigned int>, char*> >, UInt128Hash, HashTableGrowerWithPrecalculation<8ul>, Allocator<true, true> > >' () found:
+2025-11-28 21:24:41 - INFO - __main__: Found function: void DB::Aggregator::mergeStreamsImpl<DB::AggregationMethodKeysFixed<HashMapTable<wide::integer<128ul, unsigned int>, HashMapCell<wide::integer<128ul, unsigned int>, char*, UInt128Hash, HashTableNoState, PairNoInit<wide::integer<128ul, unsigned int>, char*> >, UInt128Hash, HashTableGrowerWithPrecalculation<8ul>, Allocator<true, true> >, false, false, false>, HashMapTable<wide::integer<128ul, unsigned int>, HashMapCell<wide::integer<128ul, unsigned int>, char*, UInt128Hash, HashTableNoState, PairNoInit<wide::integer<128ul, unsigned int>, char*> >, UInt128Hash, HashTableGrowerWithPrecalculation<8ul>, Allocator<true, true> > > -> /home/rocky/functio/ClickHouse/src/Interpreters/Aggregator.cpp
+2025-11-28 21:24:41 - INFO - __main__: Looking up function: bool wide::integer<128ul, unsigned int>::_impl::operator_eq<wide::integer<128ul, unsigned int> > in /home/ubuntu/ClickHouse_debug/base/base/../base/wide_integer_impl.h
+2025-11-28 21:24:41 - INFO - STDOUT: operator_eq
+2025-11-28 21:24:41 - INFO - STDOUT: Function 'bool wide::integer<128ul, unsigned int>::_impl::operator_eq<wide::integer<128ul, unsigned int> >' () found:
+2025-11-28 21:24:41 - INFO - __main__: Found function: bool wide::integer<128ul, unsigned int>::_impl::operator_eq<wide::integer<128ul, unsigned int> > -> /home/rocky/functio/ClickHouse/base/base/../base/wide_integer_impl.h
+2025-11-28 21:24:41 - INFO - __main__: Looking up function: void DB::Aggregator::executeImplBatch<true, DB::AggregationMethodKeysFixed<TwoLevelHashMapTable<wide::integer<128ul, unsigned int>, HashMapCell<wide::integer<128ul, unsigned int>, char*, UInt128HashCRC32, HashTableNoState, PairNoInit<wide::integer<128ul, unsigned int>, char*> >, UInt128HashCRC32, TwoLevelHashTableGrower<8ul>, Allocator<true, true>, HashMapTable>, false, false, false>, DB::ColumnsHashing::HashMethodKeysFixed<PairNoInit<wide::integer<128ul, unsigned int>, char*>, wide::integer<128ul, unsigned int>, char*, false, false, false, false> > in /home/ubuntu/ClickHouse_debug/src/Common/ColumnsHashingImpl.h
+2025-11-28 21:24:41 - INFO - STDOUT: executeImplBatch
+2025-11-28 21:24:41 - INFO - STDOUT: Function 'void DB::Aggregator::executeImplBatch<true, DB::AggregationMethodKeysFixed<TwoLevelHashMapTable<wide::integer<128ul, unsigned int>, HashMapCell<wide::integer<128ul, unsigned int>, char*, UInt128HashCRC32, HashTableNoState, PairNoInit<wide::integer<128ul, unsigned int>, char*> >, UInt128HashCRC32, TwoLevelHashTableGrower<8ul>, Allocator<true, true>, HashMapTable>, false, false, false>, DB::ColumnsHashing::HashMethodKeysFixed<PairNoInit<wide::integer<128ul, unsigned int>, char*>, wide::integer<128ul, unsigned int>, char*, false, false, false, false> >' () not found using traditional way. Trying alternative
+2025-11-28 21:24:54 - INFO - STDOUT: /home/ubuntu/ClickHouse_debug/src/Interpreters/Aggregator.cpp
+2025-11-28 21:24:54 - INFO - STDOUT: Function 'void DB::Aggregator::executeImplBatch<true, DB::AggregationMethodKeysFixed<TwoLevelHashMapTable<wide::integer<128ul, unsigned int>, HashMapCell<wide::integer<128ul, unsigned int>, char*, UInt128HashCRC32, HashTableNoState, PairNoInit<wide::integer<128ul, unsigned int>, char*> >, UInt128HashCRC32, TwoLevelHashTableGrower<8ul>, Allocator<true, true>, HashMapTable>, false, false, false>, DB::ColumnsHashing::HashMethodKeysFixed<PairNoInit<wide::integer<128ul, unsigned int>, char*>, wide::integer<128ul, unsigned int>, char*, false, false, false, false> >' () found:
+2025-11-28 21:24:54 - INFO - __main__: Found function: void DB::Aggregator::executeImplBatch<true, DB::AggregationMethodKeysFixed<TwoLevelHashMapTable<wide::integer<128ul, unsigned int>, HashMapCell<wide::integer<128ul, unsigned int>, char*, UInt128HashCRC32, HashTableNoState, PairNoInit<wide::integer<128ul, unsigned int>, char*> >, UInt128HashCRC32, TwoLevelHashTableGrower<8ul>, Allocator<true, true>, HashMapTable>, false, false, false>, DB::ColumnsHashing::HashMethodKeysFixed<PairNoInit<wide::integer<128ul, unsigned int>, char*>, wide::integer<128ul, unsigned int>, char*, false, false, false, false> > -> /home/rocky/functio/ClickHouse/src/Interpreters/Aggregator.cpp
+2025-11-28 21:24:54 - INFO - __main__: Looking up function: DB::Aggregator::executeOnBlock in /home/ubuntu/ClickHouse_debug/src/Common/ColumnsHashingImpl.h
+2025-11-28 21:24:54 - INFO - STDOUT: executeOnBlock
+2025-11-28 21:24:54 - INFO - STDOUT: Function 'DB::Aggregator::executeOnBlock' () not found using traditional way. Trying alternative
+2025-11-28 21:25:07 - INFO - STDOUT: /home/ubuntu/ClickHouse_debug/src/Interpreters/Aggregator.cpp
+2025-11-28 21:25:07 - INFO - STDOUT: Function 'DB::Aggregator::executeOnBlock' () found:
+2025-11-28 21:25:07 - INFO - __main__: Found function: DB::Aggregator::executeOnBlock -> /home/rocky/functio/ClickHouse/src/Interpreters/Aggregator.cpp
+2025-11-28 21:25:07 - INFO - __main__: Looking up function: DB::Aggregator::writeToTemporaryFile in /home/ubuntu/ClickHouse_debug/src/Common/ColumnsHashingImpl.h
+2025-11-28 21:25:07 - INFO - STDOUT: writeToTemporaryFile
+2025-11-28 21:25:07 - INFO - STDOUT: Function 'DB::Aggregator::writeToTemporaryFile' () not found using traditional way. Trying alternative
+2025-11-28 21:25:20 - INFO - STDOUT: /home/ubuntu/ClickHouse_debug/src/Interpreters/Aggregator.cpp
+2025-11-28 21:25:20 - INFO - STDOUT: Function 'DB::Aggregator::writeToTemporaryFile' () found:
+2025-11-28 21:25:20 - INFO - __main__: Found function: DB::Aggregator::writeToTemporaryFile -> /home/rocky/functio/ClickHouse/src/Interpreters/Aggregator.cpp
+2025-11-28 21:25:20 - INFO - __main__: Function lookup complete. Found 5 functions
+2025-11-28 21:25:20 - INFO - __main__: Results: [('void DB::Aggregator::mergeStreamsImpl<DB::AggregationMethodKeysFixed<HashMapTable<wide::integer<128ul, unsigned int>, HashMapCell<wide::integer<128ul, unsigned int>, char*, UInt128Hash, HashTableNoState, PairNoInit<wide::integer<128ul, unsigned int>, char*> >, UInt128Hash, HashTableGrowerWithPrecalculation<8ul>, Allocator<true, true> >, false, false, false>, HashMapTable<wide::integer<128ul, unsigned int>, HashMapCell<wide::integer<128ul, unsigned int>, char*, UInt128Hash, HashTableNoState, PairNoInit<wide::integer<128ul, unsigned int>, char*> >, UInt128Hash, HashTableGrowerWithPrecalculation<8ul>, Allocator<true, true> > >', '/home/rocky/functio/ClickHouse/src/Interpreters/Aggregator.cpp'), ('bool wide::integer<128ul, unsigned int>::_impl::operator_eq<wide::integer<128ul, unsigned int> >', '/home/rocky/functio/ClickHouse/base/base/../base/wide_integer_impl.h'), ('void DB::Aggregator::executeImplBatch<true, DB::AggregationMethodKeysFixed<TwoLevelHashMapTable<wide::integer<128ul, unsigned int>, HashMapCell<wide::integer<128ul, unsigned int>, char*, UInt128HashCRC32, HashTableNoState, PairNoInit<wide::integer<128ul, unsigned int>, char*> >, UInt128HashCRC32, TwoLevelHashTableGrower<8ul>, Allocator<true, true>, HashMapTable>, false, false, false>, DB::ColumnsHashing::HashMethodKeysFixed<PairNoInit<wide::integer<128ul, unsigned int>, char*>, wide::integer<128ul, unsigned int>, char*, false, false, false, false> >', '/home/rocky/functio/ClickHouse/src/Interpreters/Aggregator.cpp'), ('DB::Aggregator::executeOnBlock', '/home/rocky/functio/ClickHouse/src/Interpreters/Aggregator.cpp'), ('DB::Aggregator::writeToTemporaryFile', '/home/rocky/functio/ClickHouse/src/Interpreters/Aggregator.cpp')]
+2025-11-28 21:25:20 - INFO - __main__: Stopping ClickHouse server...
+2025-11-28 23:19:00 - INFO - __main__: ClickHouse server stopped
+2025-11-28 23:19:00 - INFO - __main__: Request completed successfully

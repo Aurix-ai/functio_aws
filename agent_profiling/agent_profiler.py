@@ -103,6 +103,7 @@ class DepthResult:
     optimization_found: bool
     message: str
     functions_at_depth: List[str]
+    functions_locations_at_depth: List[Optional[str]]
     scratchpad: str  # Extracted from <thinking> block
 
 
@@ -342,6 +343,36 @@ def get_source_code(file_path: str, context_lines: int = 0) -> Optional[str]:
             return f.read()
     except (IOError, OSError, FileNotFoundError):
         return None
+
+
+def extract_function_source(func_name: str, location: Optional[str]) -> Optional[str]:
+    """
+    Extract the source code for a specific function from its source file.
+    
+    Args:
+        func_name: The function name (will be parsed for short name)
+        location: Path to the source file
+        
+    Returns:
+        The function's source code, or None if not found
+    """
+    if not location:
+        return None
+    
+    try:
+        with open(location, 'r', encoding='utf-8', errors='replace') as f:
+            source_code = f.read()
+    except (IOError, OSError, FileNotFoundError):
+        return None
+    
+    short_name = parse_short_function_name(func_name)
+    result = find_function_definition(source_code, short_name)
+    
+    if result:
+        start, brace_open, brace_close = result
+        return source_code[start:brace_close + 1]
+    
+    return None
 
 
 # =============================================================================
@@ -634,7 +665,7 @@ def llm_loop(
     current_index = 0  # starts at leaf (index 0)
     
     # Collect results from each depth level
-    all_results: List[Tuple[int, bool, str, List[str]]] = []  # (depth, status, message, functions)
+    all_results: List[Tuple[int, bool, str, List[str], List[Optional[str]]]] = []  # (depth, status, message, functions, locations)
     
     # Initialize FunctionMemory for this run
     memory = FunctionMemory(
@@ -646,7 +677,7 @@ def llm_loop(
     
     if is_filtered_function(initial_leaf_function):
         logger.info(f"Function {initial_leaf_function} is one of the kernel functions therefore we should not continue the llm loop:")
-        result = (0, False, "Kernel Function, aborting", functions_to_check_by_agent.copy())
+        result = (0, False, "Kernel Function, aborting", functions_to_check_by_agent.copy(), function_locations.copy())
         all_results.append(result)
         # Add to memory
         memory.depth_results.append(DepthResult(
@@ -654,6 +685,7 @@ def llm_loop(
             optimization_found=False,
             message="Kernel Function, aborting",
             functions_at_depth=functions_to_check_by_agent.copy(),
+            functions_locations_at_depth=function_locations.copy(),
             scratchpad="",
         ))
         return functions_to_check_by_agent, all_results, memory
@@ -678,7 +710,7 @@ def llm_loop(
         scratchpad = llm_call_result[2]
         
         # Record result for this depth
-        all_results.append((depth, status, message, functions_to_check_by_agent.copy()))
+        all_results.append((depth, status, message, functions_to_check_by_agent.copy(), function_locations.copy()))
         
         # Update memory with this depth's result
         depth_result = DepthResult(
@@ -686,6 +718,7 @@ def llm_loop(
             optimization_found=status,
             message=message,
             functions_at_depth=functions_to_check_by_agent.copy(),
+            functions_locations_at_depth=function_locations.copy(),
             scratchpad=scratchpad,
         )
         memory.depth_results.append(depth_result)
@@ -699,28 +732,55 @@ def llm_loop(
         
         # If we haven't reached max_depth, walk up to the next caller
         if depth < max_depth - 1:
-            next_result = ctx.get_caller(functions_to_check_by_agent[-1], index=current_index)
-            if next_result:
+            # Get source code of current root-most function for deduplication
+            current_root_func = functions_to_check_by_agent[-1]
+            current_root_location = function_locations[-1]
+            current_root_source = extract_function_source(current_root_func, current_root_location)
+            
+            # Loop to find a caller with different source code (skip template duplicates)
+            # We track candidate_func/candidate_index to walk up from skipped functions
+            found_different_caller = False
+            candidate_func = current_root_func
+            candidate_index = current_index  # Position of candidate from leaf
+            
+            while not found_different_caller:
+                next_result = ctx.get_caller(candidate_func, index=candidate_index)
+                if not next_result:
+                    logger.info(f"No more callers found - stopping at depth {depth + 1}")
+                    break
+                
                 next_function_name, _sample_count = next_result
+                next_index = candidate_index + 1  # Caller is one more step from leaf
                 
                 # Check if the next function is a kernel function
                 if is_filtered_function(next_function_name):
                     logger.info(f"Next caller {next_function_name} is a kernel function - stopping at depth {depth + 1}")
                     break
                 
-                logger.info(f"Walking up to caller: {next_function_name} (samples: {_sample_count})")
-                functions_to_check_by_agent.append(next_function_name)
-                
                 # Look up the location of the new function
                 next_location = None
                 if ctx.executable:
                     next_location = get_source_location(next_function_name, ctx.executable)
-                    logger.info(f"Caller location: {next_location if next_location else '<unknown>'}")
-                function_locations.append(next_location)
                 
-                current_index += 1  # walked up one level
-            else:
-                logger.info(f"No more callers found - stopping at depth {depth + 1}")
+                # Check if source code is identical to current root-most function
+                next_source = extract_function_source(next_function_name, next_location)
+                
+                if current_root_source and next_source and current_root_source == next_source:
+                    # Same source code (likely template instantiation), skip and try ITS caller
+                    logger.info(f"Skipping {next_function_name} - same source as {current_root_func} (template duplicate)")
+                    candidate_func = next_function_name
+                    candidate_index = next_index
+                    continue
+                
+                # Found a genuinely different function
+                logger.info(f"Walking up to caller: {next_function_name} (samples: {_sample_count})")
+                logger.info(f"Caller location: {next_location if next_location else '<unknown>'}")
+                functions_to_check_by_agent.append(next_function_name)
+                function_locations.append(next_location)
+                current_index = next_index  # Update index for next iteration
+                found_different_caller = True
+            
+            if not found_different_caller:
                 break
 
     if not ctx.executable:
@@ -865,6 +925,7 @@ def llm_call(
 
     # Combine all source code into one string
     combined_source_code = "\n" + "=" * 80 + "\n".join(all_source_code_parts)
+    
     # Build function call trace string from function_list (reversed: caller -> callee order)
     function_trace = " -> ".join(reversed(function_list))
 
@@ -1021,7 +1082,7 @@ if __name__ == '__main__':
                 logger.info(f"    LLM loop completed. Functions analyzed: {functions}")
                 logger.info(f"    Results from {len(all_results)} depth level(s):")
                 
-                for depth, status, message, funcs_at_depth in all_results:
+                for depth, status, message, funcs_at_depth, locs_at_depth in all_results:
                     status_str = "OPTIMIZATION FOUND" if status else "No optimization"
                     logger.info(f"      Depth {depth + 1}: {status_str}")
                     logger.info(f"        Functions: {' -> '.join(reversed(funcs_at_depth))}")
@@ -1040,8 +1101,9 @@ if __name__ == '__main__':
                             "optimization_found": status,
                             "message": message,
                             "functions_at_depth": funcs_at_depth,
+                            "functions_locations_at_depth": locs_at_depth,
                         }
-                        for depth, status, message, funcs_at_depth in all_results
+                        for depth, status, message, funcs_at_depth, locs_at_depth in all_results
                     ]
                 })
             
@@ -1079,6 +1141,7 @@ if __name__ == '__main__':
                                 "optimization_found": dr.optimization_found,
                                 "message": dr.message,
                                 "functions_at_depth": dr.functions_at_depth,
+                                "functions_locations_at_depth": dr.functions_locations_at_depth,
                                 "scratchpad": dr.scratchpad,
                             }
                             for dr in mem.depth_results

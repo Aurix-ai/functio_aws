@@ -1,0 +1,43 @@
+2025-12-08 16:51:09 - INFO - __main__: ============================================================
+2025-12-08 16:51:09 - INFO - __main__: New request received at 12-08_16-51-09
+2025-12-08 16:51:09 - INFO - __main__: ============================================================
+2025-12-08 16:51:09 - INFO - __main__: Starting ClickHouse server...
+2025-12-08 16:51:15 - INFO - __main__: ClickHouse server started successfully
+2025-12-08 16:51:15 - INFO - __main__: Received 1 queries
+2025-12-08 16:51:15 - INFO - __main__: Waiting for server to be ready...
+2025-12-08 16:51:16 - INFO - __main__: Server is ready
+2025-12-08 16:51:16 - INFO - __main__: Executing 0 setup queries...
+2025-12-08 16:51:16 - INFO - __main__: Main query to analyze: SELECT number AS n FROM numbers_mt(2000000000) ORDER BY n DESC LIMIT 10000 FORMAT Null
+2025-12-08 16:51:16 - INFO - __main__: Starting flamegraph analysis (unified_strategy)...
+2025-12-08 16:51:16 - INFO - STDOUT: [*] Running flame_folded_pid.sh for PID: 3229098
+2025-12-08 16:51:16 - INFO - STDOUT: Executable command is /home/ubuntu/ClickHouse_debug/build_debug/programs/clickhouse client --query 'SELECT number AS n FROM numbers_mt(2000000000) ORDER BY n DESC LIMIT 10000 FORMAT Null'
+2025-12-08 16:51:16 - INFO - STDOUT: successfully ran flame_folded_pid.sh
+2025-12-08 16:56:24 - INFO - STDOUT: [✓] FlameGraph folded file generated successfully
+2025-12-08 17:19:41 - INFO - STDOUT: [*] Extracted source locations for 3216 functions
+2025-12-08 17:19:42 - INFO - __main__: Flamegraph analysis complete. Found 5 hot functions
+2025-12-08 17:19:42 - INFO - __main__: Looking up function definitions...
+2025-12-08 17:19:42 - INFO - __main__: Looking up function: DB::PODArray<unsigned long, 4096ul, Allocator<false, false>, 63ul, 64ul>::operator[] in /home/ubuntu/ClickHouse_debug/src/Common/PODArray.h
+2025-12-08 17:19:42 - INFO - STDOUT: operator[]
+2025-12-08 17:19:42 - INFO - STDOUT: Function 'DB::PODArray<unsigned long, 4096ul, Allocator<false, false>, 63ul, 64ul>::operator[]' () found:
+2025-12-08 17:19:42 - INFO - __main__: Found function: DB::PODArray<unsigned long, 4096ul, Allocator<false, false>, 63ul, 64ul>::operator[] -> /home/rocky/functio/ClickHouse/src/Common/PODArray.h
+2025-12-08 17:19:42 - INFO - __main__: Looking up function: DB::ColumnVector<unsigned long>::greater::operator in /home/ubuntu/ClickHouse_debug/src/Columns/ColumnVector.cpp
+2025-12-08 17:19:42 - INFO - STDOUT: operator
+2025-12-08 17:19:42 - INFO - STDOUT: Function 'DB::ColumnVector<unsigned long>::greater::operator' () found:
+2025-12-08 17:19:42 - INFO - __main__: Found function: DB::ColumnVector<unsigned long>::greater::operator -> /home/rocky/functio/ClickHouse/src/Columns/ColumnVector.cpp
+2025-12-08 17:19:42 - INFO - __main__: Looking up function: bool DebugLessComparator<DB::ColumnVector<unsigned long>::greater>::operator in /home/ubuntu/ClickHouse_debug/base/base/../base/sort.h
+2025-12-08 17:19:42 - INFO - STDOUT: operator
+2025-12-08 17:19:42 - INFO - STDOUT: Function 'bool DebugLessComparator<DB::ColumnVector<unsigned long>::greater>::operator' () found:
+2025-12-08 17:19:42 - INFO - __main__: Found function: bool DebugLessComparator<DB::ColumnVector<unsigned long>::greater>::operator -> /home/rocky/functio/ClickHouse/base/base/../base/sort.h
+2025-12-08 17:19:42 - INFO - __main__: Looking up function: DB::PODArrayBase<8ul, 4096ul, Allocator<false, false>, 63ul, 64ul>::size in /home/ubuntu/ClickHouse_debug/src/Common/PODArray.h
+2025-12-08 17:19:42 - INFO - STDOUT: size
+2025-12-08 17:19:42 - INFO - STDOUT: Function 'DB::PODArrayBase<8ul, 4096ul, Allocator<false, false>, 63ul, 64ul>::size' () found:
+2025-12-08 17:19:42 - INFO - __main__: Found function: DB::PODArrayBase<8ul, 4096ul, Allocator<false, false>, 63ul, 64ul>::size -> /home/rocky/functio/ClickHouse/src/Common/PODArray.h
+2025-12-08 17:19:42 - INFO - __main__: Looking up function: pcg_detail::xsl_rr_mixin<unsigned long, unsigned __int128>::output in /home/ubuntu/ClickHouse_debug/base/pcg-random/./pcg_random.hpp
+2025-12-08 17:19:42 - INFO - STDOUT: output
+2025-12-08 17:19:42 - INFO - STDOUT: Function 'pcg_detail::xsl_rr_mixin<unsigned long, unsigned __int128>::output' () found:
+2025-12-08 17:19:42 - INFO - __main__: Found function: pcg_detail::xsl_rr_mixin<unsigned long, unsigned __int128>::output -> /home/rocky/functio/ClickHouse/base/pcg-random/./pcg_random.hpp
+2025-12-08 17:19:42 - INFO - __main__: Function lookup complete. Found 5 functions
+2025-12-08 17:19:42 - INFO - __main__: Results: [('DB::PODArray<unsigned long, 4096ul, Allocator<false, false>, 63ul, 64ul>::operator[]', '/home/rocky/functio/ClickHouse/src/Common/PODArray.h'), ('DB::ColumnVector<unsigned long>::greater::operator', '/home/rocky/functio/ClickHouse/src/Columns/ColumnVector.cpp'), ('bool DebugLessComparator<DB::ColumnVector<unsigned long>::greater>::operator', '/home/rocky/functio/ClickHouse/base/base/../base/sort.h'), ('DB::PODArrayBase<8ul, 4096ul, Allocator<false, false>, 63ul, 64ul>::size', '/home/rocky/functio/ClickHouse/src/Common/PODArray.h'), ('pcg_detail::xsl_rr_mixin<unsigned long, unsigned __int128>::output', '/home/rocky/functio/ClickHouse/base/pcg-random/./pcg_random.hpp')]
+2025-12-08 17:19:42 - INFO - __main__: Stopping ClickHouse server...
+2025-12-08 17:19:43 - INFO - __main__: ClickHouse server stopped
+2025-12-08 17:19:43 - INFO - __main__: Request completed successfully

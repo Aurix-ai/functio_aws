@@ -1,0 +1,8 @@
+2025-12-26 16:24:09 - INFO - __main__: ============================================================
+2025-12-26 16:24:09 - INFO - __main__: Mock run started at 12-26_16-24-09
+2025-12-26 16:24:09 - INFO - __main__: ============================================================
+2025-12-26 16:24:09 - INFO - __main__: Loaded 19 queries from /home/ubuntu/functio_server/pid_profiling_clean/queries_26th.sql
+2025-12-26 16:24:09 - INFO - __main__: ============================================================
+2025-12-26 16:24:09 - INFO - __main__: Processing query 1/19: SELECT anyHeavy(number % 10) FROM numbers(850_000_000) FORMAT NULL;...
+2025-12-26 16:24:09 - INFO - __main__: ============================================================
+2025-12-26 16:24:09 - INFO - __main__: Starting ClickHouse server...

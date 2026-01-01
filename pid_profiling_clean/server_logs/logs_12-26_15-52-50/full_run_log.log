@@ -1,0 +1,39 @@
+2025-12-26 15:52:50 - INFO - __main__: ============================================================
+2025-12-26 15:52:50 - INFO - __main__: Mock run started at 12-26_15-52-50
+2025-12-26 15:52:50 - INFO - __main__: ============================================================
+2025-12-26 15:52:50 - INFO - __main__: Loaded 19 queries from /home/ubuntu/functio_server/pid_profiling_clean/queries_26th.sql
+2025-12-26 15:52:50 - INFO - __main__: ============================================================
+2025-12-26 15:52:50 - INFO - __main__: Processing query 1/19: SELECT anyHeavy(number % 10) FROM numbers(850_000_000) FORMAT NULL;...
+2025-12-26 15:52:50 - INFO - __main__: ============================================================
+2025-12-26 15:52:50 - INFO - __main__: Starting ClickHouse server...
+2025-12-26 15:52:56 - INFO - __main__: ClickHouse server is ready
+2025-12-26 15:52:56 - INFO - __main__: Executing 0 setup queries...
+2025-12-26 15:52:56 - INFO - __main__: Main query to analyze: SELECT anyHeavy(number % 10) FROM numbers(850_000_000) FORMAT NULL;...
+2025-12-26 15:52:56 - INFO - __main__: Profiling command: /home/ubuntu/ClickHouse_debug/build_debug/programs/clickhouse client --query 'SELECT anyHeavy(number % 10) FROM numbers(850_000_000) FORMAT NULL;'
+2025-12-26 15:52:56 - INFO - STDOUT: [*] Running flame_folded_pid.sh for PID: 2750702
+2025-12-26 15:52:56 - INFO - STDOUT: Executable command is /home/ubuntu/ClickHouse_debug/build_debug/programs/clickhouse client --query 'SELECT anyHeavy(number % 10) FROM numbers(850_000_000) FORMAT NULL;'
+2025-12-26 15:52:56 - INFO - STDOUT: successfully ran flame_folded_pid.sh
+2025-12-26 15:53:43 - INFO - STDOUT: [✓] FlameGraph folded file generated successfully
+2025-12-26 15:59:56 - INFO - STDOUT: [*] Extracted source locations for 1410 functions
+2025-12-26 15:59:56 - INFO - __main__: Flamegraph analysis complete. Found 4 hot functions
+2025-12-26 15:59:56 - INFO - __main__: Looking up function definitions...
+2025-12-26 15:59:56 - INFO - __main__: Looking up function: DB::SingleValueDataFixed<char8_t>::isEqualTo in /home/ubuntu/ClickHouse_debug/src/AggregateFunctions/SingleValueData.cpp
+2025-12-26 15:59:56 - INFO - STDOUT: isEqualTo
+2025-12-26 15:59:56 - INFO - STDOUT: Function 'DB::SingleValueDataFixed<char8_t>::isEqualTo' () found:
+2025-12-26 15:59:56 - INFO - __main__: Found function: DB::SingleValueDataFixed<char8_t>::isEqualTo -> /home/rocky/functio/ClickHouse/src/AggregateFunctions/SingleValueData.cpp
+2025-12-26 15:59:56 - INFO - __main__: Looking up function: DB::(anonymous namespace)::AggregateFunctionAnyHeavyData::add in /home/ubuntu/ClickHouse_debug/src/AggregateFunctions/AggregateFunctionAnyHeavy.cpp
+2025-12-26 15:59:56 - INFO - STDOUT: add
+2025-12-26 15:59:56 - INFO - STDOUT: Function 'DB::(anonymous namespace)::AggregateFunctionAnyHeavyData::add' () found:
+2025-12-26 15:59:56 - INFO - __main__: Found function: DB::(anonymous namespace)::AggregateFunctionAnyHeavyData::add -> /home/rocky/functio/ClickHouse/src/AggregateFunctions/AggregateFunctionAnyHeavy.cpp
+2025-12-26 15:59:56 - INFO - __main__: Looking up function: DB::PODArray<char8_t, 4096ul, Allocator<false, false>, 63ul, 64ul>::operator[] in /home/ubuntu/ClickHouse_debug/src/Common/PODArray.h
+2025-12-26 15:59:56 - INFO - STDOUT: operator[]
+2025-12-26 15:59:56 - INFO - STDOUT: Function 'DB::PODArray<char8_t, 4096ul, Allocator<false, false>, 63ul, 64ul>::operator[]' () found:
+2025-12-26 15:59:56 - INFO - __main__: Found function: DB::PODArray<char8_t, 4096ul, Allocator<false, false>, 63ul, 64ul>::operator[] -> /home/rocky/functio/ClickHouse/src/Common/PODArray.h
+2025-12-26 15:59:56 - INFO - __main__: Looking up function: DB::ColumnVector<char8_t> const& assert_cast<DB::ColumnVector<char8_t> const&, DB::IColumn const&> in /home/ubuntu/ClickHouse_debug/src/Common/assert_cast.h
+2025-12-26 15:59:56 - INFO - STDOUT: ColumnVector<char8_t> const& assert_cast<DB::ColumnVector<char8_t> const&, DB::IColumn const&>
+2025-12-26 15:59:56 - INFO - STDOUT: Function 'DB::ColumnVector<char8_t> const& assert_cast<DB::ColumnVector<char8_t> const&, DB::IColumn const&>' () not found using traditional way. Trying alternative
+2025-12-26 16:00:20 - INFO - STDOUT: /home/ubuntu/ClickHouse_debug/src/Common/assert_cast.h
+2025-12-26 16:00:20 - INFO - STDOUT: None
+2025-12-26 16:00:20 - INFO - STDOUT: standart and alternative methods of function lookup failed, skipping this function
+2025-12-26 16:00:20 - WARNING - __main__: Function not found: DB::ColumnVector<char8_t> const& assert_cast<DB::ColumnVector<char8_t> const&, DB::IColumn const&>
+2025-12-26 16:00:20 - INFO - __main__: Stopping ClickHouse server...

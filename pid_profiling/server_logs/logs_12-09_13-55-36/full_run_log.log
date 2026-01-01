@@ -1,0 +1,39 @@
+2025-12-09 13:55:36 - INFO - __main__: ============================================================
+2025-12-09 13:55:36 - INFO - __main__: New request received at 12-09_13-55-36
+2025-12-09 13:55:36 - INFO - __main__: ============================================================
+2025-12-09 13:55:36 - INFO - __main__: Starting ClickHouse server...
+2025-12-09 13:55:42 - INFO - __main__: ClickHouse server started successfully
+2025-12-09 13:55:42 - INFO - __main__: Received 1 queries
+2025-12-09 13:55:42 - INFO - __main__: Waiting for server to be ready...
+2025-12-09 13:55:43 - INFO - __main__: Server is ready
+2025-12-09 13:55:43 - INFO - __main__: Executing 0 setup queries...
+2025-12-09 13:55:43 - INFO - __main__: Main query to analyze: SELECT count() FROM (SELECT [number] a, [number * 2] b FROM numbers(10000000000)) AS t ARRAY JOIN a, b WHERE NOT ignore(a + b)
+2025-12-09 13:55:43 - INFO - __main__: Starting flamegraph analysis (unified_strategy)...
+2025-12-09 13:55:43 - INFO - STDOUT: [*] Running flame_folded_pid.sh for PID: 3232239
+2025-12-09 13:55:43 - INFO - STDOUT: Executable command is /home/ubuntu/ClickHouse_debug/build_debug/programs/clickhouse client --query 'SELECT count() FROM (SELECT [number] a, [number * 2] b FROM numbers(10000000000)) AS t ARRAY JOIN a, b WHERE NOT ignore(a + b)'
+2025-12-09 13:55:43 - INFO - STDOUT: successfully ran flame_folded_pid.sh
+2025-12-09 14:01:36 - INFO - STDOUT: [✓] FlameGraph folded file generated successfully
+2025-12-09 14:27:08 - INFO - STDOUT: [*] Extracted source locations for 4717 functions
+2025-12-09 14:27:09 - INFO - __main__: Flamegraph analysis complete. Found 4 hot functions
+2025-12-09 14:27:09 - INFO - __main__: Looking up function definitions...
+2025-12-09 14:27:09 - INFO - __main__: Looking up function: DB::PODArray<unsigned long, 4096ul, Allocator<false, false>, 63ul, 64ul>::operator[] in /home/ubuntu/ClickHouse_debug/src/Common/PODArray.h
+2025-12-09 14:27:09 - INFO - STDOUT: operator[]
+2025-12-09 14:27:09 - INFO - STDOUT: Function 'DB::PODArray<unsigned long, 4096ul, Allocator<false, false>, 63ul, 64ul>::operator[]' () found:
+2025-12-09 14:27:09 - INFO - __main__: Found function: DB::PODArray<unsigned long, 4096ul, Allocator<false, false>, 63ul, 64ul>::operator[] -> /home/rocky/functio/ClickHouse/src/Common/PODArray.h
+2025-12-09 14:27:09 - INFO - __main__: Looking up function: DB::FunctionArray::executeImpl in /home/ubuntu/ClickHouse_debug/src/Functions/array/array.cpp
+2025-12-09 14:27:09 - INFO - STDOUT: executeImpl
+2025-12-09 14:27:09 - INFO - STDOUT: Function 'DB::FunctionArray::executeImpl' () found:
+2025-12-09 14:27:09 - INFO - __main__: Found function: DB::FunctionArray::executeImpl -> /home/rocky/functio/ClickHouse/src/Functions/array/array.cpp
+2025-12-09 14:27:09 - INFO - __main__: Looking up function: DB::ArrayJoinResultIterator::next in /home/ubuntu/ClickHouse_debug/src/Interpreters/ArrayJoinAction.cpp
+2025-12-09 14:27:09 - INFO - STDOUT: next
+2025-12-09 14:27:09 - INFO - STDOUT: Function 'DB::ArrayJoinResultIterator::next' () found:
+2025-12-09 14:27:09 - INFO - __main__: Found function: DB::ArrayJoinResultIterator::next -> /home/rocky/functio/ClickHouse/src/Interpreters/ArrayJoinAction.cpp
+2025-12-09 14:27:09 - INFO - __main__: Looking up function: DB::PODArrayBase<8ul, 4096ul, Allocator<false, false>, 63ul, 64ul>::size in /home/ubuntu/ClickHouse_debug/src/Common/PODArray.h
+2025-12-09 14:27:09 - INFO - STDOUT: size
+2025-12-09 14:27:09 - INFO - STDOUT: Function 'DB::PODArrayBase<8ul, 4096ul, Allocator<false, false>, 63ul, 64ul>::size' () found:
+2025-12-09 14:27:09 - INFO - __main__: Found function: DB::PODArrayBase<8ul, 4096ul, Allocator<false, false>, 63ul, 64ul>::size -> /home/rocky/functio/ClickHouse/src/Common/PODArray.h
+2025-12-09 14:27:09 - INFO - __main__: Function lookup complete. Found 4 functions
+2025-12-09 14:27:09 - INFO - __main__: Results: [('DB::PODArray<unsigned long, 4096ul, Allocator<false, false>, 63ul, 64ul>::operator[]', '/home/rocky/functio/ClickHouse/src/Common/PODArray.h'), ('DB::FunctionArray::executeImpl', '/home/rocky/functio/ClickHouse/src/Functions/array/array.cpp'), ('DB::ArrayJoinResultIterator::next', '/home/rocky/functio/ClickHouse/src/Interpreters/ArrayJoinAction.cpp'), ('DB::PODArrayBase<8ul, 4096ul, Allocator<false, false>, 63ul, 64ul>::size', '/home/rocky/functio/ClickHouse/src/Common/PODArray.h')]
+2025-12-09 14:27:09 - INFO - __main__: Stopping ClickHouse server...
+2025-12-09 14:27:13 - INFO - __main__: ClickHouse server stopped
+2025-12-09 14:27:13 - INFO - __main__: Request completed successfully

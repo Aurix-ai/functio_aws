@@ -1,0 +1,39 @@
+2025-12-13 11:22:41 - INFO - __main__: ============================================================
+2025-12-13 11:22:41 - INFO - __main__: Mock run started at 12-13_11-22-41
+2025-12-13 11:22:41 - INFO - __main__: ============================================================
+2025-12-13 11:22:41 - INFO - __main__: Using 1 hardcoded queries
+2025-12-13 11:22:41 - INFO - __main__: Starting ClickHouse server...
+2025-12-13 11:22:49 - INFO - __main__: ClickHouse server is ready
+2025-12-13 11:22:49 - INFO - __main__: Executing 0 setup queries...
+2025-12-13 11:22:49 - INFO - __main__: Main query to analyze: SELECT histogram(128)(randCanonical()) FROM numbers(100000000) _FORMAT Null...
+2025-12-13 11:22:49 - INFO - __main__: Profiling command: /home/ubuntu/ClickHouse_debug/build_debug/programs/clickhouse client --query 'SELECT histogram(128)(randCanonical()) FROM numbers(100000000) _FORMAT Null'
+2025-12-13 11:22:49 - INFO - STDOUT: [*] Running flame_folded_pid.sh for PID: 3909514
+2025-12-13 11:22:49 - INFO - STDOUT: Executable command is /home/ubuntu/ClickHouse_debug/build_debug/programs/clickhouse client --query 'SELECT histogram(128)(randCanonical()) FROM numbers(100000000) _FORMAT Null'
+2025-12-13 11:22:49 - INFO - STDOUT: successfully ran flame_folded_pid.sh
+2025-12-13 11:22:51 - ERROR - STDERR: Error detected in command output:
+2025-12-13 11:22:51 - ERROR - STDERR: stdout: [*] Recording perf data for PID: 3909514 while executing: /home/ubuntu/ClickHouse_debug/build_debug/programs/clickhouse client --query 'SELECT histogram(128)(randCanonical()) FROM numbers(100000000) _FORMAT Null'
+2025-12-13 11:22:51 - ERROR - STDERR: [*] Executing command: /home/ubuntu/ClickHouse_debug/build_debug/programs/clickhouse client --query 'SELECT histogram(128)(randCanonical()) FROM numbers(100000000) _FORMAT Null'
+2025-12-13 11:22:51 - ERROR - STDERR: [*] Converting perf.data to folded format...
+2025-12-13 11:22:51 - ERROR - STDERR: [✓] Folded flamegraph written to: flamegraph.folded
+2025-12-13 11:22:51 - ERROR - STDERR: stderr: Code: 62. DB::Exception: Syntax error: failed at position 72 (Null): Null. Expected one of: FINAL, SAMPLE, table, table function, subquery or list of joined tables, array join, LEFT ARRAY JOIN, INNER, ARRAY JOIN, GLOBAL, LOCAL, ANY, ALL, ASOF, SEMI, ANTI, ONLY, LEFT, RIGHT, FULL, CROSS, PASTE, JOIN, token, OpeningRoundBracket, PREWHERE, WHERE, GROUP BY, WITH, HAVING, WINDOW, QUALIFY, ORDER BY, LIMIT, OFFSET, FETCH, SETTINGS, UNION, EXCEPT, INTERSECT, INTO OUTFILE, FORMAT, ParallelWithClause, PARALLEL WITH, end of query. (SYNTAX_ERROR)
+2025-12-13 11:22:51 - ERROR - STDERR: [ perf record: Woken up 0 times to write data ]
+2025-12-13 11:22:51 - ERROR - STDERR: [ perf record: Captured and wrote 0.150 MB perf.data ]
+2025-12-13 11:22:51 - ERROR - STDERR: Error in unified_strategy: Command '['sudo', './flame_folded_pid.sh', '--pid', '3909514', '--', "/home/ubuntu/ClickHouse_debug/build_debug/programs/clickhouse client --query 'SELECT histogram(128)(randCanonical()) FROM numbers(100000000) _FORMAT Null'"]' returned non-zero exit status 1.
+2025-12-13 11:22:51 - ERROR - __main__: Flamegraph analysis failed: Command '['sudo', './flame_folded_pid.sh', '--pid', '3909514', '--', "/home/ubuntu/ClickHouse_debug/build_debug/programs/clickhouse client --query 'SELECT histogram(128)(randCanonical()) FROM numbers(100000000) _FORMAT Null'"]' returned non-zero exit status 1.
+Traceback (most recent call last):
+  File "/home/ubuntu/functio_server/pid_profiling_clean/functio_mock_server.py", line 144, in _run_pipeline
+    hot_functions = unified_strategy(
+                    ^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/functio_server/pid_profiling_clean/unified_analysis.py", line 990, in unified_strategy
+    raise e
+  File "/home/ubuntu/functio_server/pid_profiling_clean/unified_analysis.py", line 966, in unified_strategy
+    folded_path = run_flamegraph(executable_command=cmd, pid=pid, output_base=output_base)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/functio_server/pid_profiling_clean/unified_analysis.py", line 150, in run_flamegraph
+    raise subprocess.CalledProcessError(
+subprocess.CalledProcessError: Command '['sudo', './flame_folded_pid.sh', '--pid', '3909514', '--', "/home/ubuntu/ClickHouse_debug/build_debug/programs/clickhouse client --query 'SELECT histogram(128)(randCanonical()) FROM numbers(100000000) _FORMAT Null'"]' returned non-zero exit status 1.
+2025-12-13 11:22:51 - INFO - __main__: Stopping ClickHouse server...
+2025-12-13 11:22:51 - INFO - __main__: ClickHouse server stopped
+2025-12-13 11:22:51 - INFO - __main__: Final status: fail
+2025-12-13 11:22:51 - INFO - __main__: Final result: ['error running flamegraph analysis. Error message: Command \'[\'sudo\', \'./flame_folded_pid.sh\', \'--pid\', \'3909514\', \'--\', "/home/ubuntu/ClickHouse_debug/build_debug/programs/clickhouse client --query \'SELECT histogram(128)(randCanonical()) FROM numbers(100000000) _FORMAT Null\'"]\' returned non-zero exit status 1.']
+2025-12-13 11:22:51 - INFO - STDOUT: {'result': ['error running flamegraph analysis. Error message: Command \'[\'sudo\', \'./flame_folded_pid.sh\', \'--pid\', \'3909514\', \'--\', "/home/ubuntu/ClickHouse_debug/build_debug/programs/clickhouse client --query \'SELECT histogram(128)(randCanonical()) FROM numbers(100000000) _FORMAT Null\'"]\' returned non-zero exit status 1.'], 'status': 'fail'}

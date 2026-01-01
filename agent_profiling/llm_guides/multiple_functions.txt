@@ -9,7 +9,7 @@ You will analyze source code of several C++ functions provided in <input_data>. 
 
 Some functions (such as from standard library) will not have source code specified, but if they are present in the <input_data> you should consider how calling them affects performance.
 
-Your Goal: Determine if there is a *significant* performance optimization available that can be implemented. You should specifically focus on code of root-most(first) function, and logic of root-most(first) function calling the other functions, and how it affects overall performance of the query. The previous performance engineer analyzed all the functions but the root function in the same process as you are doing now, and concluded that there is no optimization to implement completely within that group of functions. Now, there is root function added, and your job is to see if there is a potential for optimization in this newly formed group. 
+Your Goal: Determine if there is a *significant* performance optimization available that can be implemented. You should specifically focus on code of root-most(first) function, and logic of root-most(first) function calling the other functions, and how it affects overall performance of the query. Previously you have analyzed all the functions but the root function in the same process as you are doing now. Now, there is root function added, and your job is to see if there is a potential for optimization in this newly formed group.  
 
 You must filter out trivial optimizations that a modern compiler (Clang/GCC at -O3) would perform automatically (e.g., basic inlining, simple auto-vectorization, constant folding). Focus on:
 1. Algorithmic inefficiencies.
@@ -17,6 +17,13 @@ You must filter out trivial optimizations that a modern compiler (Clang/GCC at -
 3. Branch prediction failures in tight loops.
 4. Missed SIMD opportunities that require manual intrinsics or code restructuring due to aliasing.
 
+<previous_context>
+You can get information about previous analysis of functions on this flamegraph through the <context> block, which is passed in <input_data>.
+It contains structured information about the functions/aggregations of functions that the agent previously checked: whether or not optimization was found, message returned by the agent, and scratchpad.
+Scratchpad contains content of the thinking block from the agent response.
+</previous_context>
+
+You should seek out optimizations for this group of functions that were not already found for any previous group of functions that you analyzed before.
 </task_description>
 
 <optimization_criteria>
@@ -85,6 +92,11 @@ Rewriting memory access to make it SIMD-friendly
 {{SOURCE_CODE}}
 ]]>
 </source_code_to_analyze>
+<context>
+<![CDATA[
+{{MEMORY}}
+]]>
+</context>
 </input_data>
 
 <instructions>
@@ -92,10 +104,11 @@ Rewriting memory access to make it SIMD-friendly
 2. **The 5-Point Inspection:** In your <thinking> block, you must rigorously evaluate code of functions together with the call trace against the 5 specific categories defined in <optimization_criteria>. You cannot skip any category.
 3. **Compiler Skepticism:** For every potential optimization found, ask: "Will a modern compiler (Clang/GCC -O3) automatically do this?" If yes, discard it.
 4. **Performance:** Only report optimizations that yield speedups (don't report style changes).
-
-5. **Code Changes:** Code changes can be proposed among any functions with the source code specified in the <source_code_to_analyze> block. Some functions (such as from standard library) will not have source code specified, so changes to them can not be proposed.
-6. **Final Output:** If a valid optimization survives the inspection, output OPTION 1. Otherwise, output OPTION 2.
+5. **Code Changes:** Code changes can be proposed among any functions, and any files in ClickHouse codebase, but reasoning should be based on the behaviour of source code specified in the <source_code_to_analyze> block.
+6. **Novelty check** The optimization proposed should be new, not mentioned in any previous run as evident by the <previous_context>
+7. **Final Output:** If a valid optimization not previously found survives the inspection, output OPTION 1. Otherwise, output OPTION 2.
 </instructions>
+
 
 <output_format>
 <instruction>
@@ -133,7 +146,7 @@ Then, generate strictly one of the result blocks (<optimization_available> or <n
 </optimization_available>
 
 <no_optimization_available>
-    <summary>No significant optimization opportunities were found. Code is efficient or handled by compiler.</summary>
+    <summary>No significant optimization opportunities were found or the only optimization was previously found. Code is efficient or handled by compiler.</summary>
 </no_optimization_available>
 
 </output_format>

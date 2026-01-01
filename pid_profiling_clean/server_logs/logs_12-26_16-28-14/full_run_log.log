@@ -1,0 +1,665 @@
+2025-12-26 16:28:14 - INFO - __main__: ============================================================
+2025-12-26 16:28:14 - INFO - __main__: Mock run started at 12-26_16-28-14
+2025-12-26 16:28:14 - INFO - __main__: ============================================================
+2025-12-26 16:28:14 - INFO - __main__: Loaded 19 queries from /home/ubuntu/functio_server/pid_profiling_clean/queries_26th.sql
+2025-12-26 16:28:14 - INFO - __main__: ============================================================
+2025-12-26 16:28:14 - INFO - __main__: Processing query 1/19: SELECT anyHeavy(number % 10) FROM numbers(850_000_000) FORMAT NULL;...
+2025-12-26 16:28:14 - INFO - __main__: ============================================================
+2025-12-26 16:28:14 - INFO - __main__: Starting ClickHouse server...
+2025-12-26 16:28:20 - INFO - __main__: ClickHouse server is ready
+2025-12-26 16:28:20 - INFO - __main__: Executing 0 setup queries...
+2025-12-26 16:28:20 - INFO - __main__: Main query to analyze: SELECT anyHeavy(number % 10) FROM numbers(850_000_000) FORMAT NULL;...
+2025-12-26 16:28:20 - INFO - __main__: Profiling command: /home/ubuntu/ClickHouse_debug/build_debug/programs/clickhouse client --query 'SELECT anyHeavy(number % 10) FROM numbers(850_000_000) FORMAT NULL;'
+2025-12-26 16:28:20 - INFO - STDOUT: [*] Running flame_folded_pid.sh for PID: 2761387
+2025-12-26 16:28:20 - INFO - STDOUT: Executable command is /home/ubuntu/ClickHouse_debug/build_debug/programs/clickhouse client --query 'SELECT anyHeavy(number % 10) FROM numbers(850_000_000) FORMAT NULL;'
+2025-12-26 16:28:20 - INFO - STDOUT: successfully ran flame_folded_pid.sh
+2025-12-26 16:29:04 - INFO - STDOUT: [✓] FlameGraph folded file generated successfully
+2025-12-26 16:31:26 - INFO - STDOUT: [*] Extracted source locations for 955 functions
+2025-12-26 16:31:26 - INFO - __main__: Flamegraph analysis complete. Found 6 hot functions
+2025-12-26 16:31:26 - INFO - __main__: Looking up function definitions...
+2025-12-26 16:31:26 - INFO - __main__: Looking up function: DB::(anonymous namespace)::ModuloByConstantImpl<unsigned long, char8_t>::vectorConstant in /home/ubuntu/ClickHouse_debug/src/Functions/modulo.cpp
+2025-12-26 16:31:26 - INFO - STDOUT: vectorConstant
+2025-12-26 16:31:26 - INFO - STDOUT: Function 'DB::(anonymous namespace)::ModuloByConstantImpl<unsigned long, char8_t>::vectorConstant' () found:
+2025-12-26 16:31:26 - INFO - __main__: Found function: DB::(anonymous namespace)::ModuloByConstantImpl<unsigned long, char8_t>::vectorConstant -> /home/rocky/functio/ClickHouse/src/Functions/modulo.cpp
+2025-12-26 16:31:26 - INFO - __main__: Looking up function: DB::SingleValueDataFixed<char8_t>::isEqualTo in /home/ubuntu/ClickHouse_debug/src/AggregateFunctions/SingleValueData.cpp
+2025-12-26 16:31:26 - INFO - STDOUT: isEqualTo
+2025-12-26 16:31:26 - INFO - STDOUT: Function 'DB::SingleValueDataFixed<char8_t>::isEqualTo' () found:
+2025-12-26 16:31:26 - INFO - __main__: Found function: DB::SingleValueDataFixed<char8_t>::isEqualTo -> /home/rocky/functio/ClickHouse/src/AggregateFunctions/SingleValueData.cpp
+2025-12-26 16:31:26 - INFO - __main__: Looking up function: DB::(anonymous namespace)::AggregateFunctionAnyHeavyData::add in /home/ubuntu/ClickHouse_debug/src/AggregateFunctions/AggregateFunctionAnyHeavy.cpp
+2025-12-26 16:31:26 - INFO - STDOUT: add
+2025-12-26 16:31:26 - INFO - STDOUT: Function 'DB::(anonymous namespace)::AggregateFunctionAnyHeavyData::add' () found:
+2025-12-26 16:31:26 - INFO - __main__: Found function: DB::(anonymous namespace)::AggregateFunctionAnyHeavyData::add -> /home/rocky/functio/ClickHouse/src/AggregateFunctions/AggregateFunctionAnyHeavy.cpp
+2025-12-26 16:31:26 - INFO - __main__: Looking up function: DB::PODArray<char8_t, 4096ul, Allocator<false, false>, 63ul, 64ul>::operator[] in /home/ubuntu/ClickHouse_debug/src/Common/PODArray.h
+2025-12-26 16:31:26 - INFO - STDOUT: operator[]
+2025-12-26 16:31:26 - INFO - STDOUT: Function 'DB::PODArray<char8_t, 4096ul, Allocator<false, false>, 63ul, 64ul>::operator[]' () found:
+2025-12-26 16:31:26 - INFO - __main__: Found function: DB::PODArray<char8_t, 4096ul, Allocator<false, false>, 63ul, 64ul>::operator[] -> /home/rocky/functio/ClickHouse/src/Common/PODArray.h
+2025-12-26 16:31:26 - INFO - __main__: Looking up function: DB::ColumnVector<char8_t> const& assert_cast<DB::ColumnVector<char8_t> const&, DB::IColumn const&> in /home/ubuntu/ClickHouse_debug/src/Common/assert_cast.h
+2025-12-26 16:31:26 - INFO - STDOUT: ColumnVector<char8_t> const& assert_cast<DB::ColumnVector<char8_t> const&, DB::IColumn const&>
+2025-12-26 16:31:26 - INFO - STDOUT: Function 'DB::ColumnVector<char8_t> const& assert_cast<DB::ColumnVector<char8_t> const&, DB::IColumn const&>' () not found using traditional way. Trying alternative
+2025-12-26 16:31:50 - INFO - STDOUT: /home/ubuntu/ClickHouse_debug/src/Common/assert_cast.h
+2025-12-26 16:31:50 - INFO - STDOUT: None
+2025-12-26 16:31:50 - INFO - STDOUT: standart and alternative methods of function lookup failed, skipping this function
+2025-12-26 16:31:50 - WARNING - __main__: Function not found: DB::ColumnVector<char8_t> const& assert_cast<DB::ColumnVector<char8_t> const&, DB::IColumn const&>
+2025-12-26 16:31:50 - INFO - __main__: Looking up function: DB::executeJob in /home/ubuntu/ClickHouse_debug/src/Processors/Executors/ExecutionThreadContext.cpp
+2025-12-26 16:31:50 - INFO - STDOUT: executeJob
+2025-12-26 16:31:50 - INFO - STDOUT: Function 'DB::executeJob' () found:
+2025-12-26 16:31:50 - INFO - __main__: Found function: DB::executeJob -> /home/rocky/functio/ClickHouse/src/Processors/Executors/ExecutionThreadContext.cpp
+2025-12-26 16:31:50 - INFO - __main__: Stopping ClickHouse server...
+2025-12-26 16:31:50 - INFO - __main__: ClickHouse server stopped
+2025-12-26 16:31:50 - INFO - __main__: Query 1 status: success
+2025-12-26 16:31:50 - INFO - __main__: Query 1 result count: 5
+2025-12-26 16:31:50 - INFO - __main__: ============================================================
+2025-12-26 16:31:50 - INFO - __main__: Processing query 2/19: SELECT topK(1000)(rand64() % 1_000_000) FROM numbers(100_000_000) FORMAT NULL;...
+2025-12-26 16:31:50 - INFO - __main__: ============================================================
+2025-12-26 16:31:50 - INFO - __main__: Starting ClickHouse server...
+2025-12-26 16:31:56 - INFO - __main__: ClickHouse server is ready
+2025-12-26 16:31:56 - INFO - __main__: Executing 0 setup queries...
+2025-12-26 16:31:56 - INFO - __main__: Main query to analyze: SELECT topK(1000)(rand64() % 1_000_000) FROM numbers(100_000_000) FORMAT NULL;...
+2025-12-26 16:31:56 - INFO - __main__: Profiling command: /home/ubuntu/ClickHouse_debug/build_debug/programs/clickhouse client --query 'SELECT topK(1000)(rand64() % 1_000_000) FROM numbers(100_000_000) FORMAT NULL;'
+2025-12-26 16:31:56 - INFO - STDOUT: [*] Running flame_folded_pid.sh for PID: 2763207
+2025-12-26 16:31:56 - INFO - STDOUT: Executable command is /home/ubuntu/ClickHouse_debug/build_debug/programs/clickhouse client --query 'SELECT topK(1000)(rand64() % 1_000_000) FROM numbers(100_000_000) FORMAT NULL;'
+2025-12-26 16:31:56 - INFO - STDOUT: successfully ran flame_folded_pid.sh
+2025-12-26 16:37:32 - INFO - STDOUT: [✓] FlameGraph folded file generated successfully
+2025-12-26 16:44:45 - INFO - STDOUT: [*] Extracted source locations for 1723 functions
+2025-12-26 16:44:45 - INFO - __main__: Flamegraph analysis complete. Found 2 hot functions
+2025-12-26 16:44:45 - INFO - __main__: Looking up function definitions...
+2025-12-26 16:44:45 - INFO - __main__: Looking up function: DB::SpaceSaving<unsigned int, HashCRC32<unsigned int> >::Counter::operator> in /home/ubuntu/ClickHouse_debug/src/Common/SpaceSaving.h
+2025-12-26 16:44:45 - INFO - STDOUT: operator>
+2025-12-26 16:44:45 - INFO - STDOUT: Function 'DB::SpaceSaving<unsigned int, HashCRC32<unsigned int> >::Counter::operator>' () not found using traditional way. Trying alternative
+2025-12-26 16:45:07 - INFO - STDOUT: /home/ubuntu/ClickHouse_debug/src/Common/SpaceSaving.h
+2025-12-26 16:45:07 - INFO - STDOUT: None
+2025-12-26 16:45:07 - INFO - STDOUT: standart and alternative methods of function lookup failed, skipping this function
+2025-12-26 16:45:07 - WARNING - __main__: Function not found: DB::SpaceSaving<unsigned int, HashCRC32<unsigned int> >::Counter::operator>
+2025-12-26 16:45:07 - INFO - __main__: Looking up function: DB::SpaceSaving<unsigned int, HashCRC32<unsigned int> >::percolate in /home/ubuntu/ClickHouse_debug/src/Common/SpaceSaving.h
+2025-12-26 16:45:07 - INFO - STDOUT: percolate
+2025-12-26 16:45:07 - INFO - STDOUT: Function 'DB::SpaceSaving<unsigned int, HashCRC32<unsigned int> >::percolate' () found:
+2025-12-26 16:45:07 - INFO - __main__: Found function: DB::SpaceSaving<unsigned int, HashCRC32<unsigned int> >::percolate -> /home/rocky/functio/ClickHouse/src/Common/SpaceSaving.h
+2025-12-26 16:45:07 - INFO - __main__: Stopping ClickHouse server...
+2025-12-26 16:45:11 - INFO - __main__: ClickHouse server stopped
+2025-12-26 16:45:11 - INFO - __main__: Query 2 status: success
+2025-12-26 16:45:11 - INFO - __main__: Query 2 result count: 1
+2025-12-26 16:45:11 - INFO - __main__: ============================================================
+2025-12-26 16:45:11 - INFO - __main__: Processing query 3/19: SELECT quantilesTDigest(0.10, 0.25, 0.50, 0.75, 0.90)(rand64() % 1_000_000_000) ...
+2025-12-26 16:45:11 - INFO - __main__: ============================================================
+2025-12-26 16:45:11 - INFO - __main__: Starting ClickHouse server...
+2025-12-26 16:45:17 - INFO - __main__: ClickHouse server is ready
+2025-12-26 16:45:17 - INFO - __main__: Executing 0 setup queries...
+2025-12-26 16:45:17 - INFO - __main__: Main query to analyze: SELECT quantilesTDigest(0.10, 0.25, 0.50, 0.75, 0.90)(rand64() % 1_000_000_000) FROM numbers(100_000_000) FORMAT NULL;...
+2025-12-26 16:45:17 - INFO - __main__: Profiling command: /home/ubuntu/ClickHouse_debug/build_debug/programs/clickhouse client --query 'SELECT quantilesTDigest(0.10, 0.25, 0.50, 0.75, 0.90)(rand64() % 1_000_000_000) FROM numbers(100_000_000) FORMAT NULL;'
+2025-12-26 16:45:17 - INFO - STDOUT: [*] Running flame_folded_pid.sh for PID: 2766682
+2025-12-26 16:45:17 - INFO - STDOUT: Executable command is /home/ubuntu/ClickHouse_debug/build_debug/programs/clickhouse client --query 'SELECT quantilesTDigest(0.10, 0.25, 0.50, 0.75, 0.90)(rand64() % 1_000_000_000) FROM numbers(100_000_000) FORMAT NULL;'
+2025-12-26 16:45:17 - INFO - STDOUT: successfully ran flame_folded_pid.sh
+2025-12-26 16:46:19 - INFO - STDOUT: [✓] FlameGraph folded file generated successfully
+2025-12-26 16:47:56 - INFO - STDOUT: [*] Extracted source locations for 722 functions
+2025-12-26 16:47:57 - INFO - __main__: Flamegraph analysis complete. Found 4 hot functions
+2025-12-26 16:47:57 - INFO - __main__: Looking up function definitions...
+2025-12-26 16:47:57 - INFO - __main__: Looking up function: void RadixSort<DB::QuantileTDigest<unsigned int>::RadixSortTraits>::radixSortLSDInternal<false, true> in /home/ubuntu/ClickHouse_debug/src/Common/RadixSort.h
+2025-12-26 16:47:57 - INFO - STDOUT: radixSortLSDInternal
+2025-12-26 16:47:57 - INFO - STDOUT: Function 'void RadixSort<DB::QuantileTDigest<unsigned int>::RadixSortTraits>::radixSortLSDInternal<false, true>' () found:
+2025-12-26 16:47:57 - INFO - __main__: Found function: void RadixSort<DB::QuantileTDigest<unsigned int>::RadixSortTraits>::radixSortLSDInternal<false, true> -> /home/rocky/functio/ClickHouse/src/Common/RadixSort.h
+2025-12-26 16:47:57 - INFO - __main__: Looking up function: RadixSort<DB::QuantileTDigest<unsigned int>::RadixSortTraits>::keyToBits in /home/ubuntu/ClickHouse_debug/src/Common/RadixSort.h
+2025-12-26 16:47:57 - INFO - STDOUT: keyToBits
+2025-12-26 16:47:57 - INFO - STDOUT: Function 'RadixSort<DB::QuantileTDigest<unsigned int>::RadixSortTraits>::keyToBits' () not found using traditional way. Trying alternative
+2025-12-26 16:48:14 - INFO - STDOUT: /home/ubuntu/ClickHouse_debug/src/Common/RadixSort.h
+2025-12-26 16:48:14 - INFO - STDOUT: None
+2025-12-26 16:48:14 - INFO - STDOUT: standart and alternative methods of function lookup failed, skipping this function
+2025-12-26 16:48:14 - WARNING - __main__: Function not found: RadixSort<DB::QuantileTDigest<unsigned int>::RadixSortTraits>::keyToBits
+2025-12-26 16:48:14 - INFO - __main__: Looking up function: DB::QuantileTDigest<unsigned int>::RadixSortTraits::extractKey in /home/ubuntu/ClickHouse_debug/src/AggregateFunctions/QuantileTDigest.h
+2025-12-26 16:48:14 - INFO - STDOUT: extractKey
+2025-12-26 16:48:14 - INFO - STDOUT: Function 'DB::QuantileTDigest<unsigned int>::RadixSortTraits::extractKey' () not found using traditional way. Trying alternative
+2025-12-26 16:48:28 - INFO - STDOUT: /home/ubuntu/ClickHouse_debug/src/AggregateFunctions/QuantileTDigest.h
+2025-12-26 16:48:28 - INFO - STDOUT: None
+2025-12-26 16:48:28 - INFO - STDOUT: standart and alternative methods of function lookup failed, skipping this function
+2025-12-26 16:48:28 - WARNING - __main__: Function not found: DB::QuantileTDigest<unsigned int>::RadixSortTraits::extractKey
+2025-12-26 16:48:28 - INFO - __main__: Looking up function: RadixSort<DB::QuantileTDigest<unsigned int>::RadixSortTraits>::executeLSD in /home/ubuntu/ClickHouse_debug/src/Common/RadixSort.h
+2025-12-26 16:48:28 - INFO - STDOUT: executeLSD
+2025-12-26 16:48:28 - INFO - STDOUT: Function 'RadixSort<DB::QuantileTDigest<unsigned int>::RadixSortTraits>::executeLSD' () found:
+2025-12-26 16:48:28 - INFO - __main__: Found function: RadixSort<DB::QuantileTDigest<unsigned int>::RadixSortTraits>::executeLSD -> /home/rocky/functio/ClickHouse/src/Common/RadixSort.h
+2025-12-26 16:48:28 - INFO - __main__: Stopping ClickHouse server...
+2025-12-26 16:48:32 - INFO - __main__: ClickHouse server stopped
+2025-12-26 16:48:32 - INFO - __main__: Query 3 status: success
+2025-12-26 16:48:32 - INFO - __main__: Query 3 result count: 2
+2025-12-26 16:48:32 - INFO - __main__: ============================================================
+2025-12-26 16:48:32 - INFO - __main__: Processing query 4/19: SELECT uniqCombined(20)(number) FROM numbers(200_000_000) FORMAT NULL;...
+2025-12-26 16:48:32 - INFO - __main__: ============================================================
+2025-12-26 16:48:32 - INFO - __main__: Starting ClickHouse server...
+2025-12-26 16:48:38 - INFO - __main__: ClickHouse server is ready
+2025-12-26 16:48:38 - INFO - __main__: Executing 0 setup queries...
+2025-12-26 16:48:38 - INFO - __main__: Main query to analyze: SELECT uniqCombined(20)(number) FROM numbers(200_000_000) FORMAT NULL;...
+2025-12-26 16:48:38 - INFO - __main__: Profiling command: /home/ubuntu/ClickHouse_debug/build_debug/programs/clickhouse client --query 'SELECT uniqCombined(20)(number) FROM numbers(200_000_000) FORMAT NULL;'
+2025-12-26 16:48:38 - INFO - STDOUT: [*] Running flame_folded_pid.sh for PID: 2768662
+2025-12-26 16:48:38 - INFO - STDOUT: Executable command is /home/ubuntu/ClickHouse_debug/build_debug/programs/clickhouse client --query 'SELECT uniqCombined(20)(number) FROM numbers(200_000_000) FORMAT NULL;'
+2025-12-26 16:48:38 - INFO - STDOUT: successfully ran flame_folded_pid.sh
+2025-12-26 16:48:58 - INFO - STDOUT: [✓] FlameGraph folded file generated successfully
+2025-12-26 16:49:38 - INFO - STDOUT: [*] Extracted source locations for 228 functions
+2025-12-26 16:49:38 - INFO - __main__: Flamegraph analysis complete. Found 1 hot functions
+2025-12-26 16:49:38 - INFO - __main__: Looking up function definitions...
+2025-12-26 16:49:38 - INFO - __main__: Looking up function: DB::AsynchronousInsertQueue::processBatchDeadlines in /home/ubuntu/ClickHouse_debug/src/Interpreters/AsynchronousInsertQueue.cpp
+2025-12-26 16:49:38 - INFO - STDOUT: processBatchDeadlines
+2025-12-26 16:49:38 - INFO - STDOUT: Function 'DB::AsynchronousInsertQueue::processBatchDeadlines' () found:
+2025-12-26 16:49:38 - INFO - __main__: Found function: DB::AsynchronousInsertQueue::processBatchDeadlines -> /home/rocky/functio/ClickHouse/src/Interpreters/AsynchronousInsertQueue.cpp
+2025-12-26 16:49:38 - INFO - __main__: Stopping ClickHouse server...
+2025-12-26 16:49:38 - INFO - __main__: ClickHouse server stopped
+2025-12-26 16:49:38 - INFO - __main__: Query 4 status: success
+2025-12-26 16:49:38 - INFO - __main__: Query 4 result count: 1
+2025-12-26 16:49:38 - INFO - __main__: ============================================================
+2025-12-26 16:49:38 - INFO - __main__: Processing query 5/19: SELECT histogram(250)(number % 1_000_000) FROM numbers(11_000_000) FORMAT NULL;...
+2025-12-26 16:49:38 - INFO - __main__: ============================================================
+2025-12-26 16:49:38 - INFO - __main__: Starting ClickHouse server...
+2025-12-26 16:49:45 - INFO - __main__: ClickHouse server is ready
+2025-12-26 16:49:45 - INFO - __main__: Executing 0 setup queries...
+2025-12-26 16:49:45 - INFO - __main__: Main query to analyze: SELECT histogram(250)(number % 1_000_000) FROM numbers(11_000_000) FORMAT NULL;...
+2025-12-26 16:49:45 - INFO - __main__: Profiling command: /home/ubuntu/ClickHouse_debug/build_debug/programs/clickhouse client --query 'SELECT histogram(250)(number % 1_000_000) FROM numbers(11_000_000) FORMAT NULL;'
+2025-12-26 16:49:45 - INFO - STDOUT: [*] Running flame_folded_pid.sh for PID: 2769707
+2025-12-26 16:49:45 - INFO - STDOUT: Executable command is /home/ubuntu/ClickHouse_debug/build_debug/programs/clickhouse client --query 'SELECT histogram(250)(number % 1_000_000) FROM numbers(11_000_000) FORMAT NULL;'
+2025-12-26 16:49:45 - INFO - STDOUT: successfully ran flame_folded_pid.sh
+2025-12-26 16:50:10 - INFO - STDOUT: [✓] FlameGraph folded file generated successfully
+2025-12-26 16:50:37 - INFO - STDOUT: [*] Extracted source locations for 295 functions
+2025-12-26 16:50:37 - INFO - __main__: Flamegraph analysis complete. Found 1 hot functions
+2025-12-26 16:50:37 - INFO - __main__: Looking up function definitions...
+2025-12-26 16:50:37 - INFO - __main__: Looking up function: DB::AsynchronousInsertQueue::processBatchDeadlines in /home/ubuntu/ClickHouse_debug/src/Interpreters/AsynchronousInsertQueue.cpp
+2025-12-26 16:50:37 - INFO - STDOUT: processBatchDeadlines
+2025-12-26 16:50:37 - INFO - STDOUT: Function 'DB::AsynchronousInsertQueue::processBatchDeadlines' () found:
+2025-12-26 16:50:37 - INFO - __main__: Found function: DB::AsynchronousInsertQueue::processBatchDeadlines -> /home/rocky/functio/ClickHouse/src/Interpreters/AsynchronousInsertQueue.cpp
+2025-12-26 16:50:37 - INFO - __main__: Stopping ClickHouse server...
+2025-12-26 16:50:37 - INFO - __main__: ClickHouse server stopped
+2025-12-26 16:50:37 - INFO - __main__: Query 5 status: success
+2025-12-26 16:50:37 - INFO - __main__: Query 5 result count: 1
+2025-12-26 16:50:37 - INFO - __main__: ============================================================
+2025-12-26 16:50:37 - INFO - __main__: Processing query 6/19: SELECT groupArray(number) FROM numbers(250_000_000) FORMAT NULL;...
+2025-12-26 16:50:37 - INFO - __main__: ============================================================
+2025-12-26 16:50:37 - INFO - __main__: Starting ClickHouse server...
+2025-12-26 16:50:44 - INFO - __main__: ClickHouse server is ready
+2025-12-26 16:50:44 - INFO - __main__: Executing 0 setup queries...
+2025-12-26 16:50:44 - INFO - __main__: Main query to analyze: SELECT groupArray(number) FROM numbers(250_000_000) FORMAT NULL;...
+2025-12-26 16:50:44 - INFO - __main__: Profiling command: /home/ubuntu/ClickHouse_debug/build_debug/programs/clickhouse client --query 'SELECT groupArray(number) FROM numbers(250_000_000) FORMAT NULL;'
+2025-12-26 16:50:44 - INFO - STDOUT: [*] Running flame_folded_pid.sh for PID: 2770700
+2025-12-26 16:50:44 - INFO - STDOUT: Executable command is /home/ubuntu/ClickHouse_debug/build_debug/programs/clickhouse client --query 'SELECT groupArray(number) FROM numbers(250_000_000) FORMAT NULL;'
+2025-12-26 16:50:44 - INFO - STDOUT: successfully ran flame_folded_pid.sh
+2025-12-26 16:51:06 - INFO - STDOUT: [✓] FlameGraph folded file generated successfully
+2025-12-26 16:51:35 - INFO - STDOUT: [*] Extracted source locations for 173 functions
+2025-12-26 16:51:35 - INFO - __main__: Flamegraph analysis complete. Found 0 hot functions
+2025-12-26 16:51:35 - INFO - __main__: Looking up function definitions...
+2025-12-26 16:51:35 - INFO - __main__: Stopping ClickHouse server...
+2025-12-26 16:51:36 - INFO - __main__: ClickHouse server stopped
+2025-12-26 16:51:36 - INFO - __main__: Query 6 status: fail
+2025-12-26 16:51:36 - INFO - __main__: Query 6 result count: 0
+2025-12-26 16:51:36 - INFO - __main__: ============================================================
+2025-12-26 16:51:36 - INFO - __main__: Processing query 7/19: SELECT groupUniqArray(toUInt64(number % 1000000)) FROM numbers(100_000_000) FORM...
+2025-12-26 16:51:36 - INFO - __main__: ============================================================
+2025-12-26 16:51:36 - INFO - __main__: Starting ClickHouse server...
+2025-12-26 16:51:42 - INFO - __main__: ClickHouse server is ready
+2025-12-26 16:51:42 - INFO - __main__: Executing 0 setup queries...
+2025-12-26 16:51:42 - INFO - __main__: Main query to analyze: SELECT groupUniqArray(toUInt64(number % 1000000)) FROM numbers(100_000_000) FORMAT NULL;...
+2025-12-26 16:51:42 - INFO - __main__: Profiling command: /home/ubuntu/ClickHouse_debug/build_debug/programs/clickhouse client --query 'SELECT groupUniqArray(toUInt64(number % 1000000)) FROM numbers(100_000_000) FORMAT NULL;'
+2025-12-26 16:51:42 - INFO - STDOUT: [*] Running flame_folded_pid.sh for PID: 2771686
+2025-12-26 16:51:42 - INFO - STDOUT: Executable command is /home/ubuntu/ClickHouse_debug/build_debug/programs/clickhouse client --query 'SELECT groupUniqArray(toUInt64(number % 1000000)) FROM numbers(100_000_000) FORMAT NULL;'
+2025-12-26 16:51:42 - INFO - STDOUT: successfully ran flame_folded_pid.sh
+2025-12-26 16:52:09 - INFO - STDOUT: [✓] FlameGraph folded file generated successfully
+2025-12-26 16:53:08 - INFO - STDOUT: [*] Extracted source locations for 542 functions
+2025-12-26 16:53:08 - INFO - __main__: Flamegraph analysis complete. Found 5 hot functions
+2025-12-26 16:53:08 - INFO - __main__: Looking up function definitions...
+2025-12-26 16:53:08 - INFO - __main__: Looking up function: HashTableCell<unsigned long, DefaultHash<unsigned long>, HashTableNoState>::isZero in /home/ubuntu/ClickHouse_debug/src/Common/HashTable/HashTable.h
+2025-12-26 16:53:08 - INFO - STDOUT: isZero
+2025-12-26 16:53:08 - INFO - STDOUT: Function 'HashTableCell<unsigned long, DefaultHash<unsigned long>, HashTableNoState>::isZero' () found:
+2025-12-26 16:53:08 - INFO - __main__: Found function: HashTableCell<unsigned long, DefaultHash<unsigned long>, HashTableNoState>::isZero -> /home/rocky/functio/ClickHouse/src/Common/HashTable/HashTable.h
+2025-12-26 16:53:08 - INFO - __main__: Looking up function: DB::(anonymous namespace)::ModuloByConstantImpl<unsigned long, unsigned int>::vectorConstant in /home/ubuntu/ClickHouse_debug/src/Functions/modulo.cpp
+2025-12-26 16:53:08 - INFO - STDOUT: vectorConstant
+2025-12-26 16:53:08 - INFO - STDOUT: Function 'DB::(anonymous namespace)::ModuloByConstantImpl<unsigned long, unsigned int>::vectorConstant' () found:
+2025-12-26 16:53:08 - INFO - __main__: Found function: DB::(anonymous namespace)::ModuloByConstantImpl<unsigned long, unsigned int>::vectorConstant -> /home/rocky/functio/ClickHouse/src/Functions/modulo.cpp
+2025-12-26 16:53:08 - INFO - __main__: Looking up function: bool bitEquals<unsigned long> in /home/ubuntu/ClickHouse_debug/src/Common/HashTable/HashTable.h
+2025-12-26 16:53:08 - INFO - STDOUT: bool bitEquals
+2025-12-26 16:53:08 - INFO - STDOUT: Function 'bool bitEquals<unsigned long>' () found:
+2025-12-26 16:53:08 - INFO - __main__: Found function: bool bitEquals<unsigned long> -> /home/rocky/functio/ClickHouse/src/Common/HashTable/HashTable.h
+2025-12-26 16:53:08 - INFO - __main__: Looking up function: DB::PODArray<unsigned long, 4096ul, Allocator<false, false>, 63ul, 64ul>::operator[] in /home/ubuntu/ClickHouse_debug/src/Common/PODArray.h
+2025-12-26 16:53:08 - INFO - STDOUT: operator[]
+2025-12-26 16:53:08 - INFO - STDOUT: Function 'DB::PODArray<unsigned long, 4096ul, Allocator<false, false>, 63ul, 64ul>::operator[]' () found:
+2025-12-26 16:53:08 - INFO - __main__: Found function: DB::PODArray<unsigned long, 4096ul, Allocator<false, false>, 63ul, 64ul>::operator[] -> /home/rocky/functio/ClickHouse/src/Common/PODArray.h
+2025-12-26 16:53:08 - INFO - __main__: Looking up function: COW<DB::IColumn>::immutable_ptr<DB::IColumn> DB::detail::ConvertImpl<DB::DataTypeNumber<unsigned int>, DB::DataTypeNumber<unsigned long>, DB::detail::NameToUInt64, in /home/ubuntu/ClickHouse_debug/src/Functions/FunctionsConversion.h
+2025-12-26 16:53:08 - INFO - STDOUT: ConvertImpl<DB::DataTypeNumber<unsigned int>, DB::DataTypeNumber<unsigned long>, DB::detail::NameToUInt64,
+2025-12-26 16:53:08 - INFO - STDOUT: Function 'COW<DB::IColumn>::immutable_ptr<DB::IColumn> DB::detail::ConvertImpl<DB::DataTypeNumber<unsigned int>, DB::DataTypeNumber<unsigned long>, DB::detail::NameToUInt64,' () not found using traditional way. Trying alternative
+2025-12-26 16:53:33 - INFO - STDOUT: /home/ubuntu/ClickHouse_debug/src/Functions/FunctionsConversion.h
+2025-12-26 16:53:33 - INFO - STDOUT: None
+2025-12-26 16:53:33 - INFO - STDOUT: standart and alternative methods of function lookup failed, skipping this function
+2025-12-26 16:53:33 - WARNING - __main__: Function not found: COW<DB::IColumn>::immutable_ptr<DB::IColumn> DB::detail::ConvertImpl<DB::DataTypeNumber<unsigned int>, DB::DataTypeNumber<unsigned long>, DB::detail::NameToUInt64,
+2025-12-26 16:53:33 - INFO - __main__: Stopping ClickHouse server...
+2025-12-26 16:53:33 - INFO - __main__: ClickHouse server stopped
+2025-12-26 16:53:33 - INFO - __main__: Query 7 status: success
+2025-12-26 16:53:33 - INFO - __main__: Query 7 result count: 4
+2025-12-26 16:53:33 - INFO - __main__: ============================================================
+2025-12-26 16:53:33 - INFO - __main__: Processing query 8/19: SELECT groupBitmap(number) FROM numbers(200_000_000) FORMAT NULL;...
+2025-12-26 16:53:33 - INFO - __main__: ============================================================
+2025-12-26 16:53:33 - INFO - __main__: Starting ClickHouse server...
+2025-12-26 16:53:39 - INFO - __main__: ClickHouse server is ready
+2025-12-26 16:53:39 - INFO - __main__: Executing 0 setup queries...
+2025-12-26 16:53:39 - INFO - __main__: Main query to analyze: SELECT groupBitmap(number) FROM numbers(200_000_000) FORMAT NULL;...
+2025-12-26 16:53:39 - INFO - __main__: Profiling command: /home/ubuntu/ClickHouse_debug/build_debug/programs/clickhouse client --query 'SELECT groupBitmap(number) FROM numbers(200_000_000) FORMAT NULL;'
+2025-12-26 16:53:39 - INFO - STDOUT: [*] Running flame_folded_pid.sh for PID: 2772828
+2025-12-26 16:53:39 - INFO - STDOUT: Executable command is /home/ubuntu/ClickHouse_debug/build_debug/programs/clickhouse client --query 'SELECT groupBitmap(number) FROM numbers(200_000_000) FORMAT NULL;'
+2025-12-26 16:53:39 - INFO - STDOUT: successfully ran flame_folded_pid.sh
+2025-12-26 16:54:04 - INFO - STDOUT: [✓] FlameGraph folded file generated successfully
+2025-12-26 16:55:04 - INFO - STDOUT: [*] Extracted source locations for 267 functions
+2025-12-26 16:55:04 - INFO - __main__: Flamegraph analysis complete. Found 0 hot functions
+2025-12-26 16:55:04 - INFO - __main__: Looking up function definitions...
+2025-12-26 16:55:04 - INFO - __main__: Stopping ClickHouse server...
+2025-12-26 16:55:08 - INFO - __main__: ClickHouse server stopped
+2025-12-26 16:55:08 - INFO - __main__: Query 8 status: fail
+2025-12-26 16:55:08 - INFO - __main__: Query 8 result count: 0
+2025-12-26 16:55:08 - INFO - __main__: ============================================================
+2025-12-26 16:55:08 - INFO - __main__: Processing query 9/19: SELECT quantileExact(0.99)(number) FROM numbers(300_000_000) FORMAT NULL;...
+2025-12-26 16:55:08 - INFO - __main__: ============================================================
+2025-12-26 16:55:08 - INFO - __main__: Starting ClickHouse server...
+2025-12-26 16:55:14 - INFO - __main__: ClickHouse server is ready
+2025-12-26 16:55:14 - INFO - __main__: Executing 0 setup queries...
+2025-12-26 16:55:14 - INFO - __main__: Main query to analyze: SELECT quantileExact(0.99)(number) FROM numbers(300_000_000) FORMAT NULL;...
+2025-12-26 16:55:14 - INFO - __main__: Profiling command: /home/ubuntu/ClickHouse_debug/build_debug/programs/clickhouse client --query 'SELECT quantileExact(0.99)(number) FROM numbers(300_000_000) FORMAT NULL;'
+2025-12-26 16:55:14 - INFO - STDOUT: [*] Running flame_folded_pid.sh for PID: 2773855
+2025-12-26 16:55:14 - INFO - STDOUT: Executable command is /home/ubuntu/ClickHouse_debug/build_debug/programs/clickhouse client --query 'SELECT quantileExact(0.99)(number) FROM numbers(300_000_000) FORMAT NULL;'
+2025-12-26 16:55:14 - INFO - STDOUT: successfully ran flame_folded_pid.sh
+2025-12-26 16:58:17 - INFO - STDOUT: [✓] FlameGraph folded file generated successfully
+2025-12-26 17:03:22 - INFO - STDOUT: [*] Extracted source locations for 1155 functions
+2025-12-26 17:03:23 - INFO - __main__: Flamegraph analysis complete. Found 1 hot functions
+2025-12-26 17:03:23 - INFO - __main__: Looking up function definitions...
+2025-12-26 17:03:23 - INFO - __main__: Looking up function: pcg_detail::xsl_rr_mixin<unsigned long, unsigned __int128>::output in /home/ubuntu/ClickHouse_debug/base/pcg-random/./pcg_random.hpp
+2025-12-26 17:03:23 - INFO - STDOUT: output
+2025-12-26 17:03:23 - INFO - STDOUT: Function 'pcg_detail::xsl_rr_mixin<unsigned long, unsigned __int128>::output' () found:
+2025-12-26 17:03:23 - INFO - __main__: Found function: pcg_detail::xsl_rr_mixin<unsigned long, unsigned __int128>::output -> /home/rocky/functio/ClickHouse/base/pcg-random/./pcg_random.hpp
+2025-12-26 17:03:23 - INFO - __main__: Stopping ClickHouse server...
+2025-12-26 17:03:25 - INFO - __main__: ClickHouse server stopped
+2025-12-26 17:03:25 - INFO - __main__: Query 9 status: success
+2025-12-26 17:03:25 - INFO - __main__: Query 9 result count: 1
+2025-12-26 17:03:25 - INFO - __main__: ============================================================
+2025-12-26 17:03:25 - INFO - __main__: Processing query 10/19: SELECT sequenceMatch('(?1)(?2)')(toUInt32(number), (number % 2) = 0, (number % 3...
+2025-12-26 17:03:25 - INFO - __main__: ============================================================
+2025-12-26 17:03:25 - INFO - __main__: Starting ClickHouse server...
+2025-12-26 17:03:32 - INFO - __main__: ClickHouse server is ready
+2025-12-26 17:03:32 - INFO - __main__: Executing 0 setup queries...
+2025-12-26 17:03:32 - INFO - __main__: Main query to analyze: SELECT sequenceMatch('(?1)(?2)')(toUInt32(number), (number % 2) = 0, (number % 3) = 0) FROM numbers(180_000_000) FORMAT Null;...
+2025-12-26 17:03:32 - INFO - __main__: Profiling command: /home/ubuntu/ClickHouse_debug/build_debug/programs/clickhouse client --query 'SELECT sequenceMatch('"'"'(?1)(?2)'"'"')(toUInt32(number), (number % 2) = 0, (number % 3) = 0) FROM numbers(180_000_000) FORMAT Null;'
+2025-12-26 17:03:32 - INFO - STDOUT: [*] Running flame_folded_pid.sh for PID: 2775024
+2025-12-26 17:03:32 - INFO - STDOUT: Executable command is /home/ubuntu/ClickHouse_debug/build_debug/programs/clickhouse client --query 'SELECT sequenceMatch('"'"'(?1)(?2)'"'"')(toUInt32(number), (number % 2) = 0, (number % 3) = 0) FROM numbers(180_000_000) FORMAT Null;'
+2025-12-26 17:03:32 - INFO - STDOUT: successfully ran flame_folded_pid.sh
+2025-12-26 17:05:31 - INFO - STDOUT: [✓] FlameGraph folded file generated successfully
+2025-12-26 17:07:58 - INFO - STDOUT: [*] Extracted source locations for 1151 functions
+2025-12-26 17:07:59 - INFO - __main__: Flamegraph analysis complete. Found 1 hot functions
+2025-12-26 17:07:59 - INFO - __main__: Looking up function definitions...
+2025-12-26 17:07:59 - INFO - __main__: Looking up function: DB::(anonymous namespace)::AggregateFunctionSequenceMatchData<unsigned int>::sort in /home/ubuntu/ClickHouse_debug/src/AggregateFunctions/AggregateFunctionSequenceMatch.cpp
+2025-12-26 17:07:59 - INFO - STDOUT: sort
+2025-12-26 17:07:59 - INFO - STDOUT: Function 'DB::(anonymous namespace)::AggregateFunctionSequenceMatchData<unsigned int>::sort' () found:
+2025-12-26 17:07:59 - INFO - __main__: Found function: DB::(anonymous namespace)::AggregateFunctionSequenceMatchData<unsigned int>::sort -> /home/rocky/functio/ClickHouse/src/AggregateFunctions/AggregateFunctionSequenceMatch.cpp
+2025-12-26 17:07:59 - INFO - __main__: Stopping ClickHouse server...
+2025-12-26 17:07:59 - INFO - __main__: ClickHouse server stopped
+2025-12-26 17:07:59 - INFO - __main__: Query 10 status: success
+2025-12-26 17:07:59 - INFO - __main__: Query 10 result count: 1
+2025-12-26 17:07:59 - INFO - __main__: ============================================================
+2025-12-26 17:07:59 - INFO - __main__: Processing query 11/19: SELECT simpleLinearRegression(number, number * 2 + 5) FROM numbers(600_000_000) ...
+2025-12-26 17:07:59 - INFO - __main__: ============================================================
+2025-12-26 17:07:59 - INFO - __main__: Starting ClickHouse server...
+2025-12-26 17:08:05 - INFO - __main__: ClickHouse server is ready
+2025-12-26 17:08:05 - INFO - __main__: Executing 0 setup queries...
+2025-12-26 17:08:05 - INFO - __main__: Main query to analyze: SELECT simpleLinearRegression(number, number * 2 + 5) FROM numbers(600_000_000) FORMAT NULL;...
+2025-12-26 17:08:05 - INFO - __main__: Profiling command: /home/ubuntu/ClickHouse_debug/build_debug/programs/clickhouse client --query 'SELECT simpleLinearRegression(number, number * 2 + 5) FROM numbers(600_000_000) FORMAT NULL;'
+2025-12-26 17:08:05 - INFO - STDOUT: [*] Running flame_folded_pid.sh for PID: 2776044
+2025-12-26 17:08:05 - INFO - STDOUT: Executable command is /home/ubuntu/ClickHouse_debug/build_debug/programs/clickhouse client --query 'SELECT simpleLinearRegression(number, number * 2 + 5) FROM numbers(600_000_000) FORMAT NULL;'
+2025-12-26 17:08:05 - INFO - STDOUT: successfully ran flame_folded_pid.sh
+2025-12-26 17:08:33 - INFO - STDOUT: [✓] FlameGraph folded file generated successfully
+2025-12-26 17:10:28 - INFO - STDOUT: [*] Extracted source locations for 917 functions
+2025-12-26 17:10:28 - INFO - __main__: Flamegraph analysis complete. Found 6 hot functions
+2025-12-26 17:10:28 - INFO - __main__: Looking up function definitions...
+2025-12-26 17:10:28 - INFO - __main__: Looking up function: DB::(anonymous namespace)::AggregateFunctionSimpleLinearRegressionData::add in /home/ubuntu/ClickHouse_debug/src/AggregateFunctions/AggregateFunctionSimpleLinearRegression.cpp
+2025-12-26 17:10:28 - INFO - STDOUT: add
+2025-12-26 17:10:28 - INFO - STDOUT: Function 'DB::(anonymous namespace)::AggregateFunctionSimpleLinearRegressionData::add' () found:
+2025-12-26 17:10:28 - INFO - __main__: Found function: DB::(anonymous namespace)::AggregateFunctionSimpleLinearRegressionData::add -> /home/rocky/functio/ClickHouse/src/AggregateFunctions/AggregateFunctionSimpleLinearRegression.cpp
+2025-12-26 17:10:28 - INFO - __main__: Looking up function: DB::ColumnVector<unsigned long>::getFloat64 in /home/ubuntu/ClickHouse_debug/src/Columns/ColumnVector.cpp
+2025-12-26 17:10:28 - INFO - STDOUT: getFloat64
+2025-12-26 17:10:28 - INFO - STDOUT: Function 'DB::ColumnVector<unsigned long>::getFloat64' () found:
+2025-12-26 17:10:28 - INFO - __main__: Found function: DB::ColumnVector<unsigned long>::getFloat64 -> /home/rocky/functio/ClickHouse/src/Columns/ColumnVector.cpp
+2025-12-26 17:10:28 - INFO - __main__: Looking up function: DB::PODArray<unsigned long, 4096ul, Allocator<false, false>, 63ul, 64ul>::operator[] in /home/ubuntu/ClickHouse_debug/src/Common/PODArray.h
+2025-12-26 17:10:28 - INFO - STDOUT: operator[]
+2025-12-26 17:10:28 - INFO - STDOUT: Function 'DB::PODArray<unsigned long, 4096ul, Allocator<false, false>, 63ul, 64ul>::operator[]' () found:
+2025-12-26 17:10:28 - INFO - __main__: Found function: DB::PODArray<unsigned long, 4096ul, Allocator<false, false>, 63ul, 64ul>::operator[] -> /home/rocky/functio/ClickHouse/src/Common/PODArray.h
+2025-12-26 17:10:28 - INFO - __main__: Looking up function: DB::(anonymous namespace)::AggregateFunctionSimpleLinearRegression::add in /home/ubuntu/ClickHouse_debug/src/AggregateFunctions/AggregateFunctionSimpleLinearRegression.cpp
+2025-12-26 17:10:28 - INFO - STDOUT: add
+2025-12-26 17:10:28 - INFO - STDOUT: Function 'DB::(anonymous namespace)::AggregateFunctionSimpleLinearRegression::add' () found:
+2025-12-26 17:10:28 - INFO - __main__: Found function: DB::(anonymous namespace)::AggregateFunctionSimpleLinearRegression::add -> /home/rocky/functio/ClickHouse/src/AggregateFunctions/AggregateFunctionSimpleLinearRegression.cpp
+2025-12-26 17:10:28 - INFO - __main__: Looking up function: DB::PODArrayBase<8ul, 4096ul, Allocator<false, false>, 63ul, 64ul>::size in /home/ubuntu/ClickHouse_debug/src/Common/PODArray.h
+2025-12-26 17:10:28 - INFO - STDOUT: size
+2025-12-26 17:10:28 - INFO - STDOUT: Function 'DB::PODArrayBase<8ul, 4096ul, Allocator<false, false>, 63ul, 64ul>::size' () found:
+2025-12-26 17:10:28 - INFO - __main__: Found function: DB::PODArrayBase<8ul, 4096ul, Allocator<false, false>, 63ul, 64ul>::size -> /home/rocky/functio/ClickHouse/src/Common/PODArray.h
+2025-12-26 17:10:28 - INFO - __main__: Looking up function: DB::executeJob in /home/ubuntu/ClickHouse_debug/src/Processors/Executors/ExecutionThreadContext.cpp
+2025-12-26 17:10:28 - INFO - STDOUT: executeJob
+2025-12-26 17:10:28 - INFO - STDOUT: Function 'DB::executeJob' () found:
+2025-12-26 17:10:28 - INFO - __main__: Found function: DB::executeJob -> /home/rocky/functio/ClickHouse/src/Processors/Executors/ExecutionThreadContext.cpp
+2025-12-26 17:10:28 - INFO - __main__: Stopping ClickHouse server...
+2025-12-26 17:10:28 - INFO - __main__: ClickHouse server stopped
+2025-12-26 17:10:28 - INFO - __main__: Query 11 status: success
+2025-12-26 17:10:28 - INFO - __main__: Query 11 result count: 6
+2025-12-26 17:10:28 - INFO - __main__: ============================================================
+2025-12-26 17:10:28 - INFO - __main__: Processing query 12/19: SELECT mannWhitneyUTest('two-sided')(number, number % 2) FROM numbers(10_000_000...
+2025-12-26 17:10:28 - INFO - __main__: ============================================================
+2025-12-26 17:10:28 - INFO - __main__: Starting ClickHouse server...
+2025-12-26 17:10:34 - INFO - __main__: ClickHouse server is ready
+2025-12-26 17:10:34 - INFO - __main__: Executing 0 setup queries...
+2025-12-26 17:10:34 - INFO - __main__: Main query to analyze: SELECT mannWhitneyUTest('two-sided')(number, number % 2) FROM numbers(10_000_000) FORMAT NULL;...
+2025-12-26 17:10:34 - INFO - __main__: Profiling command: /home/ubuntu/ClickHouse_debug/build_debug/programs/clickhouse client --query 'SELECT mannWhitneyUTest('"'"'two-sided'"'"')(number, number % 2) FROM numbers(10_000_000) FORMAT NULL;'
+2025-12-26 17:10:34 - INFO - STDOUT: [*] Running flame_folded_pid.sh for PID: 2777058
+2025-12-26 17:10:34 - INFO - STDOUT: Executable command is /home/ubuntu/ClickHouse_debug/build_debug/programs/clickhouse client --query 'SELECT mannWhitneyUTest('"'"'two-sided'"'"')(number, number % 2) FROM numbers(10_000_000) FORMAT NULL;'
+2025-12-26 17:10:34 - INFO - STDOUT: successfully ran flame_folded_pid.sh
+2025-12-26 17:10:59 - INFO - STDOUT: [✓] FlameGraph folded file generated successfully
+2025-12-26 17:11:27 - INFO - STDOUT: [*] Extracted source locations for 287 functions
+2025-12-26 17:11:27 - INFO - __main__: Flamegraph analysis complete. Found 1 hot functions
+2025-12-26 17:11:27 - INFO - __main__: Looking up function definitions...
+2025-12-26 17:11:27 - INFO - __main__: Looking up function: DB::AsynchronousInsertQueue::processBatchDeadlines in /home/ubuntu/ClickHouse_debug/src/Interpreters/AsynchronousInsertQueue.cpp
+2025-12-26 17:11:27 - INFO - STDOUT: processBatchDeadlines
+2025-12-26 17:11:27 - INFO - STDOUT: Function 'DB::AsynchronousInsertQueue::processBatchDeadlines' () found:
+2025-12-26 17:11:27 - INFO - __main__: Found function: DB::AsynchronousInsertQueue::processBatchDeadlines -> /home/rocky/functio/ClickHouse/src/Interpreters/AsynchronousInsertQueue.cpp
+2025-12-26 17:11:27 - INFO - __main__: Stopping ClickHouse server...
+2025-12-26 17:11:27 - INFO - __main__: ClickHouse server stopped
+2025-12-26 17:11:27 - INFO - __main__: Query 12 status: success
+2025-12-26 17:11:27 - INFO - __main__: Query 12 result count: 1
+2025-12-26 17:11:27 - INFO - __main__: ============================================================
+2025-12-26 17:11:27 - INFO - __main__: Processing query 13/19: SELECT studentTTest(number, number % 2) FROM numbers(600_000_000) FORMAT NULL;...
+2025-12-26 17:11:27 - INFO - __main__: ============================================================
+2025-12-26 17:11:27 - INFO - __main__: Starting ClickHouse server...
+2025-12-26 17:11:33 - INFO - __main__: ClickHouse server is ready
+2025-12-26 17:11:33 - INFO - __main__: Executing 0 setup queries...
+2025-12-26 17:11:33 - INFO - __main__: Main query to analyze: SELECT studentTTest(number, number % 2) FROM numbers(600_000_000) FORMAT NULL;...
+2025-12-26 17:11:33 - INFO - __main__: Profiling command: /home/ubuntu/ClickHouse_debug/build_debug/programs/clickhouse client --query 'SELECT studentTTest(number, number % 2) FROM numbers(600_000_000) FORMAT NULL;'
+2025-12-26 17:11:33 - INFO - STDOUT: [*] Running flame_folded_pid.sh for PID: 2778044
+2025-12-26 17:11:33 - INFO - STDOUT: Executable command is /home/ubuntu/ClickHouse_debug/build_debug/programs/clickhouse client --query 'SELECT studentTTest(number, number % 2) FROM numbers(600_000_000) FORMAT NULL;'
+2025-12-26 17:11:33 - INFO - STDOUT: successfully ran flame_folded_pid.sh
+2025-12-26 17:11:59 - INFO - STDOUT: [✓] FlameGraph folded file generated successfully
+2025-12-26 17:13:34 - INFO - STDOUT: [*] Extracted source locations for 716 functions
+2025-12-26 17:13:34 - INFO - __main__: Flamegraph analysis complete. Found 5 hot functions
+2025-12-26 17:13:34 - INFO - __main__: Looking up function definitions...
+2025-12-26 17:13:34 - INFO - __main__: Looking up function: DB::ColumnVector<unsigned long>::getFloat64 in /home/ubuntu/ClickHouse_debug/src/Columns/ColumnVector.cpp
+2025-12-26 17:13:34 - INFO - STDOUT: getFloat64
+2025-12-26 17:13:34 - INFO - STDOUT: Function 'DB::ColumnVector<unsigned long>::getFloat64' () found:
+2025-12-26 17:13:34 - INFO - __main__: Found function: DB::ColumnVector<unsigned long>::getFloat64 -> /home/rocky/functio/ClickHouse/src/Columns/ColumnVector.cpp
+2025-12-26 17:13:34 - INFO - __main__: Looking up function: DB::AggregateFunctionTTest<DB::(anonymous namespace)::StudentTTestData>::add in /home/ubuntu/ClickHouse_debug/src/AggregateFunctions/AggregateFunctionTTest.h
+2025-12-26 17:13:34 - INFO - STDOUT: add
+2025-12-26 17:13:34 - INFO - STDOUT: Function 'DB::AggregateFunctionTTest<DB::(anonymous namespace)::StudentTTestData>::add' () found:
+2025-12-26 17:13:34 - INFO - __main__: Found function: DB::AggregateFunctionTTest<DB::(anonymous namespace)::StudentTTestData>::add -> /home/rocky/functio/ClickHouse/src/AggregateFunctions/AggregateFunctionTTest.h
+2025-12-26 17:13:34 - INFO - __main__: Looking up function: DB::(anonymous namespace)::ModuloByConstantImpl<unsigned long, char8_t>::vectorConstant in /home/ubuntu/ClickHouse_debug/src/Functions/modulo.cpp
+2025-12-26 17:13:34 - INFO - STDOUT: vectorConstant
+2025-12-26 17:13:34 - INFO - STDOUT: Function 'DB::(anonymous namespace)::ModuloByConstantImpl<unsigned long, char8_t>::vectorConstant' () found:
+2025-12-26 17:13:34 - INFO - __main__: Found function: DB::(anonymous namespace)::ModuloByConstantImpl<unsigned long, char8_t>::vectorConstant -> /home/rocky/functio/ClickHouse/src/Functions/modulo.cpp
+2025-12-26 17:13:34 - INFO - __main__: Looking up function: DB::TTestMoments<double>::addX in /home/ubuntu/ClickHouse_debug/src/AggregateFunctions/Moments.h
+2025-12-26 17:13:34 - INFO - STDOUT: addX
+2025-12-26 17:13:34 - INFO - STDOUT: Function 'DB::TTestMoments<double>::addX' () found:
+2025-12-26 17:13:34 - INFO - __main__: Found function: DB::TTestMoments<double>::addX -> /home/rocky/functio/ClickHouse/src/AggregateFunctions/Moments.h
+2025-12-26 17:13:34 - INFO - __main__: Looking up function: DB::TTestMoments<double>::addY in /home/ubuntu/ClickHouse_debug/src/AggregateFunctions/Moments.h
+2025-12-26 17:13:34 - INFO - STDOUT: addY
+2025-12-26 17:13:34 - INFO - STDOUT: Function 'DB::TTestMoments<double>::addY' () found:
+2025-12-26 17:13:34 - INFO - __main__: Found function: DB::TTestMoments<double>::addY -> /home/rocky/functio/ClickHouse/src/AggregateFunctions/Moments.h
+2025-12-26 17:13:34 - INFO - __main__: Stopping ClickHouse server...
+2025-12-26 17:13:34 - INFO - __main__: ClickHouse server stopped
+2025-12-26 17:13:34 - INFO - __main__: Query 13 status: success
+2025-12-26 17:13:34 - INFO - __main__: Query 13 result count: 5
+2025-12-26 17:13:34 - INFO - __main__: ============================================================
+2025-12-26 17:13:34 - INFO - __main__: Processing query 14/19: SELECT welchTTest(number, number % 2) FROM numbers(700_000_000) FORMAT NULL;...
+2025-12-26 17:13:34 - INFO - __main__: ============================================================
+2025-12-26 17:13:34 - INFO - __main__: Starting ClickHouse server...
+2025-12-26 17:13:40 - INFO - __main__: ClickHouse server is ready
+2025-12-26 17:13:40 - INFO - __main__: Executing 0 setup queries...
+2025-12-26 17:13:40 - INFO - __main__: Main query to analyze: SELECT welchTTest(number, number % 2) FROM numbers(700_000_000) FORMAT NULL;...
+2025-12-26 17:13:40 - INFO - __main__: Profiling command: /home/ubuntu/ClickHouse_debug/build_debug/programs/clickhouse client --query 'SELECT welchTTest(number, number % 2) FROM numbers(700_000_000) FORMAT NULL;'
+2025-12-26 17:13:40 - INFO - STDOUT: [*] Running flame_folded_pid.sh for PID: 2779043
+2025-12-26 17:13:40 - INFO - STDOUT: Executable command is /home/ubuntu/ClickHouse_debug/build_debug/programs/clickhouse client --query 'SELECT welchTTest(number, number % 2) FROM numbers(700_000_000) FORMAT NULL;'
+2025-12-26 17:13:40 - INFO - STDOUT: successfully ran flame_folded_pid.sh
+2025-12-26 17:14:09 - INFO - STDOUT: [✓] FlameGraph folded file generated successfully
+2025-12-26 17:15:58 - INFO - STDOUT: [*] Extracted source locations for 835 functions
+2025-12-26 17:15:58 - INFO - __main__: Flamegraph analysis complete. Found 5 hot functions
+2025-12-26 17:15:58 - INFO - __main__: Looking up function definitions...
+2025-12-26 17:15:58 - INFO - __main__: Looking up function: DB::ColumnVector<unsigned long>::getFloat64 in /home/ubuntu/ClickHouse_debug/src/Columns/ColumnVector.cpp
+2025-12-26 17:15:58 - INFO - STDOUT: getFloat64
+2025-12-26 17:15:58 - INFO - STDOUT: Function 'DB::ColumnVector<unsigned long>::getFloat64' () found:
+2025-12-26 17:15:58 - INFO - __main__: Found function: DB::ColumnVector<unsigned long>::getFloat64 -> /home/rocky/functio/ClickHouse/src/Columns/ColumnVector.cpp
+2025-12-26 17:15:58 - INFO - __main__: Looking up function: DB::AggregateFunctionTTest<DB::(anonymous namespace)::WelchTTestData>::add in /home/ubuntu/ClickHouse_debug/src/AggregateFunctions/AggregateFunctionTTest.h
+2025-12-26 17:15:58 - INFO - STDOUT: add
+2025-12-26 17:15:58 - INFO - STDOUT: Function 'DB::AggregateFunctionTTest<DB::(anonymous namespace)::WelchTTestData>::add' () found:
+2025-12-26 17:15:58 - INFO - __main__: Found function: DB::AggregateFunctionTTest<DB::(anonymous namespace)::WelchTTestData>::add -> /home/rocky/functio/ClickHouse/src/AggregateFunctions/AggregateFunctionTTest.h
+2025-12-26 17:15:58 - INFO - __main__: Looking up function: DB::(anonymous namespace)::ModuloByConstantImpl<unsigned long, char8_t>::vectorConstant in /home/ubuntu/ClickHouse_debug/src/Functions/modulo.cpp
+2025-12-26 17:15:58 - INFO - STDOUT: vectorConstant
+2025-12-26 17:15:58 - INFO - STDOUT: Function 'DB::(anonymous namespace)::ModuloByConstantImpl<unsigned long, char8_t>::vectorConstant' () found:
+2025-12-26 17:15:58 - INFO - __main__: Found function: DB::(anonymous namespace)::ModuloByConstantImpl<unsigned long, char8_t>::vectorConstant -> /home/rocky/functio/ClickHouse/src/Functions/modulo.cpp
+2025-12-26 17:15:58 - INFO - __main__: Looking up function: DB::TTestMoments<double>::addX in /home/ubuntu/ClickHouse_debug/src/AggregateFunctions/Moments.h
+2025-12-26 17:15:58 - INFO - STDOUT: addX
+2025-12-26 17:15:58 - INFO - STDOUT: Function 'DB::TTestMoments<double>::addX' () found:
+2025-12-26 17:15:58 - INFO - __main__: Found function: DB::TTestMoments<double>::addX -> /home/rocky/functio/ClickHouse/src/AggregateFunctions/Moments.h
+2025-12-26 17:15:58 - INFO - __main__: Looking up function: DB::TTestMoments<double>::addY in /home/ubuntu/ClickHouse_debug/src/AggregateFunctions/Moments.h
+2025-12-26 17:15:58 - INFO - STDOUT: addY
+2025-12-26 17:15:58 - INFO - STDOUT: Function 'DB::TTestMoments<double>::addY' () found:
+2025-12-26 17:15:58 - INFO - __main__: Found function: DB::TTestMoments<double>::addY -> /home/rocky/functio/ClickHouse/src/AggregateFunctions/Moments.h
+2025-12-26 17:15:58 - INFO - __main__: Stopping ClickHouse server...
+2025-12-26 17:15:58 - INFO - __main__: ClickHouse server stopped
+2025-12-26 17:15:58 - INFO - __main__: Query 14 status: success
+2025-12-26 17:15:58 - INFO - __main__: Query 14 result count: 5
+2025-12-26 17:15:58 - INFO - __main__: ============================================================
+2025-12-26 17:15:58 - INFO - __main__: Processing query 15/19: SELECT groupArraySorted(1500000)(number) FROM numbers(600_000_000) FORMAT NULL;...
+2025-12-26 17:15:58 - INFO - __main__: ============================================================
+2025-12-26 17:15:58 - INFO - __main__: Starting ClickHouse server...
+2025-12-26 17:16:04 - INFO - __main__: ClickHouse server is ready
+2025-12-26 17:16:04 - INFO - __main__: Executing 0 setup queries...
+2025-12-26 17:16:04 - INFO - __main__: Main query to analyze: SELECT groupArraySorted(1500000)(number) FROM numbers(600_000_000) FORMAT NULL;...
+2025-12-26 17:16:04 - INFO - __main__: Profiling command: /home/ubuntu/ClickHouse_debug/build_debug/programs/clickhouse client --query 'SELECT groupArraySorted(1500000)(number) FROM numbers(600_000_000) FORMAT NULL;'
+2025-12-26 17:16:04 - INFO - STDOUT: [*] Running flame_folded_pid.sh for PID: 2780054
+2025-12-26 17:16:04 - INFO - STDOUT: Executable command is /home/ubuntu/ClickHouse_debug/build_debug/programs/clickhouse client --query 'SELECT groupArraySorted(1500000)(number) FROM numbers(600_000_000) FORMAT NULL;'
+2025-12-26 17:16:04 - INFO - STDOUT: successfully ran flame_folded_pid.sh
+2025-12-26 17:20:27 - INFO - STDOUT: [✓] FlameGraph folded file generated successfully
+2025-12-26 17:26:14 - INFO - STDOUT: [*] Extracted source locations for 1380 functions
+2025-12-26 17:26:15 - INFO - __main__: Flamegraph analysis complete. Found 7 hot functions
+2025-12-26 17:26:15 - INFO - __main__: Looking up function definitions...
+2025-12-26 17:26:15 - INFO - __main__: Looking up function: pcg_detail::xsl_rr_mixin<unsigned long, unsigned __int128>::output in /home/ubuntu/ClickHouse_debug/base/pcg-random/./pcg_random.hpp
+2025-12-26 17:26:15 - INFO - STDOUT: output
+2025-12-26 17:26:15 - INFO - STDOUT: Function 'pcg_detail::xsl_rr_mixin<unsigned long, unsigned __int128>::output' () found:
+2025-12-26 17:26:15 - INFO - __main__: Found function: pcg_detail::xsl_rr_mixin<unsigned long, unsigned __int128>::output -> /home/rocky/functio/ClickHouse/base/pcg-random/./pcg_random.hpp
+2025-12-26 17:26:15 - INFO - __main__: Looking up function: void shuffle<unsigned long*> in /home/ubuntu/ClickHouse_debug/base/base/../base/sort.h
+2025-12-26 17:26:15 - INFO - STDOUT: void shuffle
+2025-12-26 17:26:15 - INFO - STDOUT: Function 'void shuffle<unsigned long*>' () found:
+2025-12-26 17:26:15 - INFO - __main__: Found function: void shuffle<unsigned long*> -> /home/rocky/functio/ClickHouse/base/base/../base/sort.h
+2025-12-26 17:26:15 - INFO - __main__: Looking up function: bool DebugLessComparator<DB::(anonymous namespace)::GroupArraySortedData<unsigned long, in /home/ubuntu/ClickHouse_debug/base/base/../base/sort.h
+2025-12-26 17:26:15 - INFO - STDOUT: bool DebugLessComparator<DB::(anonymous namespace)::GroupArraySortedData<unsigned long,
+2025-12-26 17:26:15 - INFO - STDOUT: Function 'bool DebugLessComparator<DB::(anonymous namespace)::GroupArraySortedData<unsigned long,' () not found using traditional way. Trying alternative
+2025-12-26 17:26:38 - INFO - STDOUT: /home/ubuntu/ClickHouse_debug/base/base/../base/sort.h
+2025-12-26 17:26:38 - INFO - STDOUT: None
+2025-12-26 17:26:38 - INFO - STDOUT: standart and alternative methods of function lookup failed, skipping this function
+2025-12-26 17:26:38 - WARNING - __main__: Function not found: bool DebugLessComparator<DB::(anonymous namespace)::GroupArraySortedData<unsigned long,
+2025-12-26 17:26:38 - INFO - __main__: Looking up function: void nth_element<unsigned long*, DB::(anonymous namespace)::GroupArraySortedData<unsigned long, in /home/ubuntu/ClickHouse_debug/base/base/../base/sort.h
+2025-12-26 17:26:38 - INFO - STDOUT: void nth_element<unsigned long*, DB::(anonymous namespace)::GroupArraySortedData<unsigned long,
+2025-12-26 17:26:38 - INFO - STDOUT: Function 'void nth_element<unsigned long*, DB::(anonymous namespace)::GroupArraySortedData<unsigned long,' () not found using traditional way. Trying alternative
+2025-12-26 17:26:52 - INFO - STDOUT: /home/ubuntu/ClickHouse_debug/base/base/../base/sort.h
+2025-12-26 17:26:52 - INFO - STDOUT: None
+2025-12-26 17:26:52 - INFO - STDOUT: standart and alternative methods of function lookup failed, skipping this function
+2025-12-26 17:26:52 - WARNING - __main__: Function not found: void nth_element<unsigned long*, DB::(anonymous namespace)::GroupArraySortedData<unsigned long,
+2025-12-26 17:26:52 - INFO - __main__: Looking up function: pcg_detail::engine<unsigned long, unsigned __int128, pcg_detail::xsl_rr_mixin<unsigned long, unsigned __int128>, false, pcg_detail::specific_stream<unsigned __int128>, pcg_detail::default_multiplier<unsigned __int128> >::bump in /home/ubuntu/ClickHouse_debug/base/pcg-random/./pcg_random.hpp
+2025-12-26 17:26:52 - INFO - STDOUT: bump
+2025-12-26 17:26:52 - INFO - STDOUT: Function 'pcg_detail::engine<unsigned long, unsigned __int128, pcg_detail::xsl_rr_mixin<unsigned long, unsigned __int128>, false, pcg_detail::specific_stream<unsigned __int128>, pcg_detail::default_multiplier<unsigned __int128> >::bump' () found:
+2025-12-26 17:26:52 - INFO - __main__: Found function: pcg_detail::engine<unsigned long, unsigned __int128, pcg_detail::xsl_rr_mixin<unsigned long, unsigned __int128>, false, pcg_detail::specific_stream<unsigned __int128>, pcg_detail::default_multiplier<unsigned __int128> >::bump -> /home/rocky/functio/ClickHouse/base/pcg-random/./pcg_random.hpp
+2025-12-26 17:26:52 - INFO - __main__: Looking up function: DB::(anonymous namespace)::GroupArraySortedData<unsigned long, in /home/ubuntu/ClickHouse_debug/base/base/../base/sort.h
+2025-12-26 17:26:52 - INFO - STDOUT: GroupArraySortedData<unsigned long,
+2025-12-26 17:26:52 - INFO - STDOUT: Function 'DB::(anonymous namespace)::GroupArraySortedData<unsigned long,' () not found using traditional way. Trying alternative
+2025-12-26 17:27:05 - INFO - STDOUT: ??
+2025-12-26 17:27:05 - ERROR - __main__: Error looking up DB::(anonymous namespace)::GroupArraySortedData<unsigned long,: [Errno 2] No such file or directory: '??'
+Traceback (most recent call last):
+  File "/home/ubuntu/functio_server/pid_profiling_clean/functio_mock_server.py", line 160, in _run_pipeline
+    resolved_path = function_lookup(function_name, file_path, projectConfig.executable)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/functio_server/pid_profiling_clean/function_lookup.py", line 304, in function_lookup
+    with open(alternative_file_path, 'r') as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '??'
+2025-12-26 17:27:06 - INFO - __main__: Looking up function: pcg_detail::engine<unsigned long, unsigned __int128, pcg_detail::xsl_rr_mixin<unsigned long, unsigned __int128>, false, pcg_detail::specific_stream<unsigned __int128>, pcg_detail::default_multiplier<unsigned __int128> >::base_generate in /home/ubuntu/ClickHouse_debug/base/pcg-random/./pcg_random.hpp
+2025-12-26 17:27:06 - INFO - STDOUT: base_generate
+2025-12-26 17:27:06 - INFO - STDOUT: Function 'pcg_detail::engine<unsigned long, unsigned __int128, pcg_detail::xsl_rr_mixin<unsigned long, unsigned __int128>, false, pcg_detail::specific_stream<unsigned __int128>, pcg_detail::default_multiplier<unsigned __int128> >::base_generate' () not found using traditional way. Trying alternative
+2025-12-26 17:27:19 - INFO - STDOUT: /home/ubuntu/ClickHouse_debug/base/pcg-random/./pcg_random.hpp
+2025-12-26 17:27:19 - INFO - STDOUT: None
+2025-12-26 17:27:19 - INFO - STDOUT: standart and alternative methods of function lookup failed, skipping this function
+2025-12-26 17:27:19 - WARNING - __main__: Function not found: pcg_detail::engine<unsigned long, unsigned __int128, pcg_detail::xsl_rr_mixin<unsigned long, unsigned __int128>, false, pcg_detail::specific_stream<unsigned __int128>, pcg_detail::default_multiplier<unsigned __int128> >::base_generate
+2025-12-26 17:27:19 - INFO - __main__: Stopping ClickHouse server...
+2025-12-26 17:27:19 - INFO - __main__: ClickHouse server stopped
+2025-12-26 17:27:19 - INFO - __main__: Query 15 status: success
+2025-12-26 17:27:19 - INFO - __main__: Query 15 result count: 3
+2025-12-26 17:27:19 - INFO - __main__: ============================================================
+2025-12-26 17:27:19 - INFO - __main__: Processing query 16/19: SELECT groupArrayInsertAt('-')(toString(number), number) FROM numbers(16_000_000...
+2025-12-26 17:27:19 - INFO - __main__: ============================================================
+2025-12-26 17:27:19 - INFO - __main__: Starting ClickHouse server...
+2025-12-26 17:27:26 - INFO - __main__: ClickHouse server is ready
+2025-12-26 17:27:26 - INFO - __main__: Executing 0 setup queries...
+2025-12-26 17:27:26 - INFO - __main__: Main query to analyze: SELECT groupArrayInsertAt('-')(toString(number), number) FROM numbers(16_000_000) FORMAT NULL;...
+2025-12-26 17:27:26 - INFO - __main__: Profiling command: /home/ubuntu/ClickHouse_debug/build_debug/programs/clickhouse client --query 'SELECT groupArrayInsertAt('"'"'-'"'"')(toString(number), number) FROM numbers(16_000_000) FORMAT NULL;'
+2025-12-26 17:27:26 - INFO - STDOUT: [*] Running flame_folded_pid.sh for PID: 2781778
+2025-12-26 17:27:26 - INFO - STDOUT: Executable command is /home/ubuntu/ClickHouse_debug/build_debug/programs/clickhouse client --query 'SELECT groupArrayInsertAt('"'"'-'"'"')(toString(number), number) FROM numbers(16_000_000) FORMAT NULL;'
+2025-12-26 17:27:26 - INFO - STDOUT: successfully ran flame_folded_pid.sh
+2025-12-26 17:27:45 - INFO - STDOUT: [✓] FlameGraph folded file generated successfully
+2025-12-26 17:28:11 - INFO - STDOUT: [*] Extracted source locations for 381 functions
+2025-12-26 17:28:11 - INFO - __main__: Flamegraph analysis complete. Found 4 hot functions
+2025-12-26 17:28:11 - INFO - __main__: Looking up function definitions...
+2025-12-26 17:28:11 - INFO - __main__: Looking up function: DB::PODArray<unsigned long, 4096ul, Allocator<false, false>, 63ul, 64ul>::operator[] in /home/ubuntu/ClickHouse_debug/src/Common/PODArray.h
+2025-12-26 17:28:11 - INFO - STDOUT: operator[]
+2025-12-26 17:28:11 - INFO - STDOUT: Function 'DB::PODArray<unsigned long, 4096ul, Allocator<false, false>, 63ul, 64ul>::operator[]' () found:
+2025-12-26 17:28:11 - INFO - __main__: Found function: DB::PODArray<unsigned long, 4096ul, Allocator<false, false>, 63ul, 64ul>::operator[] -> /home/rocky/functio/ClickHouse/src/Common/PODArray.h
+2025-12-26 17:28:11 - INFO - __main__: Looking up function: DB::(anonymous namespace)::AggregateFunctionGroupArrayInsertAtGeneric::add in /home/ubuntu/ClickHouse_debug/src/AggregateFunctions/AggregateFunctionGroupArrayInsertAt.cpp
+2025-12-26 17:28:11 - INFO - STDOUT: add
+2025-12-26 17:28:11 - INFO - STDOUT: Function 'DB::(anonymous namespace)::AggregateFunctionGroupArrayInsertAtGeneric::add' () found:
+2025-12-26 17:28:11 - INFO - __main__: Found function: DB::(anonymous namespace)::AggregateFunctionGroupArrayInsertAtGeneric::add -> /home/rocky/functio/ClickHouse/src/AggregateFunctions/AggregateFunctionGroupArrayInsertAt.cpp
+2025-12-26 17:28:11 - INFO - __main__: Looking up function: DB::Field::Field in /home/ubuntu/ClickHouse_debug/src/Core/Field.h
+2025-12-26 17:28:11 - INFO - STDOUT: Field
+2025-12-26 17:28:11 - INFO - STDOUT: Function 'DB::Field::Field' () found:
+2025-12-26 17:28:11 - INFO - __main__: Found function: DB::Field::Field -> /home/rocky/functio/ClickHouse/src/Core/Field.h
+2025-12-26 17:28:11 - INFO - __main__: Looking up function: DB::IAggregateFunctionHelper<DB::(anonymous namespace)::AggregateFunctionGroupArrayInsertAtGeneric>::addBatchSinglePlace in /home/ubuntu/ClickHouse_debug/src/AggregateFunctions/IAggregateFunction.h
+2025-12-26 17:28:11 - INFO - STDOUT: addBatchSinglePlace
+2025-12-26 17:28:11 - INFO - STDOUT: Function 'DB::IAggregateFunctionHelper<DB::(anonymous namespace)::AggregateFunctionGroupArrayInsertAtGeneric>::addBatchSinglePlace' () found:
+2025-12-26 17:28:11 - INFO - __main__: Found function: DB::IAggregateFunctionHelper<DB::(anonymous namespace)::AggregateFunctionGroupArrayInsertAtGeneric>::addBatchSinglePlace -> /home/rocky/functio/ClickHouse/src/AggregateFunctions/IAggregateFunction.h
+2025-12-26 17:28:11 - INFO - __main__: Stopping ClickHouse server...
+2025-12-26 17:28:11 - INFO - __main__: ClickHouse server stopped
+2025-12-26 17:28:11 - INFO - __main__: Query 16 status: success
+2025-12-26 17:28:11 - INFO - __main__: Query 16 result count: 4
+2025-12-26 17:28:11 - INFO - __main__: ============================================================
+2025-12-26 17:28:11 - INFO - __main__: Processing query 17/19: SELECT groupArrayIntersect(arrayMap(i -> (number + i) % 100000, range(20))) FROM...
+2025-12-26 17:28:11 - INFO - __main__: ============================================================
+2025-12-26 17:28:11 - INFO - __main__: Starting ClickHouse server...
+2025-12-26 17:28:17 - INFO - __main__: ClickHouse server is ready
+2025-12-26 17:28:17 - INFO - __main__: Executing 0 setup queries...
+2025-12-26 17:28:17 - INFO - __main__: Main query to analyze: SELECT groupArrayIntersect(arrayMap(i -> (number + i) % 100000, range(20))) FROM numbers(30_000_000) FORMAT NULL;...
+2025-12-26 17:28:17 - INFO - __main__: Profiling command: /home/ubuntu/ClickHouse_debug/build_debug/programs/clickhouse client --query 'SELECT groupArrayIntersect(arrayMap(i -> (number + i) % 100000, range(20))) FROM numbers(30_000_000) FORMAT NULL;'
+2025-12-26 17:28:17 - INFO - STDOUT: [*] Running flame_folded_pid.sh for PID: 2782765
+2025-12-26 17:28:17 - INFO - STDOUT: Executable command is /home/ubuntu/ClickHouse_debug/build_debug/programs/clickhouse client --query 'SELECT groupArrayIntersect(arrayMap(i -> (number + i) % 100000, range(20))) FROM numbers(30_000_000) FORMAT NULL;'
+2025-12-26 17:28:17 - INFO - STDOUT: successfully ran flame_folded_pid.sh
+2025-12-26 17:28:41 - INFO - STDOUT: [✓] FlameGraph folded file generated successfully
+2025-12-26 17:29:16 - INFO - STDOUT: [*] Extracted source locations for 494 functions
+2025-12-26 17:29:16 - INFO - __main__: Flamegraph analysis complete. Found 4 hot functions
+2025-12-26 17:29:16 - INFO - __main__: Looking up function definitions...
+2025-12-26 17:29:16 - INFO - __main__: Looking up function: DB::PODArray<unsigned long, 4096ul, Allocator<false, false>, 63ul, 64ul>::operator[] in /home/ubuntu/ClickHouse_debug/src/Common/PODArray.h
+2025-12-26 17:29:16 - INFO - STDOUT: operator[]
+2025-12-26 17:29:16 - INFO - STDOUT: Function 'DB::PODArray<unsigned long, 4096ul, Allocator<false, false>, 63ul, 64ul>::operator[]' () found:
+2025-12-26 17:29:16 - INFO - __main__: Found function: DB::PODArray<unsigned long, 4096ul, Allocator<false, false>, 63ul, 64ul>::operator[] -> /home/rocky/functio/ClickHouse/src/Common/PODArray.h
+2025-12-26 17:29:16 - INFO - __main__: Looking up function: void DB::impl_::BinaryOperation<unsigned long, char8_t, DB::PlusImpl<unsigned long, char8_t>, unsigned long>::apply< in /home/ubuntu/ClickHouse_debug/src/Functions/FunctionBinaryArithmetic.h
+2025-12-26 17:29:16 - INFO - STDOUT: apply<
+2025-12-26 17:29:17 - INFO - STDOUT: Function 'void DB::impl_::BinaryOperation<unsigned long, char8_t, DB::PlusImpl<unsigned long, char8_t>, unsigned long>::apply<' () not found using traditional way. Trying alternative
+2025-12-26 17:29:35 - INFO - STDOUT: /home/ubuntu/ClickHouse_debug/src/Functions/FunctionBinaryArithmetic.h
+2025-12-26 17:29:35 - INFO - STDOUT: None
+2025-12-26 17:29:35 - INFO - STDOUT: standart and alternative methods of function lookup failed, skipping this function
+2025-12-26 17:29:35 - WARNING - __main__: Function not found: void DB::impl_::BinaryOperation<unsigned long, char8_t, DB::PlusImpl<unsigned long, char8_t>, unsigned long>::apply<
+2025-12-26 17:29:35 - INFO - __main__: Looking up function: DB::ColumnVector<unsigned long>::replicate in /home/ubuntu/ClickHouse_debug/src/Columns/ColumnVector.cpp
+2025-12-26 17:29:35 - INFO - STDOUT: replicate
+2025-12-26 17:29:35 - INFO - STDOUT: Function 'DB::ColumnVector<unsigned long>::replicate' () found:
+2025-12-26 17:29:35 - INFO - __main__: Found function: DB::ColumnVector<unsigned long>::replicate -> /home/rocky/functio/ClickHouse/src/Columns/ColumnVector.cpp
+2025-12-26 17:29:35 - INFO - __main__: Looking up function: DB::PODArrayBase<8ul, 4096ul, Allocator<false, false>, 63ul, 64ul>::size in /home/ubuntu/ClickHouse_debug/src/Common/PODArray.h
+2025-12-26 17:29:35 - INFO - STDOUT: size
+2025-12-26 17:29:35 - INFO - STDOUT: Function 'DB::PODArrayBase<8ul, 4096ul, Allocator<false, false>, 63ul, 64ul>::size' () found:
+2025-12-26 17:29:35 - INFO - __main__: Found function: DB::PODArrayBase<8ul, 4096ul, Allocator<false, false>, 63ul, 64ul>::size -> /home/rocky/functio/ClickHouse/src/Common/PODArray.h
+2025-12-26 17:29:35 - INFO - __main__: Stopping ClickHouse server...
+2025-12-26 17:29:35 - INFO - __main__: ClickHouse server stopped
+2025-12-26 17:29:35 - INFO - __main__: Query 17 status: success
+2025-12-26 17:29:35 - INFO - __main__: Query 17 result count: 3
+2025-12-26 17:29:35 - INFO - __main__: ============================================================
+2025-12-26 17:29:35 - INFO - __main__: Processing query 18/19: SELECT groupArrayMovingSum(number) FROM numbers(200_000_000) FORMAT NULL;...
+2025-12-26 17:29:35 - INFO - __main__: ============================================================
+2025-12-26 17:29:35 - INFO - __main__: Starting ClickHouse server...
+2025-12-26 17:29:41 - INFO - __main__: ClickHouse server is ready
+2025-12-26 17:29:41 - INFO - __main__: Executing 0 setup queries...
+2025-12-26 17:29:41 - INFO - __main__: Main query to analyze: SELECT groupArrayMovingSum(number) FROM numbers(200_000_000) FORMAT NULL;...
+2025-12-26 17:29:41 - INFO - __main__: Profiling command: /home/ubuntu/ClickHouse_debug/build_debug/programs/clickhouse client --query 'SELECT groupArrayMovingSum(number) FROM numbers(200_000_000) FORMAT NULL;'
+2025-12-26 17:29:41 - INFO - STDOUT: [*] Running flame_folded_pid.sh for PID: 2783903
+2025-12-26 17:29:41 - INFO - STDOUT: Executable command is /home/ubuntu/ClickHouse_debug/build_debug/programs/clickhouse client --query 'SELECT groupArrayMovingSum(number) FROM numbers(200_000_000) FORMAT NULL;'
+2025-12-26 17:29:41 - INFO - STDOUT: successfully ran flame_folded_pid.sh
+2025-12-26 17:30:02 - INFO - STDOUT: [✓] FlameGraph folded file generated successfully
+2025-12-26 17:31:11 - INFO - STDOUT: [*] Extracted source locations for 413 functions
+2025-12-26 17:31:11 - INFO - __main__: Flamegraph analysis complete. Found 7 hot functions
+2025-12-26 17:31:11 - INFO - __main__: Looking up function definitions...
+2025-12-26 17:31:11 - INFO - __main__: Looking up function: void DB::PODArray<unsigned long, 4096ul, Allocator<false, false>, 63ul, 64ul>::push_back<unsigned long> in /home/ubuntu/ClickHouse_debug/src/Common/PODArray.h
+2025-12-26 17:31:11 - INFO - STDOUT: push_back
+2025-12-26 17:31:11 - INFO - STDOUT: Function 'void DB::PODArray<unsigned long, 4096ul, Allocator<false, false>, 63ul, 64ul>::push_back<unsigned long>' () found:
+2025-12-26 17:31:11 - INFO - __main__: Found function: void DB::PODArray<unsigned long, 4096ul, Allocator<false, false>, 63ul, 64ul>::push_back<unsigned long> -> /home/rocky/functio/ClickHouse/src/Common/PODArray.h
+2025-12-26 17:31:11 - INFO - __main__: Looking up function: void DB::Aggregator::insertAggregatesIntoColumns<char*> in /home/ubuntu/ClickHouse_debug/src/Interpreters/Aggregator.cpp
+2025-12-26 17:31:11 - INFO - STDOUT: insertAggregatesIntoColumns
+2025-12-26 17:31:11 - INFO - STDOUT: Function 'void DB::Aggregator::insertAggregatesIntoColumns<char*>' () found:
+2025-12-26 17:31:11 - INFO - __main__: Found function: void DB::Aggregator::insertAggregatesIntoColumns<char*> -> /home/rocky/functio/ClickHouse/src/Interpreters/Aggregator.cpp
+2025-12-26 17:31:11 - INFO - __main__: Looking up function: void DB::PODArray<unsigned long, 32ul, DB::MixedArenaAllocator<4096ul, Allocator<false, false>, DB::AlignedArenaAllocator<8ul>, 8ul>, 0ul, 0ul>::push_back<unsigned long&, DB::Arena*&> in /home/ubuntu/ClickHouse_debug/src/Common/PODArray.h
+2025-12-26 17:31:11 - INFO - STDOUT: push_back
+2025-12-26 17:31:11 - INFO - STDOUT: Function 'void DB::PODArray<unsigned long, 32ul, DB::MixedArenaAllocator<4096ul, Allocator<false, false>, DB::AlignedArenaAllocator<8ul>, 8ul>, 0ul, 0ul>::push_back<unsigned long&, DB::Arena*&>' () found:
+2025-12-26 17:31:11 - INFO - __main__: Found function: void DB::PODArray<unsigned long, 32ul, DB::MixedArenaAllocator<4096ul, Allocator<false, false>, DB::AlignedArenaAllocator<8ul>, 8ul>, 0ul, 0ul>::push_back<unsigned long&, DB::Arena*&> -> /home/rocky/functio/ClickHouse/src/Common/PODArray.h
+2025-12-26 17:31:11 - INFO - __main__: Looking up function: DB::MovingSumData<unsigned long>::get in /home/ubuntu/ClickHouse_debug/src/AggregateFunctions/AggregateFunctionGroupArrayMoving.cpp
+2025-12-26 17:31:11 - INFO - STDOUT: get
+2025-12-26 17:31:11 - INFO - STDOUT: Function 'DB::MovingSumData<unsigned long>::get' () found:
+2025-12-26 17:31:11 - INFO - __main__: Found function: DB::MovingSumData<unsigned long>::get -> /home/rocky/functio/ClickHouse/src/AggregateFunctions/AggregateFunctionGroupArrayMoving.cpp
+2025-12-26 17:31:11 - INFO - __main__: Looking up function: DB::PODArray<unsigned long, 4096ul, Allocator<false, false>, 63ul, 64ul>::operator[] in /home/ubuntu/ClickHouse_debug/src/Common/PODArray.h
+2025-12-26 17:31:11 - INFO - STDOUT: operator[]
+2025-12-26 17:31:11 - INFO - STDOUT: Function 'DB::PODArray<unsigned long, 4096ul, Allocator<false, false>, 63ul, 64ul>::operator[]' () found:
+2025-12-26 17:31:11 - INFO - __main__: Found function: DB::PODArray<unsigned long, 4096ul, Allocator<false, false>, 63ul, 64ul>::operator[] -> /home/rocky/functio/ClickHouse/src/Common/PODArray.h
+2025-12-26 17:31:11 - INFO - __main__: Looking up function: DB::Aggregator::addBatchSinglePlace in /home/ubuntu/ClickHouse_debug/src/Interpreters/Aggregator.cpp
+2025-12-26 17:31:11 - INFO - STDOUT: addBatchSinglePlace
+2025-12-26 17:31:11 - INFO - STDOUT: Function 'DB::Aggregator::addBatchSinglePlace' () found:
+2025-12-26 17:31:11 - INFO - __main__: Found function: DB::Aggregator::addBatchSinglePlace -> /home/rocky/functio/ClickHouse/src/Interpreters/Aggregator.cpp
+2025-12-26 17:31:11 - INFO - __main__: Looking up function: DB::executeJob in /home/ubuntu/ClickHouse_debug/src/Processors/Executors/ExecutionThreadContext.cpp
+2025-12-26 17:31:11 - INFO - STDOUT: executeJob
+2025-12-26 17:31:11 - INFO - STDOUT: Function 'DB::executeJob' () found:
+2025-12-26 17:31:11 - INFO - __main__: Found function: DB::executeJob -> /home/rocky/functio/ClickHouse/src/Processors/Executors/ExecutionThreadContext.cpp
+2025-12-26 17:31:11 - INFO - __main__: Stopping ClickHouse server...
+2025-12-26 17:31:13 - INFO - __main__: ClickHouse server stopped
+2025-12-26 17:31:13 - INFO - __main__: Query 18 status: success
+2025-12-26 17:31:13 - INFO - __main__: Query 18 result count: 7
+2025-12-26 17:31:13 - INFO - __main__: ============================================================
+2025-12-26 17:31:13 - INFO - __main__: Processing query 19/19: SELECT analysisOfVariance(toFloat64(number), number % 1000) FROM numbers(250_000...
+2025-12-26 17:31:13 - INFO - __main__: ============================================================
+2025-12-26 17:31:13 - INFO - __main__: Starting ClickHouse server...
+2025-12-26 17:31:19 - INFO - __main__: ClickHouse server is ready
+2025-12-26 17:31:19 - INFO - __main__: Executing 0 setup queries...
+2025-12-26 17:31:19 - INFO - __main__: Main query to analyze: SELECT analysisOfVariance(toFloat64(number), number % 1000) FROM numbers(250_000_000) FORMAT NULL;...
+2025-12-26 17:31:19 - INFO - __main__: Profiling command: /home/ubuntu/ClickHouse_debug/build_debug/programs/clickhouse client --query 'SELECT analysisOfVariance(toFloat64(number), number % 1000) FROM numbers(250_000_000) FORMAT NULL;'
+2025-12-26 17:31:19 - INFO - STDOUT: [*] Running flame_folded_pid.sh for PID: 2784906
+2025-12-26 17:31:19 - INFO - STDOUT: Executable command is /home/ubuntu/ClickHouse_debug/build_debug/programs/clickhouse client --query 'SELECT analysisOfVariance(toFloat64(number), number % 1000) FROM numbers(250_000_000) FORMAT NULL;'
+2025-12-26 17:31:19 - INFO - STDOUT: successfully ran flame_folded_pid.sh
+2025-12-26 17:31:44 - INFO - STDOUT: [✓] FlameGraph folded file generated successfully
+2025-12-26 17:32:48 - INFO - STDOUT: [*] Extracted source locations for 692 functions
+2025-12-26 17:32:48 - INFO - __main__: Flamegraph analysis complete. Found 4 hot functions
+2025-12-26 17:32:48 - INFO - __main__: Looking up function definitions...
+2025-12-26 17:32:48 - INFO - __main__: Looking up function: DB::AnalysisOfVarianceMoments<double>::add in /home/ubuntu/ClickHouse_debug/src/AggregateFunctions/Moments.h
+2025-12-26 17:32:48 - INFO - STDOUT: add
+2025-12-26 17:32:48 - INFO - STDOUT: Function 'DB::AnalysisOfVarianceMoments<double>::add' () found:
+2025-12-26 17:32:48 - INFO - __main__: Found function: DB::AnalysisOfVarianceMoments<double>::add -> /home/rocky/functio/ClickHouse/src/AggregateFunctions/Moments.h
+2025-12-26 17:32:48 - INFO - __main__: Looking up function: COW<DB::IColumn>::immutable_ptr<DB::IColumn> DB::detail::ConvertImpl<DB::DataTypeNumber<unsigned long>, DB::DataTypeNumber<double>, DB::detail::NameToFloat64, in /home/ubuntu/ClickHouse_debug/src/Functions/FunctionsConversion.h
+2025-12-26 17:32:48 - INFO - STDOUT: ConvertImpl<DB::DataTypeNumber<unsigned long>, DB::DataTypeNumber<double>, DB::detail::NameToFloat64,
+2025-12-26 17:32:49 - INFO - STDOUT: Function 'COW<DB::IColumn>::immutable_ptr<DB::IColumn> DB::detail::ConvertImpl<DB::DataTypeNumber<unsigned long>, DB::DataTypeNumber<double>, DB::detail::NameToFloat64,' () not found using traditional way. Trying alternative
+2025-12-26 17:33:08 - INFO - STDOUT: /home/ubuntu/ClickHouse_debug/src/Functions/FunctionsConversion.h
+2025-12-26 17:33:08 - INFO - STDOUT: None
+2025-12-26 17:33:08 - INFO - STDOUT: standart and alternative methods of function lookup failed, skipping this function
+2025-12-26 17:33:08 - WARNING - __main__: Function not found: COW<DB::IColumn>::immutable_ptr<DB::IColumn> DB::detail::ConvertImpl<DB::DataTypeNumber<unsigned long>, DB::DataTypeNumber<double>, DB::detail::NameToFloat64,
+2025-12-26 17:33:08 - INFO - __main__: Looking up function: DB::PODArray<double, 4096ul, Allocator<false, false>, 63ul, 64ul>::operator[] in /home/ubuntu/ClickHouse_debug/src/Common/PODArray.h
+2025-12-26 17:33:08 - INFO - STDOUT: operator[]
+2025-12-26 17:33:08 - INFO - STDOUT: Function 'DB::PODArray<double, 4096ul, Allocator<false, false>, 63ul, 64ul>::operator[]' () found:
+2025-12-26 17:33:08 - INFO - __main__: Found function: DB::PODArray<double, 4096ul, Allocator<false, false>, 63ul, 64ul>::operator[] -> /home/rocky/functio/ClickHouse/src/Common/PODArray.h
+2025-12-26 17:33:08 - INFO - __main__: Looking up function: DB::(anonymous namespace)::AggregateFunctionAnalysisOfVariance::add in /home/ubuntu/ClickHouse_debug/src/AggregateFunctions/AggregateFunctionAnalysisOfVariance.cpp
+2025-12-26 17:33:08 - INFO - STDOUT: add
+2025-12-26 17:33:08 - INFO - STDOUT: Function 'DB::(anonymous namespace)::AggregateFunctionAnalysisOfVariance::add' () found:
+2025-12-26 17:33:08 - INFO - __main__: Found function: DB::(anonymous namespace)::AggregateFunctionAnalysisOfVariance::add -> /home/rocky/functio/ClickHouse/src/AggregateFunctions/AggregateFunctionAnalysisOfVariance.cpp
+2025-12-26 17:33:08 - INFO - __main__: Stopping ClickHouse server...
+2025-12-26 17:33:08 - INFO - __main__: ClickHouse server stopped
+2025-12-26 17:33:08 - INFO - __main__: Query 19 status: success
+2025-12-26 17:33:08 - INFO - __main__: Query 19 result count: 3
+2025-12-26 17:33:08 - INFO - __main__: Results saved to /home/ubuntu/functio_server/pid_profiling_clean/server_logs/logs_12-26_16-28-14/profiling_results.json
+2025-12-26 17:33:08 - INFO - __main__: ============================================================
+2025-12-26 17:33:08 - INFO - __main__: Completed: 17/19 queries succeeded
+2025-12-26 17:33:08 - INFO - __main__: ============================================================
+2025-12-26 17:33:08 - INFO - STDOUT: Results saved to: /home/ubuntu/functio_server/pid_profiling_clean/server_logs/logs_12-26_16-28-14/profiling_results.json

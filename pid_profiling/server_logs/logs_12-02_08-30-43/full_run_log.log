@@ -1,0 +1,71 @@
+2025-12-02 08:30:43 - INFO - __main__: ============================================================
+2025-12-02 08:30:43 - INFO - __main__: New request received at 12-02_08-30-43
+2025-12-02 08:30:43 - INFO - __main__: ============================================================
+2025-12-02 08:30:43 - INFO - __main__: Starting ClickHouse server...
+2025-12-02 08:30:49 - INFO - __main__: ClickHouse server started successfully
+2025-12-02 08:30:49 - INFO - __main__: Received 3 queries
+2025-12-02 08:30:49 - INFO - __main__: Waiting for server to be ready...
+2025-12-02 08:30:51 - INFO - __main__: Server is ready
+2025-12-02 08:30:51 - INFO - __main__: Executing 2 setup queries...
+2025-12-02 08:30:51 - INFO - __main__: Executing setup query 1/2: CREATE TABLE stress_distance (
+    id UInt64,
+    str_a String,
+    str_b String
+) ENGINE = MergeTre...
+2025-12-02 08:30:51 - INFO - __main__: Setup query 1 completed successfully
+2025-12-02 08:30:51 - INFO - __main__: Executing setup query 2/2: INSERT INTO stress_distance
+SELECT 
+    number,
+    randomString(20), 
+    randomString(20)
+FROM num...
+2025-12-02 08:30:55 - INFO - __main__: Setup query 2 completed successfully
+2025-12-02 08:30:55 - INFO - __main__: Main query to analyze: SELECT 
+    id, 
+    str_a, 
+    str_b,
+    levenshteinDistance(str_a, str_b) as dist
+FROM stress_distance
+WHERE id < 10000000 
+ORDER BY dist DESC
+LIMIT 100;
+2025-12-02 08:30:55 - INFO - __main__: Starting flamegraph analysis (unified_strategy)...
+2025-12-02 08:30:55 - INFO - STDOUT: [*] Running flame_folded_pid.sh for PID: 2908411
+2025-12-02 08:30:55 - INFO - STDOUT: Executable command is /home/ubuntu/ClickHouse_debug/build_debug/programs/clickhouse client --query 'SELECT 
+2025-12-02 08:30:55 - INFO - STDOUT:     id, 
+2025-12-02 08:30:55 - INFO - STDOUT:     str_a, 
+2025-12-02 08:30:55 - INFO - STDOUT:     str_b,
+2025-12-02 08:30:55 - INFO - STDOUT:     levenshteinDistance(str_a, str_b) as dist
+2025-12-02 08:30:55 - INFO - STDOUT: FROM stress_distance
+2025-12-02 08:30:55 - INFO - STDOUT: WHERE id < 10000000 
+2025-12-02 08:30:55 - INFO - STDOUT: ORDER BY dist DESC
+2025-12-02 08:30:55 - INFO - STDOUT: LIMIT 100;'
+2025-12-02 08:30:55 - INFO - STDOUT: successfully ran flame_folded_pid.sh
+2025-12-02 08:32:59 - INFO - STDOUT: [✓] FlameGraph folded file generated successfully
+2025-12-02 09:16:56 - INFO - STDOUT: [*] Extracted source locations for 2137 functions
+2025-12-02 09:16:57 - INFO - __main__: Flamegraph analysis complete. Found 4 hot functions
+2025-12-02 09:16:57 - INFO - __main__: Looking up function definitions...
+2025-12-02 09:16:57 - INFO - __main__: Looking up function: DB::PODArray<unsigned long, 4096ul, Allocator<false, false>, 63ul, 64ul>::operator[] in /home/ubuntu/ClickHouse_debug/src/Common/PODArray.h
+2025-12-02 09:16:57 - INFO - STDOUT: operator[]
+2025-12-02 09:16:57 - INFO - STDOUT: Function 'DB::PODArray<unsigned long, 4096ul, Allocator<false, false>, 63ul, 64ul>::operator[]' () found:
+2025-12-02 09:16:57 - INFO - __main__: Found function: DB::PODArray<unsigned long, 4096ul, Allocator<false, false>, 63ul, 64ul>::operator[] -> /home/rocky/functio/ClickHouse/src/Common/PODArray.h
+2025-12-02 09:16:57 - INFO - __main__: Looking up function: DB::ByteEditDistanceImpl<false>::process in /home/ubuntu/ClickHouse_debug/src/Functions/FunctionsStringDistance.cpp
+2025-12-02 09:16:57 - INFO - STDOUT: process
+2025-12-02 09:16:57 - INFO - STDOUT: Function 'DB::ByteEditDistanceImpl<false>::process' () found:
+2025-12-02 09:16:57 - INFO - __main__: Found function: DB::ByteEditDistanceImpl<false>::process -> /home/rocky/functio/ClickHouse/src/Functions/FunctionsStringDistance.cpp
+2025-12-02 09:16:57 - INFO - __main__: Looking up function: DB::PODArrayBase<8ul, 4096ul, Allocator<false, false>, 63ul, 64ul>::size in /home/ubuntu/ClickHouse_debug/src/Common/PODArray.h
+2025-12-02 09:16:57 - INFO - STDOUT: size
+2025-12-02 09:16:57 - INFO - STDOUT: Function 'DB::PODArrayBase<8ul, 4096ul, Allocator<false, false>, 63ul, 64ul>::size' () found:
+2025-12-02 09:16:57 - INFO - __main__: Found function: DB::PODArrayBase<8ul, 4096ul, Allocator<false, false>, 63ul, 64ul>::size -> /home/rocky/functio/ClickHouse/src/Common/PODArray.h
+2025-12-02 09:16:57 - INFO - __main__: Looking up function: DB::PODArray<unsigned long, 4096ul, Allocator<false, false>, 63ul, 64ul>::t_start in /home/ubuntu/ClickHouse_debug/src/Common/PODArray.h
+2025-12-02 09:16:57 - INFO - STDOUT: t_start
+2025-12-02 09:16:57 - INFO - STDOUT: Function 'DB::PODArray<unsigned long, 4096ul, Allocator<false, false>, 63ul, 64ul>::t_start' () not found using traditional way. Trying alternative
+2025-12-02 09:17:25 - INFO - STDOUT: /home/ubuntu/ClickHouse_debug/src/Common/PODArray.h
+2025-12-02 09:17:25 - INFO - STDOUT: None
+2025-12-02 09:17:25 - INFO - STDOUT: standart and alternative methods of function lookup failed, skipping this function
+2025-12-02 09:17:25 - WARNING - __main__: Function not found: DB::PODArray<unsigned long, 4096ul, Allocator<false, false>, 63ul, 64ul>::t_start
+2025-12-02 09:17:25 - INFO - __main__: Function lookup complete. Found 3 functions
+2025-12-02 09:17:25 - INFO - __main__: Results: [('DB::PODArray<unsigned long, 4096ul, Allocator<false, false>, 63ul, 64ul>::operator[]', '/home/rocky/functio/ClickHouse/src/Common/PODArray.h'), ('DB::ByteEditDistanceImpl<false>::process', '/home/rocky/functio/ClickHouse/src/Functions/FunctionsStringDistance.cpp'), ('DB::PODArrayBase<8ul, 4096ul, Allocator<false, false>, 63ul, 64ul>::size', '/home/rocky/functio/ClickHouse/src/Common/PODArray.h')]
+2025-12-02 09:17:25 - INFO - __main__: Stopping ClickHouse server...
+2025-12-02 09:17:26 - INFO - __main__: ClickHouse server stopped
+2025-12-02 09:17:26 - INFO - __main__: Request completed successfully
